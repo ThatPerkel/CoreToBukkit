@@ -7,10 +7,14 @@ import org.ships.implementation.bukkit.platform.BukkitPlatform;
 
 public abstract class AbstractBlockDetails implements BlockDetails {
 
-    org.bukkit.block.data.BlockData blockData;
+    protected org.bukkit.block.data.BlockData blockData;
 
     public AbstractBlockDetails(org.bukkit.block.data.BlockData blockData){
         this.blockData = blockData;
+    }
+
+    public org.bukkit.block.data.BlockData getBukkitData(){
+        return this.blockData;
     }
 
     @Override

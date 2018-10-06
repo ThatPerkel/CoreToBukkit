@@ -8,11 +8,14 @@ import org.core.entity.EntityType;
 import org.core.vector.types.Vector3Double;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
+import org.core.world.position.BlockPosition;
 import org.core.world.position.ExactPosition;
+import org.core.world.position.Position;
 import org.core.world.position.block.details.BlockDetails;
-import org.core.world.position.block.entity.TileEntity;
+import org.core.world.position.block.entity.LiveTileEntity;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.BWorldExtent;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.AbstractBlockDetails;
 
 import java.util.Optional;
 
@@ -43,18 +46,29 @@ public class BExactPosition implements ExactPosition {
     }
 
     @Override
+    public BlockPosition toBlockPosition() {
+        return new BBlockPosition(this.location.getBlock());
+    }
+
+    @Override
     public WorldExtent getWorld() {
         return new BWorldExtent(this.location.getWorld());
     }
 
     @Override
     public BlockDetails getBlockDetails() {
-        return null;
+        return ((BukkitPlatform)CorePlugin.getPlatform()).createBlockDetailInstance(this.location.getBlock().getBlockData());
     }
 
     @Override
-    public Optional<TileEntity> getTileEntity() {
-        return Optional.empty();
+    public Position<Double> setBlock(BlockDetails details) {
+        this.location.getBlock().setBlockData(((AbstractBlockDetails)details).getBukkitData());
+        return this;
+    }
+
+    @Override
+    public Optional<LiveTileEntity> getTileEntity() {
+        return ((BukkitPlatform)CorePlugin.getPlatform()).createTileEntityInstance(this.location.getBlock().getState());
     }
 
     @Override

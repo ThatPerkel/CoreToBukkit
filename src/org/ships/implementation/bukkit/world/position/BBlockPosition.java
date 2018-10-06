@@ -7,10 +7,12 @@ import org.core.entity.EntityType;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
 import org.core.world.position.BlockPosition;
+import org.core.world.position.Position;
 import org.core.world.position.block.details.BlockDetails;
-import org.core.world.position.block.entity.TileEntity;
+import org.core.world.position.block.entity.LiveTileEntity;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.BWorldExtent;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.AbstractBlockDetails;
 
 import java.util.Optional;
 
@@ -51,7 +53,13 @@ public class BBlockPosition implements BlockPosition {
     }
 
     @Override
-    public Optional<TileEntity> getTileEntity() {
+    public Position<Integer> setBlock(BlockDetails details) {
+        this.block.setBlockData(((AbstractBlockDetails)details).getBukkitData());
+        return this;
+    }
+
+    @Override
+    public Optional<LiveTileEntity> getTileEntity() {
         return ((BukkitPlatform)CorePlugin.getPlatform()).createTileEntityInstance(getBukkitBlock().getState());
     }
 

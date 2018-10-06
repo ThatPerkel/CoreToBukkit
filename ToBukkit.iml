@@ -3,8 +3,23 @@
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
+        <userChosenTypes>
+          <map>
+            <entry key="PAPER" value="false" />
+            <entry key="SPIGOT" value="false" />
+            <entry key="BUKKIT" value="true" />
+            <entry key="FORGE" value="false" />
+            <entry key="SPONGE" value="false" />
+            <entry key="CANARY" value="false" />
+            <entry key="WATERFALL" value="false" />
+            <entry key="BUNGEECORD" value="false" />
+            <entry key="LITELOADER" value="false" />
+            <entry key="MIXIN" value="false" />
+            <entry key="MCP" value="false" />
+          </map>
+        </userChosenTypes>
         <autoDetectTypes>
-          <platformType>BUKKIT</platformType>
+          <platformType>SPIGOT</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
@@ -16,17 +31,18 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Ships Core" />
+    <orderEntry type="module" module-name="ShipsSix" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Minecraft/Bukkit/1.13.1/craftbukkit.jar!/" />
+          <root url="jar://$USER_HOME$/Documents/True files/Servers/Bukkit/1.13.1/spigot.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/Documents/Minecraft/Bukkit/1.13.1/craftbukkit.jar!/" />
+          <root url="jar://$USER_HOME$/Documents/True files/Servers/Bukkit/1.13.1/spigot.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="Core" />
   </component>
 </module>

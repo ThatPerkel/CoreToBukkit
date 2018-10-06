@@ -29,8 +29,7 @@ public class BSignEntity extends AbstractTileEntity implements SignTileEntity {
     }
 
     @Override
-    public TileEntitySnapshot<? extends TileEntity> createSnapshot() {
-
-        return null;
+    public TileEntitySnapshot<? extends TileEntity> getSnapshot() {
+        return new BSignEntitySnapshot(this);
     }
 }

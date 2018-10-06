@@ -12,7 +12,7 @@ import org.core.world.position.ExactPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.BlockTypes;
 import org.core.world.position.block.details.BlockDetails;
-import org.core.world.position.block.entity.TileEntity;
+import org.core.world.position.block.entity.LiveTileEntity;
 import org.ships.implementation.bukkit.entity.BEntityType;
 import org.ships.implementation.bukkit.inventory.item.BItemType;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
@@ -23,11 +23,11 @@ import java.util.*;
 
 public class BukkitPlatform implements Platform {
 
-    Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> entityTypes = new HashSet<>(Arrays.asList(new BEntityType.ZombieType()));
-    Set<BlockDetails> modifiedBlockDetails = new HashSet<>();
-    Map<Class<org.bukkit.entity.Entity>, Class<Entity>> entityToEntity = new HashMap<>();
-    Map<Class<org.bukkit.block.BlockState>, Class<TileEntity>> blockStateToTileEntity = new HashMap<>();
-    Map<Class<org.bukkit.block.data.BlockData>, Class<BlockDetails>> blockDataToBlockDetails = new HashMap<>();
+    protected Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> entityTypes = new HashSet<>(Arrays.asList(new BEntityType.ZombieType()));
+    protected Set<BlockDetails> modifiedBlockDetails = new HashSet<>();
+    protected Map<Class<org.bukkit.entity.Entity>, Class<Entity>> entityToEntity = new HashMap<>();
+    protected Map<Class<org.bukkit.block.BlockState>, Class<LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
+    protected Map<Class<org.bukkit.block.data.BlockData>, Class<BlockDetails>> blockDataToBlockDetails = new HashMap<>();
 
     public <E extends Entity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, S> type, ExactPosition position){
         if(type.equals(EntityTypes.PLAYER) || type.equals(EntityTypes.HUMAN)){
@@ -68,12 +68,12 @@ public class BukkitPlatform implements Platform {
         return null;
     }
 
-    public Optional<TileEntity> createTileEntityInstance(org.bukkit.block.BlockState state) {
-        Optional<Map.Entry<Class<org.bukkit.block.BlockState>, Class<TileEntity>>> opEntry = blockStateToTileEntity.entrySet().stream().filter(e -> e.getKey().isInstance(state)).findAny();
+    public Optional<LiveTileEntity> createTileEntityInstance(org.bukkit.block.BlockState state) {
+        Optional<Map.Entry<Class<org.bukkit.block.BlockState>, Class<LiveTileEntity>>> opEntry = blockStateToTileEntity.entrySet().stream().filter(e -> e.getKey().isInstance(state)).findAny();
         if(!opEntry.isPresent()){
             return Optional.empty();
         }
-        Class<TileEntity> bdclass = opEntry.get().getValue();
+        Class<LiveTileEntity> bdclass = opEntry.get().getValue();
         try {
             return Optional.of(bdclass.getConstructor(org.bukkit.block.BlockState.class).newInstance(state));
         } catch (InstantiationException e) {
