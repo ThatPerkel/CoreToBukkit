@@ -4,6 +4,7 @@ import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.PlayerInventory;
+import org.core.source.viewer.CommandViewer;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlayerSnapshot;
 
@@ -68,5 +69,15 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     @Override
     public PlayerSnapshot createSnapshot() {
         return new BPlayerSnapshot(this);
+    }
+
+    @Override
+    public CommandViewer sendMessage(String message) {
+        return null;
+    }
+
+    @Override
+    public CommandViewer sendMessagePlain(String message) {
+        return null;
     }
 }
