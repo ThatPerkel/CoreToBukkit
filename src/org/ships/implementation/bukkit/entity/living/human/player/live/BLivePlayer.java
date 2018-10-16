@@ -1,8 +1,12 @@
 package org.ships.implementation.bukkit.entity.living.human.player.live;
 
-import net.md_5.bungee.api.ChatColor;
+import org.core.entity.Entity;
+import org.core.entity.EntitySnapshot;
+import org.core.entity.EntityType;
+import org.core.entity.EntityTypes;
 import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
+import org.core.entity.living.human.player.Player;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.PlayerInventory;
 import org.core.source.viewer.CommandViewer;
@@ -81,8 +85,24 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
+    public EntityType<Player, PlayerSnapshot> getType() {
+        return EntityTypes.PLAYER;
+    }
+
+    @Override
     public PlayerSnapshot createSnapshot() {
         return new BPlayerSnapshot(this);
+    }
+
+    @Override
+    public Player setGravity(boolean check) {
+        getBukkitEntity().setGravity(check);
+        return this;
+    }
+
+    @Override
+    public boolean hasGravity() {
+        return getBukkitEntity().hasGravity();
     }
 
     @Override
@@ -93,7 +113,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
 
     @Override
     public CommandViewer sendMessagePlain(String message) {
-        getBukkitEntity().sendMessage(ChatColor.stripColor(message));
+        getBukkitEntity().sendMessage(org.bukkit.ChatColor.stripColor(message));
         return this;
     }
 }

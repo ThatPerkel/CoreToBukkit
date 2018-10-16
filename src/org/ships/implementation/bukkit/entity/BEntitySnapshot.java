@@ -2,6 +2,7 @@ package org.ships.implementation.bukkit.entity;
 
 import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
+import org.core.entity.living.human.player.Player;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.ExactPosition;
 import org.core.world.position.Position;
@@ -16,6 +17,7 @@ public abstract class BEntitySnapshot <T extends Entity> implements EntitySnapsh
     protected double roll;
     protected ExactPosition position;
     protected Collection<Entity> passengers = new HashSet<>();
+    protected boolean hasGravity;
 
     public BEntitySnapshot(ExactPosition position){
         this.position = position;
@@ -80,5 +82,16 @@ public abstract class BEntitySnapshot <T extends Entity> implements EntitySnapsh
     @Override
     public ExactPosition getPosition() {
         return this.position;
+    }
+
+    @Override
+    public Entity setGravity(boolean check) {
+        this.hasGravity = check;
+        return this;
+    }
+
+    @Override
+    public boolean hasGravity() {
+        return this.hasGravity;
     }
 }

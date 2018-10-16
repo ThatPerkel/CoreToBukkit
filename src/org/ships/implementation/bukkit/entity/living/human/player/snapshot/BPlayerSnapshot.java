@@ -115,4 +115,5 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     public PlayerSnapshot createSnapshot() {
         return new BPlayerSnapshot(this);
     }
+
 }

@@ -1,10 +1,16 @@
 package org.ships.implementation.bukkit.world;
 
+import org.core.CorePlugin;
+import org.core.entity.Entity;
 import org.core.world.WorldExtent;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.ExactPosition;
+import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.BExactPosition;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class BWorldExtent implements WorldExtent {
 
@@ -31,5 +37,12 @@ public class BWorldExtent implements WorldExtent {
     @Override
     public boolean isLoaded() {
         return true;
+    }
+
+    @Override
+    public Set<Entity> getEntities() {
+        Set<Entity> entities = new HashSet<>();
+        this.world.getEntities().forEach(e -> entities.add(((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(e)));
+        return entities;
     }
 }
