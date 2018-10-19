@@ -11,10 +11,11 @@ import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class BWorldExtent implements WorldExtent {
 
-    org.bukkit.World world;
+    protected org.bukkit.World world;
 
     public BWorldExtent(org.bukkit.World world){
         this.world = world;
@@ -44,5 +45,20 @@ public class BWorldExtent implements WorldExtent {
         Set<Entity> entities = new HashSet<>();
         this.world.getEntities().forEach(e -> entities.add(((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(e)));
         return entities;
+    }
+
+    @Override
+    public String getName() {
+        return this.world.getName();
+    }
+
+    @Override
+    public UUID getUniquieId() {
+        return this.world.getUID();
+    }
+
+    @Override
+    public String getPlatformUniquieId() {
+        return getName();
     }
 }

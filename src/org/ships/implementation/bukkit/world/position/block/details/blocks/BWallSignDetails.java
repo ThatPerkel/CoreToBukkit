@@ -10,15 +10,15 @@ import org.core.world.position.block.entity.sign.SignTileEntitySnapshot;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.position.block.entity.sign.BSignEntitySnapshot;
 
-public class BLiveWallSignDetails extends AbstractBlockDetails implements WallSign {
+public class BWallSignDetails extends AbstractBlockDetails implements WallSign {
 
     SignTileEntitySnapshot snapshot;
 
-    public BLiveWallSignDetails(org.bukkit.block.data.type.WallSign wallsign){
+    public BWallSignDetails(org.bukkit.block.data.type.WallSign wallsign){
         this(wallsign, new BSignEntitySnapshot());
     }
 
-    public BLiveWallSignDetails(org.bukkit.block.data.type.WallSign wallsign, SignTileEntitySnapshot snapshot){
+    public BWallSignDetails(org.bukkit.block.data.type.WallSign wallsign, SignTileEntitySnapshot snapshot){
         super(wallsign);
         this.snapshot = snapshot;
     }
@@ -53,6 +53,6 @@ public class BLiveWallSignDetails extends AbstractBlockDetails implements WallSi
 
     @Override
     public BlockDetails createCopyOf() {
-        return new BLiveWallSignDetails((org.bukkit.block.data.type.WallSign)getBukkitData().clone(), (BSignEntitySnapshot)this.snapshot.getSnapshot());
+        return new BWallSignDetails((org.bukkit.block.data.type.WallSign)getBukkitData().clone(), (BSignEntitySnapshot)this.snapshot.getSnapshot());
     }
 }

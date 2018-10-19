@@ -1,7 +1,5 @@
 package org.ships.implementation.bukkit.entity.living.human.player.live;
 
-import org.core.entity.Entity;
-import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
 import org.core.entity.living.human.AbstractHuman;
@@ -15,6 +13,11 @@ import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlay
 import org.ships.implementation.bukkit.inventory.inventories.live.BLivePlayerInventory;
 
 public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implements LivePlayer {
+
+    @Deprecated
+    public BLivePlayer(org.bukkit.entity.Entity entity){
+        this((org.bukkit.entity.Player)entity);
+    }
 
     public BLivePlayer(org.bukkit.entity.Player entity) {
         super(entity);

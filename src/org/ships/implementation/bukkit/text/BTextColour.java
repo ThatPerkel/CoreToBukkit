@@ -12,7 +12,7 @@ public class BTextColour implements TextColour {
 
     @Override
     public String formatChar() {
-        return color.toString();
+        return this.color.toString();
     }
 
     @Override
@@ -23,5 +23,10 @@ public class BTextColour implements TextColour {
     @Override
     public String getName() {
         return this.color.name();
+    }
+
+    @Override
+    public String toString(){
+        return this.formatChar();
     }
 }
