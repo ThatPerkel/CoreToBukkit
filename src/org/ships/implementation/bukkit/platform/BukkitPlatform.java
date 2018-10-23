@@ -29,6 +29,7 @@ import org.ships.implementation.bukkit.text.BTextColour;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BGeneralBlockDetails;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -217,9 +218,10 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public ConfigurationLoaderType get(ConfigurationLoaderTypes id) {
-        if(id.getName().equals("yaml") || id.getName().equals("default")){
+        if(id.getName().equals("YetAnotherMarkupLang") || id.getName().equals("Default")){
             return new YamlConfigurationLoaderType();
         }
+        new IOException("Unknown ConfigurationLoaderType: " + id.getName()).printStackTrace();
         return null;
     }
 

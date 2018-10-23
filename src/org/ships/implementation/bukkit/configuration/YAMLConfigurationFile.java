@@ -61,6 +61,40 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     }
 
     @Override
+    public Optional<String> parseString(ConfigurationNode node) {
+        String value = this.yaml.getString(CorePlugin.toString(".", s -> s, node.getPath()));
+        return Optional.ofNullable(value);
+    }
+
+    @Override
+    public Optional<Integer> parseInt(ConfigurationNode node) {
+        int value = this.yaml.getInt(CorePlugin.toString(".", s -> s, node.getPath()));
+        return Optional.ofNullable(value);
+    }
+
+    @Override
+    public Optional<Double> parseDouble(ConfigurationNode node) {
+        double value = this.yaml.getDouble(CorePlugin.toString(".", s -> s, node.getPath()));
+        return Optional.ofNullable(value);
+    }
+
+    @Override
+    public Optional<Boolean> parseBoolean(ConfigurationNode node) {
+        boolean value = this.yaml.getBoolean(CorePlugin.toString(".", s -> s, node.getPath()));
+        return Optional.ofNullable(value);
+    }
+
+    @Override
+    public <T> void set(ConfigurationNode node, Parser<?, T> parser, T value) {
+        this.yaml.set(CorePlugin.toString(".", s -> s, node.getPath()), value);
+    }
+
+    @Override
+    public void set(ConfigurationNode node, Object value) {
+        this.yaml.set(CorePlugin.toString(".", s -> s, node.getPath()), value);
+    }
+
+    @Override
     public ConfigurationNode getRootNode() {
         return new ConfigurationNode();
     }

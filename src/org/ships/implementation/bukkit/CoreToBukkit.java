@@ -10,11 +10,13 @@ import org.core.event.EventManager;
 import org.core.platform.Platform;
 import org.core.platform.PlatformServer;
 import org.core.schedule.SchedulerBuilder;
+import org.core.source.command.ConsoleSource;
 import org.ships.implementation.bukkit.configuration.YAMLConfigurationFile;
 import org.ships.implementation.bukkit.event.BEventManager;
 import org.ships.implementation.bukkit.event.BukkitListener;
 import org.ships.implementation.bukkit.platform.BServer;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
+import org.ships.implementation.bukkit.platform.PlatformConsole;
 import org.ships.implementation.bukkit.scheduler.BSchedulerBuilder;
 
 import java.io.File;
@@ -25,6 +27,8 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
     protected BukkitPlatform platform = new BukkitPlatform();
     protected BEventManager manager = new BEventManager();
     protected BServer server = new BServer();
+    protected PlatformConsole console = new PlatformConsole();
+
 
     public CoreToBukkit(JavaPlugin plugin){
         init(plugin);
@@ -46,12 +50,27 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
     }
 
     @Override
+    public ConsoleSource getRawConsole() {
+        return this.console;
+    }
+
+    @Override
     public SchedulerBuilder createRawSchedulerBuilder() {
         return new BSchedulerBuilder();
     }
 
     @Override
     public ConfigurationFile createRawConfigurationFile(File file, ConfigurationLoaderType type) {
+        if(file == null){
+            System.err.println("File can not be null");
+            new IOException("Unknown file").printStackTrace();
+            return null;
+        }
+        if(type == null){
+            System.err.println("ConfigurationLoaderType can not be null");
+            new IOException("Unknown Configuration Loader Type").printStackTrace();
+            return null;
+        }
         if(type.equals(ConfigurationLoaderTypes.YAML) || type.equals(ConfigurationLoaderTypes.DEFAULT)){
             File file2 = new File(file.getParentFile(), file.getName().substring(0, file.getName().length() - 4) + "yml");
             if(!file2.exists()){
