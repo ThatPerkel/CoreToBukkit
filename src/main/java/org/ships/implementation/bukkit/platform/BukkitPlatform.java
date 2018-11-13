@@ -27,7 +27,9 @@ import org.ships.implementation.bukkit.inventory.item.BItemType;
 import org.ships.implementation.bukkit.text.BTextColour;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BGeneralBlockDetails;
-import org.ships.implementation.bukkit.world.position.block.details.blocks.BWallSignDetails;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.furnace.BFurnace;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.sign.BWallSignDetails;
+import org.ships.implementation.bukkit.world.position.block.entity.furnace.BLiveFurnaceTileEntity;
 import org.ships.implementation.bukkit.world.position.block.entity.sign.BSignEntity;
 
 import java.io.IOException;
@@ -47,7 +49,9 @@ public class BukkitPlatform implements Platform {
         this.entityToEntity.put(org.bukkit.entity.Player.class, BLivePlayer.class);
 
         this.blockStateToTileEntity.put(org.bukkit.block.Sign.class, BSignEntity.class);
+        this.blockStateToTileEntity.put(org.bukkit.block.Furnace.class, BLiveFurnaceTileEntity.class);
 
+        this.blockDataToBlockDetails.put(org.bukkit.block.data.type.Furnace.class, BFurnace.class);
         this.blockDataToBlockDetails.put(org.bukkit.block.data.type.WallSign.class, BWallSignDetails.class);
     }
 
@@ -150,7 +154,7 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public int[] getMinecraftVersion() {
-        return new int[]{1, 13, 1};
+        return new int[]{1, 13, 2};
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.core.CorePlugin;
 import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
+import org.core.exceptions.BlockNotSupported;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
 import org.core.world.position.BlockPosition;
@@ -21,18 +22,18 @@ public class BBlockPosition implements BlockPosition {
 
     protected org.bukkit.block.Block block;
 
-    public BBlockPosition(int x, int y, int z, org.bukkit.World world){
+    public BBlockPosition(int x, int y, int z, org.bukkit.World world) {
         this(world.getBlockAt(x, y, z));
     }
 
-    public BBlockPosition(org.bukkit.block.Block block){
-        if(block == null){
+    public BBlockPosition(org.bukkit.block.Block block) {
+        if (block == null) {
             new NullPointerException().printStackTrace();
         }
         this.block = block;
     }
 
-    public org.bukkit.block.Block getBukkitBlock(){
+    public org.bukkit.block.Block getBukkitBlock() {
         return this.block;
     }
 
@@ -53,42 +54,50 @@ public class BBlockPosition implements BlockPosition {
 
     @Override
     public BlockDetails getBlockDetails() {
-        BlockDetails bd =  ((BukkitPlatform)CorePlugin.getPlatform()).createBlockDetailInstance(getBukkitBlock().getBlockData());
-        if(bd instanceof TiledBlockDetails){
-            TiledBlockDetails tbd = (TiledBlockDetails)bd;
-            getTileEntity().ifPresent(te -> tbd.setTileEntity(te.getSnapshot()));
+        BlockDetails bd = ((BukkitPlatform) CorePlugin.getPlatform()).createBlockDetailInstance(getBukkitBlock().getBlockData());
+        if (bd instanceof TiledBlockDetails) {
+            TiledBlockDetails tbd = (TiledBlockDetails) bd;
+            getTileEntity().ifPresent(te -> {
+                tbd.setTileEntity(te.getSnapshot());
+            });
         }
         return bd;
     }
 
     @Override
     public Position<Integer> setBlock(BlockDetails details) {
-        this.block.setBlockData(((AbstractBlockDetails)details).getBukkitData());
+        this.block.setBlockData(((AbstractBlockDetails) details).getBukkitData());
+        if (details instanceof TiledBlockDetails) {
+            TiledBlockDetails tbd = (TiledBlockDetails) details;
+            try {
+                tbd.getTileEntity().apply(this);
+            } catch (BlockNotSupported blockNotSupported) {
+                blockNotSupported.printStackTrace();
+            }
+        }
         return this;
     }
 
     @Override
     public Optional<LiveTileEntity> getTileEntity() {
-        System.out.println("GetTileEntity");
-        BukkitPlatform platform = (BukkitPlatform)CorePlugin.getPlatform();
-        System.out.println("\t- Platform: " + platform + ", BukkitBlock" + getBukkitBlock());
-        System.out.println("\t- " + getBukkitBlock().getState());
-        return platform.createTileEntityInstance(getBukkitBlock().getState());
+        BukkitPlatform platform = (BukkitPlatform) CorePlugin.getPlatform();
+        Optional<LiveTileEntity> opTE = platform.createTileEntityInstance(getBukkitBlock().getState());
+        return opTE;
     }
+
 
     @Override
     public <E extends Entity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
-        return ((BukkitPlatform)CorePlugin.getPlatform()).createSnapshot(type, this.toExactPosition());
+        return ((BukkitPlatform) CorePlugin.getPlatform()).createSnapshot(type, this.toExactPosition());
     }
 
     @Override
-    public boolean equals(Object value){
-        if(!(value instanceof Position)){
+    public boolean equals(Object value) {
+        if (!(value instanceof Position)) {
             return false;
         }
-        Position<? extends Number> pos = (Position<? extends Number>)value;
+        Position<? extends Number> pos = (Position<? extends Number>) value;
         boolean check = pos.getPosition().equals(getPosition());
-        System.out.println("\tEquals() " + check);
         return check;
     }
 }

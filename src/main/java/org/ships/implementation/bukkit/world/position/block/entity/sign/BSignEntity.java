@@ -35,6 +35,7 @@ public class BSignEntity extends AbstractLiveTileEntity implements LiveSignTileE
         for(int A = 0; A < lines.length; A++){
             getBukkitSign().setLine(A, lines[A]);
         }
+        getBukkitSign().update();
         return this;
     }
 

@@ -68,7 +68,7 @@ public class BLivePlayerInventory implements PlayerInventoryLive {
 
     private class PlayerItemSlot implements Slot {
 
-        int position;
+        private int position;
 
         public PlayerItemSlot(int slot){
             this.position = slot;

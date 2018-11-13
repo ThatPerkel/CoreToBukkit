@@ -24,4 +24,18 @@ public class BItemStack implements ItemStack {
     public int getQuantity() {
         return this.stack.getAmount();
     }
+
+    @Override
+    public ItemStack copy() {
+        return new BItemStack(this.stack.clone());
+    }
+
+    @Override
+    public String toString(){
+        if(this.stack == null){
+            return super.toString();
+        }else{
+            return super.toString() + "{ID: " + getType().getId() + " Quantity: " + this.stack.getAmount() + "}";
+        }
+    }
 }
