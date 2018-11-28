@@ -70,7 +70,7 @@ public class BukkitPlatform implements Platform {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
     public Entity createEntityInstance(org.bukkit.entity.Entity entity){
