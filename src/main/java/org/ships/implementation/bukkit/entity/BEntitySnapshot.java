@@ -22,6 +22,15 @@ public abstract class BEntitySnapshot <T extends Entity> implements EntitySnapsh
         this.position = position;
     }
 
+    public BEntitySnapshot(Entity entity){
+        this.hasGravity = entity.hasGravity();
+        this.yaw = entity.getYaw();
+        this.pitch = entity.getPitch();
+        this.roll = entity.getRoll();
+        this.position = entity.getPosition();
+        this.passengers.addAll(entity.getPassengers());
+    }
+
     @Override
     public Entity setPitch(double value) {
         this.pitch = value;

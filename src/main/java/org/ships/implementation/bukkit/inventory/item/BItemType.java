@@ -39,9 +39,6 @@ public class BItemType implements ItemType {
     @Override
     public ItemStack getDefaultItemStack() {
         org.bukkit.inventory.ItemStack stack = new org.bukkit.inventory.ItemStack(this.material, 1);
-        if(stack == null){
-            return null;
-        }
         return new BItemStack(stack);
     }
 
@@ -55,16 +52,11 @@ public class BItemType implements ItemType {
 
     @Override
     public String getId() {
-        return "minecraft:" + getName().toLowerCase();
+        return this.material.getKey().toString();
     }
 
     @Override
     public String getName() {
-        return this.material.name().toLowerCase();
-    }
-
-    @Override
-    public String toString(){
-        return super.toString() + "{ID: " + getId() + "}";
+        return this.material.name();
     }
 }

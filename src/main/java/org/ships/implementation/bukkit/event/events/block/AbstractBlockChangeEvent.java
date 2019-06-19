@@ -39,7 +39,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         protected boolean isCancelled;
 
         public BreakBlockChangeEvent(BlockPosition pos, LivePlayer player) {
-            super(pos, pos.getBlockDetails(), BlockTypes.AIR.getDefaultBlockDetails());
+            super(pos, pos.getBlockDetails(), BlockTypes.AIR.get().getDefaultBlockDetails());
             this.player = player;
         }
 

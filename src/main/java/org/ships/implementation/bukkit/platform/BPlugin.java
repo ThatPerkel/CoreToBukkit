@@ -2,6 +2,8 @@ package org.ships.implementation.bukkit.platform;
 
 import org.core.platform.Plugin;
 
+import java.util.Optional;
+
 public class BPlugin implements Plugin {
 
     org.bukkit.plugin.Plugin plugin;
@@ -13,6 +15,16 @@ public class BPlugin implements Plugin {
     @Override
     public String getPluginName() {
         return this.plugin.getName();
+    }
+
+    @Override
+    public String getPluginVersion() {
+        return this.plugin.getDescription().getVersion();
+    }
+
+    @Override
+    public Optional<String> checkForUpdates() {
+        return Optional.empty();
     }
 
     @Override

@@ -9,10 +9,13 @@ import org.core.CorePlugin;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.Event;
 import org.core.event.HEvent;
+import org.core.event.events.entity.EntityInteractEvent;
+import org.core.text.Text;
 import org.ships.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.ships.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntityInteractEvent;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
+import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 
@@ -26,11 +29,16 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onSignChangeEvent(SignChangeEvent event){
-        BSignChangeEvent event1 = new BSignChangeEvent((LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()), new BBlockPosition(event.getBlock()), event.getLines());
+        String[] originalLines = event.getLines();
+        Text[] lines = new Text[originalLines.length];
+        for(int A = 0; A < originalLines.length; A++){
+            lines[A] = new BText(originalLines[A]);
+        }
+        BSignChangeEvent event1 = new BSignChangeEvent((LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()), new BBlockPosition(event.getBlock()), lines);
         call(event1);
         for(int A = 0; A < 4; A++) {
             final int B = A;
-            event1.getTo().getLine(A).ifPresent(l -> event.setLine(B, l));
+            event1.getTo().getLine(A).ifPresent(l -> event.setLine(B, ((BText)l).toBukkitString()));
         }
         if(event1.isCancelled()){
             event.setCancelled(event1.isCancelled());
@@ -42,7 +50,14 @@ public class BukkitListener implements Listener {
         if(event.getClickedBlock() == null){
             return;
         }
-        BEntityInteractEvent.PlayerInteractWithBlock event1 = new BEntityInteractEvent.PlayerInteractWithBlock(new BBlockPosition(event.getClickedBlock()), DirectionUtils.toDirection(event.getBlockFace()), (LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
+        int action = -1;
+        switch (event.getAction()){
+            case RIGHT_CLICK_BLOCK:
+                action = EntityInteractEvent.PRIMARY_CLICK_ACTION; break;
+            case LEFT_CLICK_BLOCK:
+                action = EntityInteractEvent.SECONDARY_CLICK_ACTION; break;
+        }
+        BEntityInteractEvent.PlayerInteractWithBlock event1 = new BEntityInteractEvent.PlayerInteractWithBlock(new BBlockPosition(event.getClickedBlock()), action, DirectionUtils.toDirection(event.getBlockFace()), (LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
         call(event1);
         if(event1.isCancelled()){
             event.setCancelled(event1.isCancelled());

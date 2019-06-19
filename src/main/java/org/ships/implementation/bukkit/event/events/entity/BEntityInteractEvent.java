@@ -12,17 +12,24 @@ public class BEntityInteractEvent {
         protected BlockPosition position;
         protected LivePlayer player;
         protected Direction direction;
+        protected int click;
         protected boolean cancelled;
 
-        public PlayerInteractWithBlock(BlockPosition position, Direction clickedFace, LivePlayer player){
+        public PlayerInteractWithBlock(BlockPosition position, int click, Direction clickedFace, LivePlayer player){
             this.player = player;
             this.position = position;
             this.direction = clickedFace;
+            this.click = click;
         }
 
         @Override
         public BlockPosition getInteractPosition() {
             return this.position;
+        }
+
+        @Override
+        public int getClickAction() {
+            return this.click;
         }
 
         @Override

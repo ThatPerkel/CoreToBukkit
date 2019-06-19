@@ -10,49 +10,77 @@ import java.util.concurrent.TimeUnit;
 
 public class BSchedulerBuilder implements SchedulerBuilder {
 
-    Integer delay;
-    TimeUnit delayUnit;
-    Runnable executor;
-    Scheduler runAfter;
+    protected Integer delay;
+    protected TimeUnit delayUnit;
+    protected Integer iteration;
+    protected TimeUnit iterationUnit;
+    protected Runnable executor;
+    protected Scheduler runAfter;
 
     @Override
     public Optional<Integer> getDelay() {
-        return Optional.empty();
+        return Optional.ofNullable(this.delay);
     }
 
     @Override
     public SchedulerBuilder setDelay(Integer value) {
-        return null;
+        this.delay = value;
+        return this;
     }
 
     @Override
     public Optional<TimeUnit> getDelayUnit() {
-        return Optional.empty();
+        return Optional.ofNullable(this.delayUnit);
     }
 
     @Override
     public SchedulerBuilder setDelayUnit(TimeUnit unit) {
-        return null;
+        this.delayUnit = unit;
+        return this;
+    }
+
+    @Override
+    public Optional<Integer> getIteration() {
+        return Optional.ofNullable(this.iteration);
+    }
+
+    @Override
+    public SchedulerBuilder setIteration(Integer value) {
+        this.iteration = value;
+        return this;
+    }
+
+    @Override
+    public Optional<TimeUnit> getIterationUnit() {
+        return Optional.ofNullable(this.iterationUnit);
+    }
+
+    @Override
+    public SchedulerBuilder setIterationUnit(TimeUnit unit) {
+        this.iterationUnit = unit;
+        return this;
     }
 
     @Override
     public SchedulerBuilder setExecutor(Runnable runnable) {
-        return null;
+        this.executor = runnable;
+        return this;
     }
 
     @Override
     public Runnable getExecutor() {
-        return null;
+        return this.executor;
     }
 
     @Override
     public SchedulerBuilder setToRunAfter(Scheduler scheduler) {
-        return null;
+        this.runAfter = scheduler;
+        return this;
     }
 
     @Override
     public Optional<Scheduler> getToRunAfter() {
-        return Optional.empty();
+        return Optional.ofNullable(this.runAfter);
     }
 
     @Override

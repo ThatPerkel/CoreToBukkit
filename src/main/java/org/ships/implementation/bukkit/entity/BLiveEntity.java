@@ -21,14 +21,29 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
+    public Entity setGravity(boolean check) {
+        this.entity.setGravity(check);
+        return this;
+    }
+
+    @Override
+    public boolean hasGravity() {
+        return this.entity.hasGravity();
+    }
+
+    @Override
     public Entity setPitch(double value) {
-        entity.getLocation().setPitch((float)value);
+        org.bukkit.Location loc = this.entity.getLocation();
+        loc.setPitch((float)value);
+        entity.teleport(loc);
         return this;
     }
 
     @Override
     public Entity setYaw(double value) {
-        entity.getLocation().setYaw((float)value);
+        org.bukkit.Location loc = this.entity.getLocation();
+        loc.setYaw((float)value);
+        entity.teleport(loc);
         return this;
     }
 

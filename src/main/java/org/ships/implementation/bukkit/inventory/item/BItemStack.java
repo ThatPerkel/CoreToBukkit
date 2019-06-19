@@ -31,11 +31,9 @@ public class BItemStack implements ItemStack {
     }
 
     @Override
-    public String toString(){
-        if(this.stack == null){
-            return super.toString();
-        }else{
-            return super.toString() + "{ID: " + getType().getId() + " Quantity: " + this.stack.getAmount() + "}";
-        }
+    public ItemStack copyWithQuantity(int quantity) {
+        org.bukkit.inventory.ItemStack item = this.stack.clone();
+        item.setAmount(quantity);
+        return new BItemStack(item);
     }
 }

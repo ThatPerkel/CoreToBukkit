@@ -25,10 +25,16 @@ public class BScheduler implements Scheduler {
     protected Scheduler runAfter;
     protected int delayCount;
     protected TimeUnit delayTimeUnit;
+    protected Integer iteration;
+    protected TimeUnit iterationTimeUnit;
     protected Plugin plugin;
+
+    protected int task;
 
     public BScheduler(SchedulerBuilder builder, Plugin plugin){
         this.taskToRun = builder.getExecutor();
+        this.iteration = builder.getIteration().orElse(null);
+        this.iterationTimeUnit = builder.getIterationUnit().orElse(null);
         this.delayCount = builder.getDelay().orElse(0);
         this.delayTimeUnit = builder.getDelayUnit().orElse(null);
         this.plugin = plugin;
@@ -43,11 +49,38 @@ public class BScheduler implements Scheduler {
         }else{
             switch (this.delayTimeUnit) {
                 case SECONDS:
-                    ticks = (this.delayCount / 20);
+                    ticks = (this.delayCount * 20);
                 default:
                     System.err.println("Unknown TimeUnit: " + this.delayTimeUnit.name());
             }
         }
-        Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin)this.plugin.getBukkitLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+        Integer iter = null;
+        if(this.iterationTimeUnit != null) {
+            if (this.iterationTimeUnit == null) {
+                iter = this.iteration;
+            } else {
+                switch (this.iterationTimeUnit) {
+                    case SECONDS:
+                        iter = (this.iteration * 20);
+                    default:
+                        System.err.println("Unknown TimeUnit: " + this.iterationTimeUnit.name());
+                }
+            }
+        }
+        if(iter == null){
+            this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getBukkitLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+        } else {
+            this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getBukkitLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
+        }
+    }
+
+    @Override
+    public void cancel() {
+        Bukkit.getScheduler().cancelTask(this.task);
+    }
+
+    @Override
+    public Runnable getExecutor() {
+        return this.taskToRun;
     }
 }

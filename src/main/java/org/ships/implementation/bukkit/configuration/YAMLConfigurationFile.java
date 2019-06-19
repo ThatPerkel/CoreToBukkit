@@ -34,9 +34,7 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     @Override
     public Map<ConfigurationNode, Object> getKeyValues() {
         Map<ConfigurationNode, Object> value = new HashMap<>();
-        this.yaml.getKeys(true).stream().forEach(p -> {
-            value.put(new ConfigurationNode(p.split(".")), this.yaml.get(p));
-        });
+        this.yaml.getKeys(true).forEach(p -> value.put(new ConfigurationNode(p.split(".")), this.yaml.get(p)));
         return value;
     }
 
@@ -47,14 +45,12 @@ public class YAMLConfigurationFile implements ConfigurationFile {
         }else if(parser instanceof StringMapParser){
             StringMapParser<T> mParser = (StringMapParser<T>)parser;
             Map<String, String> map = new HashMap<>();
-            getChildren(node).forEach(n ->{
-                String path = CorePlugin.toString(".", t -> t, n.getPath());
-                String value = this.yaml.getString(path);
-                map.put(path, value);
+            String path = CorePlugin.toString(".", t -> t, node.getPath());
+            mParser.getKeys().forEach(k -> {
+                String value2 = path + "." + k;
+                String value3 = this.yaml.getString(value2);
+                map.put(k, value3);
             });
-            if(map.isEmpty()){
-                return Optional.empty();
-            }
             return mParser.parse(map);
         }else{
             System.err.println("Unknown Parser Type: The following are supported: StringParser<> or StringMapParser<>");
@@ -91,7 +87,7 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     public <T> Optional<List<T>> parseList(ConfigurationNode node, StringParser<T> parser) {
         List<String> stringList = this.yaml.getStringList(CorePlugin.toString(".", t -> t, node.getPath()));
         List<T> valueList = new ArrayList<>();
-        stringList.stream().forEach(s -> parser.parse(s).ifPresent(v -> valueList.add(v)));
+        stringList.forEach(s -> parser.parse(s).ifPresent(v -> valueList.add(v)));
         if(valueList.isEmpty()){
             return Optional.empty();
         }
@@ -120,12 +116,5 @@ public class YAMLConfigurationFile implements ConfigurationFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Set<ConfigurationNode> getChildren(ConfigurationNode node){
-        Set<String> keys = this.yaml.getValues(true).keySet();
-        Set<ConfigurationNode> ret = new HashSet();
-        keys.stream().filter(k -> k.startsWith(CorePlugin.toString(".", s -> s, node.getPath()))).forEach(r -> ret.add(new ConfigurationNode(r)));
-        return ret;
     }
 }

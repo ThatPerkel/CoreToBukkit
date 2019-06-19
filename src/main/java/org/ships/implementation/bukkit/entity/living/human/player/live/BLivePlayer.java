@@ -6,11 +6,13 @@ import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.Player;
 import org.core.entity.living.human.player.PlayerSnapshot;
-import org.core.inventory.inventories.PlayerInventory;
+import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.source.viewer.CommandViewer;
+import org.core.text.Text;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlayerSnapshot;
-import org.ships.implementation.bukkit.inventory.inventories.live.BLivePlayerInventory;
+import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLivePlayerInventory;
+import org.ships.implementation.bukkit.text.BText;
 
 public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implements LivePlayer {
 
@@ -61,6 +63,11 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
+    public boolean isSneaking() {
+        return getBukkitEntity().isSneaking();
+    }
+
+    @Override
     public AbstractHuman setFood(int value) throws IndexOutOfBoundsException {
         if(value > 20){
             throw new IndexOutOfBoundsException();
@@ -88,8 +95,19 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
+    public AbstractHuman setSneaking(boolean sneaking) {
+        getBukkitEntity().setSneaking(sneaking);
+        return this;
+    }
+
+    @Override
     public EntityType<Player, PlayerSnapshot> getType() {
         return EntityTypes.PLAYER;
+    }
+
+    @Override
+    public boolean hasPermission(String permission) {
+        return getBukkitEntity().hasPermission(permission);
     }
 
     @Override
@@ -109,8 +127,8 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
-    public CommandViewer sendMessage(String message) {
-        getBukkitEntity().sendMessage(message);
+    public CommandViewer sendMessage(Text message) {
+        getBukkitEntity().sendMessage(((BText)message).toBukkitString());
         return this;
     }
 

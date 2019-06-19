@@ -5,8 +5,8 @@ import org.core.entity.EntityTypes;
 import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.Player;
 import org.core.entity.living.human.player.PlayerSnapshot;
-import org.core.inventory.inventories.PlayerInventory;
-import org.core.inventory.inventories.snapshots.PlayerInventorySnapshot;
+import org.core.inventory.inventories.general.entity.PlayerInventory;
+import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
@@ -19,6 +19,7 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     protected int foodLevel;
     protected double exhaustionLevel;
     protected double saturationLevel;
+    protected boolean sneaking;
 
     public BPlayerSnapshot(Player player){
         super(player.getPosition());
@@ -86,6 +87,11 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     }
 
     @Override
+    public boolean isSneaking() {
+        return this.sneaking;
+    }
+
+    @Override
     public AbstractHuman setFood(int value) throws IndexOutOfBoundsException {
         if(value > 20){
             throw new IndexOutOfBoundsException();
@@ -103,6 +109,12 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     @Override
     public AbstractHuman setSaturationLevel(double value) throws IndexOutOfBoundsException {
         this.saturationLevel = value;
+        return this;
+    }
+
+    @Override
+    public AbstractHuman setSneaking(boolean sneaking) {
+        this.sneaking = sneaking;
         return this;
     }
 
