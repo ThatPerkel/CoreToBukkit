@@ -1,5 +1,6 @@
 package org.ships.implementation.bukkit.event;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -66,6 +67,11 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onBlockBreakByPlayer(BlockBreakEvent event){
+        Material material = event.getPlayer().getInventory().getItemInMainHand().getType();
+        if(material.equals(Material.WOODEN_SWORD) || material.equals(Material.STONE_SWORD) || material.equals(Material.IRON_SWORD) || material.equals(Material.DIAMOND_SWORD) || material.equals(Material.GOLDEN_SWORD)){
+            event.setCancelled(true);
+            return;
+        }
         AbstractBlockChangeEvent.BreakBlockChangeEvent event1 = new AbstractBlockChangeEvent.BreakBlockChangeEvent(new BBlockPosition(event.getBlock()), (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
         call(event1);
         if(event1.isCancelled()){
