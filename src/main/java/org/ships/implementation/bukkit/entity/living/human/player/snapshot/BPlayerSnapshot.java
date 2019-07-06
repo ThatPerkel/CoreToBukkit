@@ -11,6 +11,8 @@ import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 
+import java.util.UUID;
+
 public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSnapshot {
 
     protected BLivePlayer player;
@@ -46,6 +48,11 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return this.player.getUniqueId();
     }
 
     @Override

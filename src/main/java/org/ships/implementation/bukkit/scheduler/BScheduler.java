@@ -48,8 +48,14 @@ public class BScheduler implements Scheduler {
             ticks = this.delayCount;
         }else{
             switch (this.delayTimeUnit) {
+                case MILLISECONDS:
+                    ticks = ((this.delayCount * 20)/1000); break;
+                case MICROSECONDS:
+                    ticks = ((this.delayCount * 20)/1000000); break;
                 case SECONDS:
-                    ticks = (this.delayCount * 20);
+                    ticks = (this.delayCount * 20); break;
+                case MINUTES:
+                    ticks = ((this.iteration * 20)*100); break;
                 default:
                     System.err.println("Unknown TimeUnit: " + this.delayTimeUnit.name());
             }
@@ -60,8 +66,14 @@ public class BScheduler implements Scheduler {
                 iter = this.iteration;
             } else {
                 switch (this.iterationTimeUnit) {
+                    case MILLISECONDS:
+                        iter = ((this.iteration * 20)/1000); break;
+                    case MICROSECONDS:
+                        iter = ((this.iteration * 20)/1000000); break;
                     case SECONDS:
-                        iter = (this.iteration * 20);
+                        iter = (this.iteration * 20); break;
+                    case MINUTES:
+                        iter = ((this.iteration * 20)*100); break;
                     default:
                         System.err.println("Unknown TimeUnit: " + this.iterationTimeUnit.name());
                 }

@@ -18,4 +18,9 @@ public class PlatformConsole implements ConsoleSource {
     public CommandViewer sendMessagePlain(String message) {
         return sendMessage(new BText(TextColours.stripColours(message)));
     }
+
+    @Override
+    public boolean sudo(String wholeCommand) {
+        return Bukkit.dispatchCommand(Bukkit.getConsoleSender(), wholeCommand);
+    }
 }

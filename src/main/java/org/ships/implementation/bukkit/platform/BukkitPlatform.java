@@ -6,10 +6,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.core.CorePlugin;
 import org.core.configuration.type.ConfigurationLoaderType;
 import org.core.configuration.type.ConfigurationLoaderTypes;
-import org.core.entity.Entity;
-import org.core.entity.EntitySnapshot;
-import org.core.entity.EntityType;
-import org.core.entity.EntityTypes;
+import org.core.entity.*;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
@@ -50,7 +47,7 @@ import java.util.regex.Pattern;
 public class BukkitPlatform implements Platform {
 
     protected Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> entityTypes = new HashSet<>();
-    protected Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends Entity>> entityToEntity = new HashMap<>();
+    protected Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> entityToEntity = new HashMap<>();
     protected Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
     protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
     protected Set<BlockGroup> blockGroups = new HashSet<>();
@@ -112,7 +109,7 @@ public class BukkitPlatform implements Platform {
         return this.blockStateToTileEntity;
     }
 
-    public Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends Entity>> getBukkitEntityToCoreEntityMap(){
+    public Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> getBukkitEntityToCoreEntityMap(){
         return this.entityToEntity;
     }
 
@@ -142,12 +139,12 @@ public class BukkitPlatform implements Platform {
         return Optional.empty();
     }
 
-    public Entity createEntityInstance(org.bukkit.entity.Entity entity){
-        Optional<Map.Entry<Class<? extends org.bukkit.entity.Entity>, Class<? extends Entity>>> opEntry = entityToEntity.entrySet().stream().filter(e -> e.getKey().isInstance(entity)).findAny();
+    public LiveEntity createEntityInstance(org.bukkit.entity.Entity entity){
+        Optional<Map.Entry<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>>> opEntry = entityToEntity.entrySet().stream().filter(e -> e.getKey().isInstance(entity)).findAny();
         if(!opEntry.isPresent()){
             return null;
         }
-        Class<? extends Entity> bdclass = opEntry.get().getValue();
+        Class<? extends LiveEntity> bdclass = opEntry.get().getValue();
         try {
             return bdclass.getConstructor(org.bukkit.entity.Entity.class).newInstance(entity);
         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

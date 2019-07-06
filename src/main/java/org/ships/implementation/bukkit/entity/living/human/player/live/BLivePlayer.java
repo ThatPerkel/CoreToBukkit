@@ -1,5 +1,6 @@
 package org.ships.implementation.bukkit.entity.living.human.player.live;
 
+import org.bukkit.Bukkit;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
 import org.core.entity.living.human.AbstractHuman;
@@ -13,6 +14,8 @@ import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlayerSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLivePlayerInventory;
 import org.ships.implementation.bukkit.text.BText;
+
+import java.util.UUID;
 
 public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implements LivePlayer {
 
@@ -63,6 +66,16 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
+    public String getName() {
+        return getBukkitEntity().getName();
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return getBukkitEntity().getUniqueId();
+    }
+
+    @Override
     public boolean isSneaking() {
         return getBukkitEntity().isSneaking();
     }
@@ -107,7 +120,18 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
 
     @Override
     public boolean hasPermission(String permission) {
-        return getBukkitEntity().hasPermission(permission);
+        org.bukkit.entity.Player player = getBukkitEntity();
+        String[] blocks = permission.split(".");
+        for(int A = 0; A < blocks.length; A++){
+            StringBuilder builder = new StringBuilder();
+            for(int B = 0; B < blocks.length; B++){
+                builder.append(blocks[B]);
+            }
+            if(player.hasPermission(builder.toString() + ".*")){
+                return true;
+            }
+        }
+        return player.hasPermission(permission);
     }
 
     @Override
@@ -136,5 +160,10 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     public CommandViewer sendMessagePlain(String message) {
         getBukkitEntity().sendMessage(org.bukkit.ChatColor.stripColor(message));
         return this;
+    }
+
+    @Override
+    public boolean sudo(String wholeCommand) {
+        return Bukkit.dispatchCommand(getBukkitEntity(), wholeCommand);
     }
 }

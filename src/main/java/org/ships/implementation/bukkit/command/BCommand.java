@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.core.CorePlugin;
-import org.core.command.BaseCommandLauncher;
+import org.core.command.CommandLauncher;
 import org.core.source.command.CommandSource;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 
@@ -12,9 +12,9 @@ import java.util.List;
 
 public class BCommand implements TabExecutor {
 
-    private BaseCommandLauncher command;
+    private CommandLauncher command;
 
-    public BCommand(BaseCommandLauncher command){
+    public BCommand(CommandLauncher command){
         this.command = command;
     }
 

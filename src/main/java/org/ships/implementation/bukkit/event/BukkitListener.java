@@ -1,32 +1,58 @@
 package org.ships.implementation.bukkit.event;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.core.CorePlugin;
+import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.Event;
 import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
 import org.core.text.Text;
+import org.core.world.position.BlockPosition;
 import org.ships.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.ships.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
+import org.ships.implementation.bukkit.event.events.connection.BKickEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntityInteractEvent;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
+import org.ships.implementation.bukkit.world.expload.EntityExplosion;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class BukkitListener implements Listener {
+
+    @EventHandler
+    public static void onPlayerKickedEvent(PlayerKickEvent event){
+        LivePlayer player = (LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        Text message = CorePlugin.buildText(event.getLeaveMessage());
+        BKickEvent kickEvent = new BKickEvent(player, message);
+        call(kickEvent);
+        event.setLeaveMessage(((BText)message).toBukkitString());
+    }
+
+    @EventHandler
+    public static void onPlayerQuitEvent(PlayerQuitEvent event){
+        LivePlayer player = (LivePlayer)((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        Text message = CorePlugin.buildText(event.getQuitMessage());
+        BKickEvent kickEvent = new BKickEvent(player, message);
+        call(kickEvent);
+        event.setQuitMessage(((BText)message).toBukkitString());
+    }
 
     @EventHandler
     public static void onSignChangeEvent(SignChangeEvent event){
@@ -66,13 +92,34 @@ public class BukkitListener implements Listener {
     }
 
     @EventHandler
+    public static void onExplode(org.bukkit.event.entity.EntityExplodeEvent event){
+        List<BlockPosition> positions = new ArrayList<>();
+        List<Block> list = event.blockList();
+        for (Block value : list) {
+            positions.add(new BBlockPosition(value));
+        }
+        Entity entity = ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getEntity());
+        EntityExplosion explosion = new EntityExplosion(entity, positions);
+        Iterator<Block> iterator = event.blockList().iterator();
+        while(iterator.hasNext()){
+            BlockPosition block = new BBlockPosition(iterator.next());
+            AbstractBlockChangeEvent.BreakBlockChangeExplode event2 = new AbstractBlockChangeEvent.BreakBlockChangeExplode(block, explosion);
+            call(event2);
+            if(event2.isCancelled()){
+                iterator.remove();
+            }
+        }
+    }
+
+    @EventHandler
     public static void onBlockBreakByPlayer(BlockBreakEvent event){
-        Material material = event.getPlayer().getInventory().getItemInMainHand().getType();
-        if(material.equals(Material.WOODEN_SWORD) || material.equals(Material.STONE_SWORD) || material.equals(Material.IRON_SWORD) || material.equals(Material.DIAMOND_SWORD) || material.equals(Material.GOLDEN_SWORD)){
+        Player player = event.getPlayer();
+        Material material = player.getInventory().getItemInMainHand().getType();
+        if(player.getGameMode().equals(GameMode.CREATIVE) && (material.equals(Material.WOODEN_SWORD) || material.equals(Material.STONE_SWORD) || material.equals(Material.IRON_SWORD) || material.equals(Material.DIAMOND_SWORD) || material.equals(Material.GOLDEN_SWORD))){
             event.setCancelled(true);
             return;
         }
-        AbstractBlockChangeEvent.BreakBlockChangeEvent event1 = new AbstractBlockChangeEvent.BreakBlockChangeEvent(new BBlockPosition(event.getBlock()), (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
+        AbstractBlockChangeEvent.BreakBlockChangeEventPlayer event1 = new AbstractBlockChangeEvent.BreakBlockChangeEventPlayer(new BBlockPosition(event.getBlock()), (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer()));
         call(event1);
         if(event1.isCancelled()){
             event.setCancelled(event1.isCancelled());
@@ -81,34 +128,34 @@ public class BukkitListener implements Listener {
 
     public static <E extends Event> E call(E event){
         Set<BEventLaunch> methods = getMethods(event.getClass());
-        methods.stream().forEach(m -> m.run(event));
+        methods.forEach(m -> m.run(event));
         return event;
     }
 
     private static Set<BEventLaunch> getMethods(Class<? extends Event> classEvent){
         Set<BEventLaunch> methods = new HashSet<>();
-        CorePlugin.getEventManager().getEventListeners().entrySet().stream().forEach(e -> e.getValue().stream().forEach(el -> {
-            for (Method method : el.getClass().getDeclaredMethods()){
-                if(method.getDeclaredAnnotationsByType(HEvent.class) == null){
+        CorePlugin.getEventManager().getEventListeners().forEach((key, value) -> value.forEach(el -> {
+            for (Method method : el.getClass().getDeclaredMethods()) {
+                if (method.getDeclaredAnnotationsByType(HEvent.class) == null) {
                     continue;
                 }
-                if(methods.stream().anyMatch(m -> method.getName().contains("$"))){
+                if (methods.stream().anyMatch(m -> method.getName().contains("$"))) {
                     continue;
                 }
                 Parameter[] parameters = method.getParameters();
-                if(parameters.length == 0){
+                if (parameters.length == 0) {
                     System.err.println("Failed to know what to do: HEvent found on method, but no event on " + el.getClass().getName() + "." + method.getName() + "()");
                     continue;
                 }
-                if(!Modifier.isPublic(method.getModifiers())){
+                if (!Modifier.isPublic(method.getModifiers())) {
                     continue;
                 }
-                Class<? extends Object> class1 = parameters[0].getType();
-                if(!Event.class.isAssignableFrom(classEvent)){
+                Class<?> class1 = parameters[0].getType();
+                if (!Event.class.isAssignableFrom(classEvent)) {
                     System.err.println("Failed to know what to do: HEvent found on method, but no known event on " + el.getClass().getName() + "." + method.getName() + "(" + CorePlugin.toString(", ", p -> p.getType().getSimpleName() + " " + p.getName(), parameters) + ")");
                 }
-                if(class1.isAssignableFrom(classEvent)){
-                    methods.add(new BEventLaunch(e.getKey(), el, method));
+                if (class1.isAssignableFrom(classEvent)) {
+                    methods.add(new BEventLaunch(key, el, method));
                 }
             }
         }));

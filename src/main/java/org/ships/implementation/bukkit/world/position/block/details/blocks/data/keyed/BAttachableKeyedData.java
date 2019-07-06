@@ -1,12 +1,14 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed;
 
 import org.bukkit.block.data.BlockData;
+import org.core.CorePlugin;
 import org.core.world.direction.Direction;
-import org.core.world.direction.FourFacingDirection;
 import org.core.world.position.block.BlockType;
-import org.core.world.position.block.BlockTypes;
 import org.core.world.position.block.details.data.keyed.AttachableKeyedData;
+import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.attachableworkarounds.AttachableWorkAround1D14;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.attachableworkarounds.CommonAttachableWorkAround;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -16,64 +18,23 @@ public class BAttachableKeyedData implements AttachableKeyedData {
 
     public interface AttachableBlockWorkAround {
 
-        enum CommonWorkArounds implements AttachableBlockWorkAround{
-            CARPET(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.BLACK_CARPET.get().getLike()),
-            FIRE(b -> FourFacingDirection.DOWN, e -> {}, BlockTypes.FIRE.get());
-
-            private Collection<BlockType> collection;
-            private Function<BlockData, Direction> functionDirection;
-            private Consumer<Map.Entry<BlockData, Direction>> consumer;
-
-            CommonWorkArounds(Function<BlockData, Direction> getDir, Consumer<Map.Entry<BlockData, Direction>> setDir, BlockType... types){
-                this(getDir, setDir, Arrays.asList(types));
-            }
-
-            CommonWorkArounds(Function<BlockData, Direction> getDir, Consumer<Map.Entry<BlockData, Direction>> setDir, Collection<BlockType> blockTypes){
-                this.consumer = setDir;
-                this.functionDirection = getDir;
-                this.collection = blockTypes;
-            }
-
-            @Override
-            public Collection<BlockType> getTypes() {
-                return this.collection;
-            }
-
-            @Override
-            public Direction getAttachedDirection(BlockData data) {
-                return this.functionDirection.apply(data);
-            }
-
-            @Override
-            public BlockData setAttachedDirection(BlockData data, Direction direction) {
-                this.consumer.accept(new Map.Entry(){
-
-                    @Override
-                    public Object getKey() {
-                        return data;
-                    }
-
-                    @Override
-                    public Object getValue() {
-                        return direction;
-                    }
-
-                    @Deprecated
-                    @Override
-                    public Object setValue(Object o) {
-                        return o;
-                    }
-                });
-                return data;
-            }
-        }
+        Function<BlockData, Direction> GET_DIRECTION_FROM_BLOOCK_DATA = b -> DirectionUtils.toDirection(((org.bukkit.block.data.Directional)b).getFacing()).getOpposite();
+        Consumer<Map.Entry<BlockData, Direction>> SET_BLOCK_DATA_FROM_DIRECTION = e -> ((org.bukkit.block.data.Directional) e.getKey()).setFacing(DirectionUtils.toFace(e.getValue().getOpposite()));
 
         Collection<BlockType> getTypes();
         Direction getAttachedDirection(BlockData data);
         org.bukkit.block.data.BlockData setAttachedDirection(org.bukkit.block.data.BlockData data, Direction direction);
     }
 
-    public static Set<AttachableBlockWorkAround> workArounds = new HashSet<>(Arrays.asList(AttachableBlockWorkAround.CommonWorkArounds.values()));
+    public static Set<AttachableBlockWorkAround> workArounds = new HashSet<>();
+
+    static {
+        workArounds.addAll(Arrays.asList(CommonAttachableWorkAround.values()));
+        int[] mcVersion = CorePlugin.getPlatform().getMinecraftVersion();
+        if(mcVersion[1] >= 14){
+            workArounds.addAll(Arrays.asList(AttachableWorkAround1D14.values()));
+        }
+    }
 
     private BBlockDetails details;
     private AttachableBlockWorkAround workAround;
