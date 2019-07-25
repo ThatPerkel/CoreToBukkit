@@ -2,6 +2,7 @@ package org.ships.implementation.bukkit.entity;
 
 import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
+import org.core.entity.LiveEntity;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.ExactPosition;
 import org.core.world.position.Position;
@@ -9,7 +10,7 @@ import org.core.world.position.Position;
 import java.util.Collection;
 import java.util.HashSet;
 
-public abstract class BEntitySnapshot <T extends Entity> implements EntitySnapshot<T> {
+public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySnapshot<T> {
 
     protected double pitch;
     protected double yaw;

@@ -1,8 +1,7 @@
 package org.ships.implementation.bukkit.entity.living.human.player.snapshot;
 
-import org.core.entity.EntityType;
-import org.core.entity.EntityTypes;
 import org.core.entity.living.human.AbstractHuman;
+import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.Player;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
@@ -13,7 +12,7 @@ import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlay
 
 import java.util.UUID;
 
-public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSnapshot {
+public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements PlayerSnapshot {
 
     protected BLivePlayer player;
     protected String name;
@@ -56,7 +55,7 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     }
 
     @Override
-    public Player getOrCreateEntity() {
+    public LivePlayer spawnEntity() {
         this.player.setExhaustionLevel(this.exhaustionLevel);
         this.player.setFood(this.foodLevel);
         this.player.setSaturationLevel(this.saturationLevel);
@@ -123,11 +122,6 @@ public class BPlayerSnapshot extends BEntitySnapshot<Player> implements PlayerSn
     public AbstractHuman setSneaking(boolean sneaking) {
         this.sneaking = sneaking;
         return this;
-    }
-
-    @Override
-    public EntityType<Player, PlayerSnapshot> getType() {
-        return EntityTypes.PLAYER;
     }
 
     @Override

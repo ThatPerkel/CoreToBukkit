@@ -2,14 +2,11 @@ package org.ships.implementation.bukkit.entity.scene.live;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.core.entity.EntitySnapshot;
-import org.core.entity.EntityType;
-import org.core.entity.EntityTypes;
 import org.core.entity.scene.droppeditem.DroppedItem;
-import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.entity.scene.droppeditem.LiveDroppedItem;
 import org.core.inventory.parts.Slot;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.scene.snapshot.BDroppedItemSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLiveDroppedItemSlot;
 
 import java.util.concurrent.TimeUnit;
@@ -65,12 +62,7 @@ public class BLiveDroppedItem extends BLiveEntity<org.bukkit.entity.Item> implem
     }
 
     @Override
-    public EntityType<DroppedItem, DroppedItemSnapshot> getType() {
-        return EntityTypes.DROPPED_ITEM;
-    }
-
-    @Override
-    public EntitySnapshot createSnapshot() {
-        return null;
+    public BDroppedItemSnapshot createSnapshot() {
+        return new BDroppedItemSnapshot(this);
     }
 }

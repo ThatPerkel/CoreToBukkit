@@ -1,9 +1,9 @@
 package org.ships.implementation.bukkit.world.position;
 
 import org.core.CorePlugin;
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
+import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.exceptions.BlockNotSupported;
 import org.core.text.Text;
@@ -67,7 +67,7 @@ public class BBlockPosition implements BlockPosition {
 
     @Override
     public Position<Integer> setBlock(BlockDetails details) {
-        this.block.setBlockData(((BBlockDetails)details).getBukkitData());
+        this.block.setBlockData(((BBlockDetails)details).getBukkitData(), false);
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if(opTile.isPresent()){
             try {
@@ -110,7 +110,7 @@ public class BBlockPosition implements BlockPosition {
     }
 
     @Override
-    public <E extends Entity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
         return ((BukkitPlatform)CorePlugin.getPlatform()).createSnapshot(type, this.toExactPosition());
     }
 

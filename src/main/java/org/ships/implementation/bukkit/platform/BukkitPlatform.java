@@ -7,6 +7,7 @@ import org.core.CorePlugin;
 import org.core.configuration.type.ConfigurationLoaderType;
 import org.core.configuration.type.ConfigurationLoaderTypes;
 import org.core.entity.*;
+import org.core.event.CustomEvent;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
@@ -29,6 +30,7 @@ import org.core.world.position.block.grouptype.BlockGroups;
 import org.ships.implementation.bukkit.configuration.YamlConfigurationLoaderType;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
+import org.ships.implementation.bukkit.event.BukkitListener;
 import org.ships.implementation.bukkit.inventory.item.BItemType;
 import org.ships.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.ships.implementation.bukkit.platform.version.BukkitSpecificPlatform;
@@ -127,7 +129,7 @@ public class BukkitPlatform implements Platform {
         return null;
     }
 
-    public <E extends Entity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, S> type, ExactPosition position){
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, S> type, ExactPosition position){
         if(type.equals(EntityTypes.PLAYER) || type.equals(EntityTypes.HUMAN)){
             return Optional.empty();
         }
@@ -208,6 +210,11 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public <E extends CustomEvent> E callEvent(E event) {
+        return BukkitListener.call(event);
+    }
+
+    @Override
     public Collection<TextColour> getTextColours(){
         Set<TextColour> set = new HashSet<>();
         for(org.bukkit.ChatColor color : org.bukkit.ChatColor.values()){
@@ -278,7 +285,7 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    public <E extends Entity, S extends EntitySnapshot<E>> EntityType<E, S> get(EntityTypes<E, S> entityId) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> EntityType<E, S> get(EntityTypes<E, S> entityId) {
         return (EntityType<E, S>) this.entityTypes.stream().filter(t -> t.getId().equals(entityId.getId())).findAny().get();
     }
 

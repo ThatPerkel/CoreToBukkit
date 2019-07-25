@@ -4,7 +4,6 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
 import org.core.entity.living.AgeableEntity;
-import org.core.entity.living.hostile.undead.classic.ClassicZombie;
 import org.core.entity.living.hostile.undead.classic.ClassicZombieSnapshot;
 import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
 import org.core.inventory.inventories.general.entity.ZombieInventory;
@@ -39,7 +38,7 @@ public class BLiveZombie extends BLiveEntity<org.bukkit.entity.Zombie> implement
     }
 
     @Override
-    public EntityType<ClassicZombie, ClassicZombieSnapshot> getType() {
+    public EntityType<LiveClassicZombie, ClassicZombieSnapshot> getType() {
         return EntityTypes.ZOMBIE;
     }
 

@@ -1,11 +1,16 @@
 package org.ships.implementation.bukkit.event.events.block;
 
 import org.core.entity.living.human.player.LivePlayer;
+import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.event.events.block.BlockChangeEvent;
 import org.core.world.expload.Explosion;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.block.BlockTypes;
 import org.core.world.position.block.details.BlockDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
@@ -32,6 +37,35 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
     @Override
     public BlockPosition getPosition() {
         return this.position;
+    }
+
+    public static class BreakBlockPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Post.ByPlayer {
+
+        Collection<DroppedItemSnapshot> items;
+        List<DroppedItemSnapshot> toRemove = new ArrayList<>();
+        LivePlayer player;
+
+        public BreakBlockPostEvent(BlockDetails pre, BlockPosition pos, LivePlayer player, Collection<DroppedItemSnapshot> items) {
+            super(pos, pre, pos.getBlockDetails());
+            this.items = items;
+            this.player = player;
+        }
+
+        @Override
+        public Collection<DroppedItemSnapshot> getItems() {
+            return this.items;
+        }
+
+        @Override
+        public Post removeItem(DroppedItemSnapshot snapshot) {
+            this.toRemove.add(snapshot);
+            return this;
+        }
+
+        @Override
+        public LivePlayer getEntity() {
+            return this.player;
+        }
     }
 
     public static class BreakBlockChangeExplode extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.ByExplosion {

@@ -2,9 +2,9 @@ package org.ships.implementation.bukkit.world.position;
 
 import org.bukkit.Location;
 import org.core.CorePlugin;
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
+import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.vector.types.Vector3Double;
 import org.core.vector.types.Vector3Int;
@@ -84,7 +84,7 @@ public class BExactPosition implements ExactPosition {
     }
 
     @Override
-    public <E extends Entity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createEntity(EntityType<E, S> type) {
         return ((BukkitPlatform) CorePlugin.getPlatform()).createSnapshot(type, this);
     }
 

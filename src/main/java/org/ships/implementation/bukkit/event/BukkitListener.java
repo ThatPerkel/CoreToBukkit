@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,15 +21,18 @@ import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
 import org.core.text.Text;
 import org.core.world.position.BlockPosition;
+import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.ships.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.ships.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
 import org.ships.implementation.bukkit.event.events.connection.BKickEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntityInteractEvent;
+import org.ships.implementation.bukkit.event.events.entity.BEntitySpawnEvent;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.expload.EntityExplosion;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -35,6 +40,40 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class BukkitListener implements Listener {
+
+    @EventHandler
+    public static void onItemSpawnEvent(ItemSpawnEvent event){
+        org.bukkit.entity.Item item = event.getEntity();
+        BEntitySpawnEvent spawnEvent = new BEntitySpawnEvent(new BExactPosition(event.getLocation()), new BLiveDroppedItem(item));
+        call(spawnEvent);
+        boolean cancelled = spawnEvent.isCancelled();
+        if(cancelled) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public static void onEntitySpawnEvent(EntitySpawnEvent event){
+        org.bukkit.entity.Entity entity = event.getEntity();
+        BEntitySpawnEvent spawnEvent = new BEntitySpawnEvent(new BExactPosition(event.getLocation()), ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(entity));
+        call(spawnEvent);
+        boolean cancelled = spawnEvent.isCancelled();
+        if(cancelled) {
+            event.setCancelled(true);
+        }
+    }
+
+    /**@EventHandler
+    public static void onItemDropFromBlock(BlockDropItemEvent event){
+        BBlockDetails preDetails = new BBlockDetails(event.getBlockState().getBlockData());
+        BBlockPosition position = new BBlockPosition(event.getBlock());
+        Map<org.bukkit.entity.Item, DroppedItemSnapshot> items = new HashMap<>();
+        event.getItems().forEach(i -> items.put(i, new BLiveDroppedItem(i).createSnapshot()));
+        BLivePlayer player = new BLivePlayer(event.getPlayer());
+        AbstractBlockChangeEvent.BreakBlockPostEvent event2 = new AbstractBlockChangeEvent.BreakBlockPostEvent(preDetails, position, player, items.values());
+        call(event2);
+        event2.getItems().forEach(is -> items.entrySet().stream().filter(e -> e.getValue().equals(is)).forEach(e -> event.getItems().remove(e.getKey())));
+    }*/
 
     @EventHandler
     public static void onPlayerKickedEvent(PlayerKickEvent event){

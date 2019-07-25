@@ -1,30 +1,34 @@
 package org.ships.implementation.bukkit.entity;
 
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
-import org.core.entity.living.animal.chicken.Chicken;
+import org.core.entity.LiveEntity;
 import org.core.entity.living.animal.chicken.ChickenSnapshot;
-import org.core.entity.living.animal.cow.Cow;
+import org.core.entity.living.animal.chicken.LiveChicken;
 import org.core.entity.living.animal.cow.CowSnapshot;
-import org.core.entity.living.bat.Bat;
+import org.core.entity.living.animal.cow.LiveCow;
 import org.core.entity.living.bat.BatSnapshot;
-import org.core.entity.living.fish.cod.Cod;
+import org.core.entity.living.bat.LiveBat;
 import org.core.entity.living.fish.cod.CodSnapshot;
-import org.core.entity.living.hostile.undead.classic.ClassicZombie;
+import org.core.entity.living.fish.cod.LiveCod;
 import org.core.entity.living.hostile.undead.classic.ClassicZombieSnapshot;
-import org.core.entity.projectile.item.snowball.SnowballEntity;
+import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
+import org.core.entity.living.human.HumanSnapshot;
+import org.core.entity.living.human.LiveHuman;
+import org.core.entity.living.human.player.LivePlayer;
+import org.core.entity.living.human.player.PlayerSnapshot;
+import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
 import org.core.entity.projectile.item.snowball.SnowballEntitySnapshot;
-import org.core.entity.scene.droppeditem.DroppedItem;
 import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
-import org.core.entity.scene.itemframe.ItemFrame;
+import org.core.entity.scene.droppeditem.LiveDroppedItem;
 import org.core.entity.scene.itemframe.ItemFrameSnapshot;
+import org.core.entity.scene.itemframe.LiveItemFrame;
 
-public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
+public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
 
     org.bukkit.entity.EntityType getBukkitEntityType();
 
-    class BatType implements BEntityType<Bat, BatSnapshot>{
+    class BatType implements BEntityType<LiveBat, BatSnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -32,8 +36,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<Bat> getEntityClass() {
-            return Bat.class;
+        public Class<LiveBat> getEntityClass() {
+            return LiveBat.class;
         }
 
         @Override
@@ -52,7 +56,7 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class SnowballType implements BEntityType<SnowballEntity, SnowballEntitySnapshot>{
+    class SnowballType implements BEntityType<LiveSnowballEntity, SnowballEntitySnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -60,8 +64,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<SnowballEntity> getEntityClass() {
-            return SnowballEntity.class;
+        public Class<LiveSnowballEntity> getEntityClass() {
+            return LiveSnowballEntity.class;
         }
 
         @Override
@@ -80,7 +84,7 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class DroppedItemType implements BEntityType<DroppedItem, DroppedItemSnapshot>{
+    class DroppedItemType implements BEntityType<LiveDroppedItem, DroppedItemSnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -88,8 +92,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<DroppedItem> getEntityClass() {
-            return DroppedItem.class;
+        public Class<LiveDroppedItem> getEntityClass() {
+            return LiveDroppedItem.class;
         }
 
         @Override
@@ -108,7 +112,63 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class CodType implements BEntityType<Cod, CodSnapshot> {
+    class PlayerType implements BEntityType<LivePlayer, PlayerSnapshot>{
+
+        @Override
+        public org.bukkit.entity.EntityType getBukkitEntityType() {
+            return org.bukkit.entity.EntityType.PLAYER;
+        }
+
+        @Override
+        public Class<LivePlayer> getEntityClass() {
+            return LivePlayer.class;
+        }
+
+        @Override
+        public Class<PlayerSnapshot> getSnapshotClass() {
+            return PlayerSnapshot.class;
+        }
+
+        @Override
+        public String getId() {
+            return "minecraft:" + getName().toLowerCase();
+        }
+
+        @Override
+        public String getName() {
+            return "Player";
+        }
+    }
+
+    class HumanType implements BEntityType<LiveHuman, HumanSnapshot>{
+
+        @Override
+        public org.bukkit.entity.EntityType getBukkitEntityType() {
+            return org.bukkit.entity.EntityType.PLAYER;
+        }
+
+        @Override
+        public Class<LiveHuman> getEntityClass() {
+            return LiveHuman.class;
+        }
+
+        @Override
+        public Class<HumanSnapshot> getSnapshotClass() {
+            return HumanSnapshot.class;
+        }
+
+        @Override
+        public String getId() {
+            return "minecraft:" + getName().toLowerCase();
+        }
+
+        @Override
+        public String getName() {
+            return "Human";
+        }
+    }
+
+    class CodType implements BEntityType<LiveCod, CodSnapshot> {
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -116,8 +176,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<Cod> getEntityClass() {
-            return Cod.class;
+        public Class<LiveCod> getEntityClass() {
+            return LiveCod.class;
         }
 
         @Override
@@ -136,7 +196,7 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class ItemFrameType implements BEntityType<ItemFrame, ItemFrameSnapshot>{
+    class ItemFrameType implements BEntityType<LiveItemFrame, ItemFrameSnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -144,8 +204,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<ItemFrame> getEntityClass() {
-            return ItemFrame.class;
+        public Class<LiveItemFrame> getEntityClass() {
+            return LiveItemFrame.class;
         }
 
         @Override
@@ -164,7 +224,7 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class CowType implements BEntityType<Cow, CowSnapshot>{
+    class CowType implements BEntityType<LiveCow, CowSnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -172,8 +232,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<Cow> getEntityClass() {
-            return Cow.class;
+        public Class<LiveCow> getEntityClass() {
+            return LiveCow.class;
         }
 
         @Override
@@ -192,7 +252,7 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class ChickenType implements BEntityType<Chicken, ChickenSnapshot>{
+    class ChickenType implements BEntityType<LiveChicken, ChickenSnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -200,8 +260,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<Chicken> getEntityClass() {
-            return Chicken.class;
+        public Class<LiveChicken> getEntityClass() {
+            return LiveChicken.class;
         }
 
         @Override
@@ -220,7 +280,7 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
     }
 
-    class ZombieType implements BEntityType<ClassicZombie, ClassicZombieSnapshot>{
+    class ZombieType implements BEntityType<LiveClassicZombie, ClassicZombieSnapshot>{
 
         @Override
         public org.bukkit.entity.EntityType getBukkitEntityType() {
@@ -228,8 +288,8 @@ public interface BEntityType <E extends Entity, S extends EntitySnapshot<E>> ext
         }
 
         @Override
-        public Class<ClassicZombie> getEntityClass() {
-            return ClassicZombie.class;
+        public Class<LiveClassicZombie> getEntityClass() {
+            return LiveClassicZombie.class;
         }
 
         @Override

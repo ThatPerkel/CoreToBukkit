@@ -42,6 +42,9 @@ public enum CommonAttachableWorkAround implements BAttachableKeyedData.Attachabl
     BUTTON(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
             BlockGroups.BUTTON.getGrouped()),
+    PISTON(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
+            BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
+            BlockTypes.MOVING_PISTON.get(), BlockTypes.PISTON_HEAD.get()),
     SIGN(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
             BlockTypes.OAK_WALL_SIGN.get().getLike().stream()

@@ -3,12 +3,8 @@ package org.ships.implementation.bukkit.entity.projectile.item.live;
 import org.bukkit.entity.Snowball;
 import org.core.CorePlugin;
 import org.core.entity.EntitySnapshot;
-import org.core.entity.EntityType;
-import org.core.entity.EntityTypes;
 import org.core.entity.projectile.ProjectileEntity;
 import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
-import org.core.entity.projectile.item.snowball.SnowballEntity;
-import org.core.entity.projectile.item.snowball.SnowballEntitySnapshot;
 import org.core.source.projectile.ProjectileSource;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
@@ -38,11 +34,6 @@ public class BLiveSnowballEntity extends BLiveEntity<org.bukkit.entity.Snowball>
     public ProjectileEntity setSource(ProjectileSource source) {
         this.getBukkitEntity().setShooter(((BukkitPlatform)CorePlugin.getPlatform()).getBukkitProjectileSource(source));
         return this;
-    }
-
-    @Override
-    public EntityType<SnowballEntity, SnowballEntitySnapshot> getType() {
-        return EntityTypes.SNOWBALL;
     }
 
     @Override

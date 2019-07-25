@@ -1,8 +1,6 @@
 package org.ships.implementation.bukkit.entity.living.human.player.live;
 
 import org.bukkit.Bukkit;
-import org.core.entity.EntityType;
-import org.core.entity.EntityTypes;
 import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.Player;
@@ -111,11 +109,6 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     public AbstractHuman setSneaking(boolean sneaking) {
         getBukkitEntity().setSneaking(sneaking);
         return this;
-    }
-
-    @Override
-    public EntityType<Player, PlayerSnapshot> getType() {
-        return EntityTypes.PLAYER;
     }
 
     @Override

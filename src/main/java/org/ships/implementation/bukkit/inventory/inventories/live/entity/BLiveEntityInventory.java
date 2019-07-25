@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.inventory.inventories.live.entity;
 
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
+import org.core.entity.LiveEntity;
 import org.core.entity.living.ArmoredEntity;
 import org.core.inventory.inventories.BasicEntityInventory;
 import org.core.inventory.item.ItemStack;
@@ -12,7 +12,7 @@ import org.ships.implementation.bukkit.inventory.item.BItemStack;
 
 import java.util.Optional;
 
-public abstract class BLiveEntityInventory<E extends Entity, S extends EntitySnapshot<E>> implements BasicEntityInventory {
+public abstract class BLiveEntityInventory<E extends LiveEntity, S extends EntitySnapshot<E>> implements BasicEntityInventory {
 
     private class ZombieArmorPart implements ArmorPart {
 

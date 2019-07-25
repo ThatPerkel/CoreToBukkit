@@ -32,6 +32,12 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     }
 
     @Override
+    public ConfigurationFile reload() {
+        this.yaml = YamlConfiguration.loadConfiguration(this.file);
+        return this;
+    }
+
+    @Override
     public Map<ConfigurationNode, Object> getKeyValues() {
         Map<ConfigurationNode, Object> value = new HashMap<>();
         this.yaml.getKeys(true).forEach(p -> value.put(new ConfigurationNode(p.split(".")), this.yaml.get(p)));
@@ -67,20 +73,29 @@ public class YAMLConfigurationFile implements ConfigurationFile {
 
     @Override
     public Optional<Integer> parseInt(ConfigurationNode node) {
+        if(!this.yaml.contains(CorePlugin.toString(".", node.getPath()))){
+            return Optional.empty();
+        }
         int value = this.yaml.getInt(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.ofNullable(value);
+        return Optional.of(value);
     }
 
     @Override
     public Optional<Double> parseDouble(ConfigurationNode node) {
+        if(!this.yaml.contains(CorePlugin.toString(".", node.getPath()))){
+            return Optional.empty();
+        }
         double value = this.yaml.getDouble(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.ofNullable(value);
+        return Optional.of(value);
     }
 
     @Override
     public Optional<Boolean> parseBoolean(ConfigurationNode node) {
+        if(!this.yaml.contains(CorePlugin.toString(".", node.getPath()))){
+            return Optional.empty();
+        }
         boolean value = this.yaml.getBoolean(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.ofNullable(value);
+        return Optional.of(value);
     }
 
     @Override

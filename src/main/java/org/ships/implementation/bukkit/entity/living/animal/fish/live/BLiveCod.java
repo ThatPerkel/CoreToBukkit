@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.entity.living.animal.fish.live;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
-import org.core.entity.living.fish.cod.Cod;
 import org.core.entity.living.fish.cod.CodSnapshot;
 import org.core.entity.living.fish.cod.LiveCod;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
@@ -20,7 +19,7 @@ public class BLiveCod extends BLiveEntity<org.bukkit.entity.Cod> implements Live
     }
 
     @Override
-    public EntityType<Cod, CodSnapshot> getType() {
+    public EntityType<LiveCod, CodSnapshot> getType() {
         return EntityTypes.COD;
     }
 
