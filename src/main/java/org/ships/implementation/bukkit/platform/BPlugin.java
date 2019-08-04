@@ -18,22 +18,22 @@ public class BPlugin implements Plugin {
     }
 
     @Override
+    public String getPluginId() {
+        return this.plugin.getName().toLowerCase();
+    }
+
+    @Override
     public String getPluginVersion() {
         return this.plugin.getDescription().getVersion();
     }
 
     @Override
-    public Optional<String> checkForUpdates() {
+    public Optional<Object> getBukkitLauncher() {
+        return Optional.of(this.plugin);
+    }
+
+    @Override
+    public Optional<Object> getSpongeLauncher() {
         return Optional.empty();
-    }
-
-    @Override
-    public Object getBukkitLauncher() {
-        return this.plugin;
-    }
-
-    @Override
-    public Object getSpongeLauncher() {
-        return null;
     }
 }

@@ -1,6 +1,7 @@
 package org.ships.implementation.bukkit.platform;
 
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.core.CorePlugin;
@@ -18,6 +19,8 @@ import org.core.source.command.CommandSource;
 import org.core.source.projectile.ProjectileSource;
 import org.core.text.TextColour;
 import org.core.text.TextColours;
+import org.core.world.boss.colour.BossColour;
+import org.core.world.boss.colour.BossColours;
 import org.core.world.position.ExactPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.entity.LiveTileEntity;
@@ -35,6 +38,7 @@ import org.ships.implementation.bukkit.inventory.item.BItemType;
 import org.ships.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.ships.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.ships.implementation.bukkit.text.BTextColour;
+import org.ships.implementation.bukkit.world.boss.colour.BBossColour;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
@@ -248,6 +252,15 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public Collection<BossColour> getBossColours() {
+        Set<BossColour> set = new HashSet<>();
+        for(BarColor color : BarColor.values()){
+            set.add(new BBossColour(color));
+        }
+        return set;
+    }
+
+    @Override
     public Collection<TileEntitySnapshot<? extends TileEntity>> getDefaultTileEntities() {
         return this.defaultTileEntities;
     }
@@ -277,6 +290,16 @@ public class BukkitPlatform implements Platform {
     @Override
     public Collection<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getEntityTypes() {
         return new HashSet<>(this.entityTypes);
+    }
+
+    @Override
+    public BossColour get(BossColours colours) {
+        for(BarColor colour : BarColor.values()){
+            if(colour.name().equalsIgnoreCase(colours.getName())){
+                return new BBossColour(colour);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -344,6 +367,11 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Optional<ConfigurationLoaderType> getConfigurationLoaderType(String id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<BossColour> getBossColour(String id) {
         return Optional.empty();
     }
 

@@ -12,6 +12,7 @@ import org.core.platform.PlatformServer;
 import org.core.schedule.SchedulerBuilder;
 import org.core.source.command.ConsoleSource;
 import org.core.text.Text;
+import org.core.world.boss.ServerBossBar;
 import org.ships.implementation.bukkit.configuration.YAMLConfigurationFile;
 import org.ships.implementation.bukkit.event.BEventManager;
 import org.ships.implementation.bukkit.event.BukkitListener;
@@ -20,6 +21,7 @@ import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.platform.PlatformConsole;
 import org.ships.implementation.bukkit.scheduler.BSchedulerBuilder;
 import org.ships.implementation.bukkit.text.BText;
+import org.ships.implementation.bukkit.world.boss.BServerBossBar;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,14 +81,6 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
             if(file.getName().endsWith(".temp")){
                 file2 = new File(file.getParentFile(), file.getName().substring(0, file.getName().length() - 4) + "yml");
             }
-            /*if(!file2.exists()){
-                try {
-                    file2.getParentFile().mkdirs();
-                    file2.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }*/
             return new YAMLConfigurationFile(file2);
         }
         System.err.println("ConfigurationLoaderType is not supported: " + type.getId());
@@ -101,5 +95,10 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
     @Override
     public Text textBuilder(String chars) {
         return new BText(chars);
+    }
+
+    @Override
+    public ServerBossBar bossBuilder() {
+        return new BServerBossBar();
     }
 }

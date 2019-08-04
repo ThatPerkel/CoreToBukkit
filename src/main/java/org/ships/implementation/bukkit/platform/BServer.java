@@ -62,7 +62,7 @@ public class BServer implements PlatformServer {
     @Override
     public void registerCommands(CommandLauncher... commandLaunchers) {
         for(CommandLauncher command : commandLaunchers){
-            JavaPlugin plugin = (JavaPlugin) command.getPlugin().getBukkitLauncher();
+            JavaPlugin plugin = (JavaPlugin) command.getPlugin().getBukkitLauncher().get();
             PluginCommand command2 = plugin.getCommand(command.getName());
             BCommand command3 = new BCommand(command);
             command2.setTabCompleter(command3);
