@@ -4,8 +4,10 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.living.AgeableEntity;
+import org.core.entity.living.animal.cow.CowSnapshot;
 import org.core.entity.living.animal.cow.LiveCow;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.living.animal.snapshot.BCowSnapshot;
 
 public class BLiveCow extends BLiveEntity<org.bukkit.entity.Cow> implements LiveCow {
 
@@ -16,6 +18,10 @@ public class BLiveCow extends BLiveEntity<org.bukkit.entity.Cow> implements Live
 
     public BLiveCow(Cow entity) {
         super(entity);
+    }
+
+    public BLiveCow(CowSnapshot snapshot){
+        super(snapshot);
     }
 
     @Override
@@ -35,6 +41,6 @@ public class BLiveCow extends BLiveEntity<org.bukkit.entity.Cow> implements Live
 
     @Override
     public EntitySnapshot createSnapshot() {
-        return null;
+        return new BCowSnapshot(this);
     }
 }

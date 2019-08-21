@@ -7,6 +7,7 @@ import org.core.entity.living.bat.Bat;
 import org.core.entity.living.bat.BatSnapshot;
 import org.core.entity.living.bat.LiveBat;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.living.bat.snapshot.BBatSnapshot;
 
 public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements LiveBat {
 
@@ -17,6 +18,10 @@ public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements Live
 
     public BLiveBat(org.bukkit.entity.Bat entity) {
         super(entity);
+    }
+
+    public BLiveBat(BatSnapshot snapshot){
+        super(snapshot);
     }
 
     @Override
@@ -37,6 +42,6 @@ public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements Live
 
     @Override
     public EntitySnapshot createSnapshot() {
-        return null;
+        return new BBatSnapshot(this);
     }
 }

@@ -3,8 +3,10 @@ package org.ships.implementation.bukkit.entity.living.animal.live;
 import org.bukkit.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.living.AgeableEntity;
+import org.core.entity.living.animal.chicken.ChickenSnapshot;
 import org.core.entity.living.animal.chicken.LiveChicken;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.living.animal.snapshot.BChickenSnapshot;
 
 public class BLiveChicken extends BLiveEntity<org.bukkit.entity.Chicken> implements LiveChicken {
 
@@ -15,6 +17,10 @@ public class BLiveChicken extends BLiveEntity<org.bukkit.entity.Chicken> impleme
 
     public BLiveChicken(org.bukkit.entity.Chicken entity) {
         super(entity);
+    }
+
+    public BLiveChicken(ChickenSnapshot snapshot){
+        super(snapshot);
     }
 
     @Override
@@ -35,6 +41,6 @@ public class BLiveChicken extends BLiveEntity<org.bukkit.entity.Chicken> impleme
 
     @Override
     public EntitySnapshot createSnapshot() {
-        return null;
+        return new BChickenSnapshot(this);
     }
 }

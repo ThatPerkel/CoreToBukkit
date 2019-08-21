@@ -1,12 +1,13 @@
 package org.ships.implementation.bukkit.entity.projectile.item.live;
 
-import org.bukkit.entity.Snowball;
 import org.core.CorePlugin;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.projectile.ProjectileEntity;
 import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
+import org.core.entity.projectile.item.snowball.SnowballEntitySnapshot;
 import org.core.source.projectile.ProjectileSource;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.projectile.item.snapshot.BSnowballEntitySnapshot;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 
 import java.util.Optional;
@@ -17,7 +18,11 @@ public class BLiveSnowballEntity extends BLiveEntity<org.bukkit.entity.Snowball>
         this((org.bukkit.entity.Snowball)entity);
     }
 
-    public BLiveSnowballEntity(Snowball entity) {
+    public BLiveSnowballEntity(org.bukkit.entity.Snowball entity) {
+        super(entity);
+    }
+
+    public BLiveSnowballEntity(SnowballEntitySnapshot entity){
         super(entity);
     }
 
@@ -38,6 +43,6 @@ public class BLiveSnowballEntity extends BLiveEntity<org.bukkit.entity.Snowball>
 
     @Override
     public EntitySnapshot createSnapshot() {
-        return null;
+        return new BSnowballEntitySnapshot(this);
     }
 }

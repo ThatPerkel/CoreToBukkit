@@ -5,12 +5,14 @@ import org.bukkit.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.scene.AttachableEntity;
 import org.core.entity.scene.itemframe.ItemFrame;
+import org.core.entity.scene.itemframe.ItemFrameSnapshot;
 import org.core.entity.scene.itemframe.LiveItemFrame;
 import org.core.exceptions.DirectionNotSupported;
 import org.core.inventory.parts.Slot;
 import org.core.world.direction.Direction;
 import org.core.world.direction.FourFacingDirection;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLiveItemFrameSlot;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 
@@ -23,6 +25,10 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
 
     public BLiveItemFrame(org.bukkit.entity.ItemFrame entity) {
         super(entity);
+    }
+
+    public BLiveItemFrame(ItemFrameSnapshot snapshot){
+        super(snapshot);
     }
 
     @Override
@@ -128,6 +134,6 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
 
     @Override
     public EntitySnapshot createSnapshot() {
-        return null;
+        return new BItemFrameSnapshot(this);
     }
 }
