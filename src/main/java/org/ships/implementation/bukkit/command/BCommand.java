@@ -5,9 +5,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.core.CorePlugin;
 import org.core.command.CommandLauncher;
+import org.core.exceptions.NotEnoughArguments;
 import org.core.source.command.CommandSource;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BCommand implements TabExecutor {
@@ -21,7 +23,12 @@ public class BCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         CommandSource source = ((BukkitPlatform) CorePlugin.getPlatform()).getSource(commandSender);
-        return this.command.run(source, strings);
+        try {
+            return this.command.run(source, strings);
+        } catch (NotEnoughArguments notEnoughArguments) {
+            notEnoughArguments.printStackTrace();
+        }
+        return false;
     }
 
     @Override
