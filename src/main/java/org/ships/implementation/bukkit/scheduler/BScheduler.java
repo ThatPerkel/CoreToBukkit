@@ -55,7 +55,7 @@ public class BScheduler implements Scheduler {
                 case SECONDS:
                     ticks = (this.delayCount * 20); break;
                 case MINUTES:
-                    ticks = ((this.iteration * 20)*100); break;
+                    ticks = ((this.delayCount * 20)*100); break;
                 default:
                     System.err.println("Unknown TimeUnit: " + this.delayTimeUnit.name());
             }

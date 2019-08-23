@@ -51,7 +51,7 @@ public class BServerBossBar implements ServerBossBar {
 
     @Override
     public int getValue() {
-        return ((int)this.bossBar.getProgress() * 100);
+        return (int)(this.bossBar.getProgress() * 100);
     }
 
     @Override
@@ -59,7 +59,8 @@ public class BServerBossBar implements ServerBossBar {
         if(value > 100){
             throw new IllegalArgumentException("ServerBossBar.SetValue must be between 0 and 100 (" + value + ")");
         }
-        this.bossBar.setProgress(value/100);
+        double percent = (value/100.0);
+        this.bossBar.setProgress(percent);
         return this;
     }
 
