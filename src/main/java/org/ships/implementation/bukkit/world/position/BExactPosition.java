@@ -6,6 +6,7 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
+import org.core.vector.Vector3;
 import org.core.vector.types.Vector3Double;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
@@ -43,6 +44,11 @@ public class BExactPosition implements ExactPosition {
     @Override
     public Vector3Double getPosition() {
         return new Vector3Double(this.location.getX(), this.location.getY(), this.location.getZ());
+    }
+
+    @Override
+    public ExactPosition getRelative(Vector3<Double> vector) {
+        return new BExactPosition(this.location.getX() + vector.getX(), this.location.getY() + vector.getY(), this.location.getZ() + vector.getZ(), this.location.getWorld());
     }
 
     @Override
