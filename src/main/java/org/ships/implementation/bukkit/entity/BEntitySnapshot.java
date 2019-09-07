@@ -1,7 +1,6 @@
 package org.ships.implementation.bukkit.entity;
 
 import org.core.CorePlugin;
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
@@ -12,6 +11,7 @@ import org.core.world.position.Position;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 
 public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySnapshot<T> {
 
@@ -19,23 +19,53 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     protected double yaw;
     protected double roll;
     protected ExactPosition position;
-    protected Collection<Entity> passengers = new HashSet<>();
+    protected Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected boolean hasGravity;
     protected Vector3Double velocity;
     protected Text customName;
     protected boolean isCustomNameVisible;
+    protected T createdFrom;
 
     public BEntitySnapshot(ExactPosition position){
         this.position = position;
     }
 
-    public BEntitySnapshot(Entity entity){
+    public BEntitySnapshot(T entity){
         this.hasGravity = entity.hasGravity();
+        this.customName = entity.getCustomName();
+        this.velocity = entity.getVelocity();
+        this.yaw = entity.getYaw();
+        this.pitch = entity.getPitch();
+        this.roll = entity.getRoll();
+        this.position = entity.getPosition();
+        entity.getPassengers().stream().forEach(e -> this.passengers.add(e.createSnapshot()));
+        this.createdFrom = entity;
+    }
+
+    public BEntitySnapshot(EntitySnapshot<T> entity){
+        this.hasGravity = entity.hasGravity();
+        this.customName = entity.getCustomName();
+        this.velocity = entity.getVelocity();
         this.yaw = entity.getYaw();
         this.pitch = entity.getPitch();
         this.roll = entity.getRoll();
         this.position = entity.getPosition();
         this.passengers.addAll(entity.getPassengers());
+        this.createdFrom = entity.getCreatedFrom().orElse(null);
+    }
+
+    protected <L extends LiveEntity> L applyDefaults(L entity){
+        entity.setCustomNameVisible(this.isCustomNameVisible);
+        if(this.customName != null) {
+            entity.setCustomName(this.customName);
+        }
+        entity.setGravity(this.hasGravity);
+        entity.setVelocity(this.velocity);
+        entity.setPosition(this.position);
+        entity.setPitch(this.pitch);
+        entity.setRoll(this.roll);
+        entity.setYaw(this.yaw);
+        return entity;
     }
 
     @Override
@@ -78,18 +108,18 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public Collection<Entity> getPassengers() {
+    public Collection<EntitySnapshot<? extends LiveEntity>> getPassengers() {
         return this.passengers;
     }
 
     @Override
-    public EntitySnapshot<T> addPassengers(Collection<Entity> entities) {
+    public EntitySnapshot<T> addPassengers(Collection<EntitySnapshot<? extends LiveEntity>> entities) {
         this.passengers.addAll(entities);
         return this;
     }
 
     @Override
-    public EntitySnapshot<T> removePassengers(Collection<Entity> entities) {
+    public EntitySnapshot<T> removePassengers(Collection<EntitySnapshot<? extends LiveEntity>> entities) {
         this.passengers.removeAll(entities);
         return this;
     }
@@ -100,7 +130,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public Entity setGravity(boolean check) {
+    public EntitySnapshot<T> setGravity(boolean check) {
         this.hasGravity = check;
         return this;
     }
@@ -145,5 +175,10 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     @Override
     public boolean isCustomNameVisible(){
         return this.isCustomNameVisible;
+    }
+
+    @Override
+    public Optional<T> getCreatedFrom(){
+        return Optional.ofNullable(this.createdFrom);
     }
 }

@@ -7,6 +7,7 @@ import org.core.inventory.item.ItemStack;
 import org.core.inventory.parts.ArmorPart;
 import org.core.inventory.parts.Slot;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
+import org.ships.implementation.bukkit.inventory.inventories.snapshot.entity.BClassicZombieInventorySnapshot;
 import org.ships.implementation.bukkit.inventory.item.BItemStack;
 
 import java.util.HashSet;
@@ -209,7 +210,7 @@ public class BLiveZombieInventory implements LiveZombieInventory {
 
     @Override
     public ZombieInventorySnapshot createSnapshot() {
-        return null;
+        return new BClassicZombieInventorySnapshot(this);
     }
 
     @Override
@@ -228,7 +229,7 @@ public class BLiveZombieInventory implements LiveZombieInventory {
     }
 
     @Override
-    public LiveClassicZombie getAttachedEntity() {
-        return this.zombie;
+    public Optional<LiveClassicZombie> getAttachedEntity() {
+        return Optional.of(this.zombie);
     }
 }

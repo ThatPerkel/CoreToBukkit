@@ -20,9 +20,10 @@ public class BLiveBat extends BLiveEntity<org.bukkit.entity.Bat> implements Live
         super(entity);
     }
 
+    /*@Deprecated
     public BLiveBat(BatSnapshot snapshot){
         super(snapshot);
-    }
+    }*/
 
     @Override
     public boolean isAwake() {

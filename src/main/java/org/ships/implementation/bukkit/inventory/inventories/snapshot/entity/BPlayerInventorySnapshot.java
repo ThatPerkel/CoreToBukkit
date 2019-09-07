@@ -1,10 +1,10 @@
 package org.ships.implementation.bukkit.inventory.inventories.snapshot.entity;
 
-import org.core.entity.living.human.player.Player;
+import org.core.entity.living.human.player.LivePlayer;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
 
-public class BPlayerInventorySnapshot extends PlayerInventorySnapshot implements BEntityInventorySnapshot<Player> {
+public class BPlayerInventorySnapshot extends PlayerInventorySnapshot implements BEntityInventorySnapshot<LivePlayer> {
 
     public BPlayerInventorySnapshot(PlayerInventory inventory) {
         super(inventory);
@@ -16,7 +16,8 @@ public class BPlayerInventorySnapshot extends PlayerInventorySnapshot implements
     }
 
     @Override
-    public void apply(Player entity) {
-
+    public void apply(LivePlayer entity) {
+        BEntityInventorySnapshot.super.apply(entity);
+        //TODO
     }
 }

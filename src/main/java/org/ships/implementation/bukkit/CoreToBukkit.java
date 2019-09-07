@@ -41,6 +41,7 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
     private void init(JavaPlugin plugin){
         CoreImplementation.IMPLEMENTATION = this;
         Bukkit.getPluginManager().registerEvents(new BukkitListener(), plugin);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, getRawServer().getTPSExecutor(), 0, 1);
         this.platform.init();
     }
 

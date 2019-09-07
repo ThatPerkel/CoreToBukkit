@@ -4,7 +4,6 @@ import org.core.CorePlugin;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.projectile.ProjectileEntity;
 import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
-import org.core.entity.projectile.item.snowball.SnowballEntitySnapshot;
 import org.core.source.projectile.ProjectileSource;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.projectile.item.snapshot.BSnowballEntitySnapshot;
@@ -22,9 +21,10 @@ public class BLiveSnowballEntity extends BLiveEntity<org.bukkit.entity.Snowball>
         super(entity);
     }
 
+    /*@Deprecated
     public BLiveSnowballEntity(SnowballEntitySnapshot entity){
         super(entity);
-    }
+    }*/
 
     @Override
     public Optional<ProjectileSource> getSource() {

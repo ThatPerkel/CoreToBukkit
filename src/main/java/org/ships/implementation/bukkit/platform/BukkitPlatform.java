@@ -8,6 +8,8 @@ import org.core.CorePlugin;
 import org.core.configuration.type.ConfigurationLoaderType;
 import org.core.configuration.type.ConfigurationLoaderTypes;
 import org.core.entity.*;
+import org.core.entity.living.animal.parrot.ParrotType;
+import org.core.entity.living.animal.parrot.ParrotTypes;
 import org.core.event.CustomEvent;
 import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
@@ -30,8 +32,12 @@ import org.core.world.position.block.entity.banner.pattern.PatternLayerType;
 import org.core.world.position.block.entity.banner.pattern.PatternLayerTypes;
 import org.core.world.position.block.grouptype.BlockGroup;
 import org.core.world.position.block.grouptype.BlockGroups;
+import org.core.world.position.flags.physics.ApplyPhysicsFlag;
+import org.core.world.position.flags.physics.ApplyPhysicsFlags;
 import org.ships.implementation.bukkit.configuration.YamlConfigurationLoaderType;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.UnknownLiveEntity;
+import org.ships.implementation.bukkit.entity.living.animal.type.BParrotType;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.ships.implementation.bukkit.event.BukkitListener;
 import org.ships.implementation.bukkit.inventory.item.BItemType;
@@ -43,6 +49,7 @@ import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
 import org.ships.implementation.bukkit.world.position.block.entity.unknown.BLiveUnknownContainerTileEntity;
+import org.ships.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -87,7 +94,7 @@ public class BukkitPlatform implements Platform {
             }
             this.blockGroups.add(new BBlockGroup(field.getName(), blockType.toArray(new BlockType[blockType.size()])));
         }
-        this.blockGroups.addAll(Arrays.asList(BlockGroups.values()));
+        this.blockGroups.addAll(BlockGroups.values());
 
     }
 
@@ -148,7 +155,7 @@ public class BukkitPlatform implements Platform {
     public LiveEntity createEntityInstance(org.bukkit.entity.Entity entity){
         Optional<Map.Entry<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>>> opEntry = entityToEntity.entrySet().stream().filter(e -> e.getKey().isInstance(entity)).findAny();
         if(!opEntry.isPresent()){
-            return null;
+            return new UnknownLiveEntity<>(entity);
         }
         Class<? extends LiveEntity> bdclass = opEntry.get().getValue();
         try {
@@ -261,6 +268,23 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public Collection<ParrotType> getParrotType() {
+        List<ParrotType> list = new ArrayList<>();
+        for(org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()){
+            list.add(new BParrotType(variant));
+        }
+        return Collections.unmodifiableCollection(list);
+    }
+
+    @Override
+    public Collection<ApplyPhysicsFlag> getApplyPhysics() {
+        List<ApplyPhysicsFlag> list = new ArrayList<>();
+        list.add(BApplyPhysicsFlag.DEFAULT);
+        list.add(BApplyPhysicsFlag.NONE);
+        return Collections.unmodifiableCollection(list);
+    }
+
+    @Override
     public Collection<TileEntitySnapshot<? extends TileEntity>> getDefaultTileEntities() {
         return this.defaultTileEntities;
     }
@@ -303,8 +327,26 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public ApplyPhysicsFlag get(ApplyPhysicsFlags flags) {
+        if(flags.getName().equals("None")){
+            return BApplyPhysicsFlag.NONE;
+        }
+        return BApplyPhysicsFlag.DEFAULT;
+    }
+
+    @Override
     public ItemType get(ItemTypeCommon itemId) {
         return new BItemType(getMaterial(itemId.getId(), false));
+    }
+
+    @Override
+    public ParrotType get(ParrotTypes parrotID) {
+        for(org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()){
+            if(parrotID.getName().equalsIgnoreCase(variant.name())){
+                return new BParrotType(variant);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -373,6 +415,22 @@ public class BukkitPlatform implements Platform {
     @Override
     public Optional<BossColour> getBossColour(String id) {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<ParrotType> getParrotType(String id) {
+        for(org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()){
+            if(("minecraft:parrot_variant_" + variant.name().toLowerCase()).equalsIgnoreCase(id)){
+                return Optional.of(new BParrotType(variant));
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ApplyPhysicsFlag> getApplyPhysics(String id) {
+        return getApplyPhysics().stream().filter(f -> f.getId().equals(id)).findAny();
     }
 
     @Override

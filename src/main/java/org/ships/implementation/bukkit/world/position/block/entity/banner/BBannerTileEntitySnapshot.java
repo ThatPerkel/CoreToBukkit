@@ -1,10 +1,7 @@
 package org.ships.implementation.bukkit.world.position.block.entity.banner;
 
-import org.core.exceptions.BlockNotSupported;
-import org.core.world.position.BlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.BlockTypes;
-import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.banner.BannerTileEntity;
 import org.core.world.position.block.entity.banner.BannerTileEntitySnapshot;
 import org.core.world.position.block.entity.banner.LiveBannerTileEntity;
@@ -12,7 +9,6 @@ import org.core.world.position.block.entity.banner.pattern.PatternLayersSnapshot
 import org.ships.implementation.bukkit.world.position.block.entity.banner.pattern.BPatternLayersSnapshot;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public class BBannerTileEntitySnapshot implements BannerTileEntitySnapshot {
 
@@ -27,18 +23,9 @@ public class BBannerTileEntitySnapshot implements BannerTileEntitySnapshot {
     }
 
     @Override
-    public LiveBannerTileEntity apply(BlockPosition position) throws BlockNotSupported {
-        Optional<LiveTileEntity> opTile = position.getTileEntity();
-        if(!opTile.isPresent()){
-            throw new BlockNotSupported(position.getBlockType(), "BannerTileEntity");
-        }
-        LiveTileEntity lte = opTile.get();
-        if(!(lte instanceof BannerTileEntity)){
-            throw new BlockNotSupported(position.getBlockType(), "BannerTileEntity");
-        }
-        LiveBannerTileEntity bte = (LiveBannerTileEntity) lte;
-        bte.getLayers().removeLayers().addLayers(this.layers.getLayers());
-        return bte;
+    public LiveBannerTileEntity apply(LiveBannerTileEntity lbte) {
+        lbte.getLayers().removeLayers().addLayers(this.layers.getLayers());
+        return lbte;
     }
 
     @Override

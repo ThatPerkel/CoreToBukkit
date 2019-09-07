@@ -7,6 +7,7 @@ import org.core.world.expload.Explosion;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.block.BlockTypes;
 import org.core.world.position.block.details.BlockDetails;
+import org.core.world.position.block.details.BlockSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +40,40 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         return this.position;
     }
 
+    public static class PlaceBlockPlayerPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Place.Post.ByPlayer {
+
+        protected LivePlayer player;
+        protected boolean cancelled;
+        protected Collection<BlockSnapshot> collection;
+
+        public PlaceBlockPlayerPostEvent(BlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot> affected) {
+            super(pos, before, after);
+            this.player = player;
+            this.collection = affected;
+
+        }
+
+        @Override
+        public boolean isCancelled() {
+            return this.cancelled;
+        }
+
+        @Override
+        public void setCancelled(boolean value) {
+            this.cancelled = value;
+        }
+
+        @Override
+        public LivePlayer getEntity() {
+            return this.player;
+        }
+
+        @Override
+        public Collection<BlockSnapshot> getAffected() {
+            return this.collection;
+        }
+    }
+
     public static class BreakBlockPostEvent extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Post.ByPlayer {
 
         Collection<DroppedItemSnapshot> items;
@@ -68,7 +103,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
     }
 
-    public static class BreakBlockChangeExplode extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.ByExplosion {
+    public static class BreakBlockChangeExplode extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByExplosion {
 
         protected boolean cancelled;
         protected Explosion explosion;
@@ -94,7 +129,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
     }
 
-    public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.ByPlayer{
+    public static class BreakBlockChangeEventPlayer extends AbstractBlockChangeEvent implements BlockChangeEvent.Break.Pre.ByPlayer{
 
         protected LivePlayer player;
         protected boolean isCancelled;

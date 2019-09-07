@@ -5,7 +5,7 @@ import org.core.world.direction.Direction;
 import org.core.world.direction.FourFacingDirection;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.BlockTypes;
-import org.core.world.position.block.grouptype.BlockGroups;
+import org.core.world.position.block.grouptype.versions.BlockGroups1V13;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BAttachableKeyedData;
 
@@ -29,7 +29,7 @@ public enum CommonAttachableWorkAround implements BAttachableKeyedData.Attachabl
             BlockTypes.DETECTOR_RAIL.get(),
             BlockTypes.POWERED_RAIL.get()),
     STANDING_TORCH(b -> FourFacingDirection.DOWN, e -> {},
-            BlockGroups.STANDING_TORCH.getGrouped()),
+            BlockGroups1V13.STANDING_TORCH.getGrouped()),
     LADDER(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
             BlockTypes.LADDER.get()),
@@ -38,10 +38,10 @@ public enum CommonAttachableWorkAround implements BAttachableKeyedData.Attachabl
             BlockTypes.LEVER.get()),
     WALL_TORCH(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
-            BlockGroups.WALL_TORCH.getGrouped()),
+            BlockGroups1V13.WALL_TORCH.getGrouped()),
     BUTTON(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
-            BlockGroups.BUTTON.getGrouped()),
+            BlockGroups1V13.BUTTON.getGrouped()),
     PISTON(BAttachableKeyedData.AttachableBlockWorkAround.GET_DIRECTION_FROM_BLOOCK_DATA,
             BAttachableKeyedData.AttachableBlockWorkAround.SET_BLOCK_DATA_FROM_DIRECTION,
             BlockTypes.MOVING_PISTON.get(), BlockTypes.PISTON_HEAD.get()),

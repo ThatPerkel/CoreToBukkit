@@ -10,6 +10,7 @@ import org.core.command.CommandLauncher;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.User;
 import org.core.platform.PlatformServer;
+import org.core.platform.tps.TPSExecutor;
 import org.core.world.WorldExtent;
 import org.ships.implementation.bukkit.command.BCommand;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BUser;
@@ -20,6 +21,7 @@ import java.util.*;
 public class BServer implements PlatformServer {
 
     protected Set<CommandLauncher> commands = new HashSet<>();
+    protected TPSExecutor tpsExecutor = new TPSExecutor();
 
     @Override
     public Set<WorldExtent> getWorlds() {
@@ -55,6 +57,11 @@ public class BServer implements PlatformServer {
     }
 
     @Override
+    public TPSExecutor getTPSExecutor() {
+        return this.tpsExecutor;
+    }
+
+    @Override
     public Collection<CommandLauncher> getCommands() {
         return Collections.unmodifiableCollection(this.commands);
     }
@@ -62,7 +69,7 @@ public class BServer implements PlatformServer {
     @Override
     public void registerCommands(CommandLauncher... commandLaunchers) {
         for(CommandLauncher command : commandLaunchers){
-            JavaPlugin plugin = (JavaPlugin) command.getPlugin().getBukkitLauncher().get();
+            JavaPlugin plugin = (JavaPlugin) command.getPlugin().getLauncher();
             PluginCommand command2 = plugin.getCommand(command.getName());
             BCommand command3 = new BCommand(command);
             command2.setTabCompleter(command3);

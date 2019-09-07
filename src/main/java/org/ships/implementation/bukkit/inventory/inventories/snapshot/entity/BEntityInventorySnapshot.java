@@ -1,12 +1,12 @@
 package org.ships.implementation.bukkit.inventory.inventories.snapshot.entity;
 
 import org.bukkit.entity.LivingEntity;
-import org.core.entity.Entity;
+import org.core.entity.LiveEntity;
 import org.core.inventory.inventories.snapshots.entity.EntityInventorySnapshot;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.inventory.item.BItemStack;
 
-public interface BEntityInventorySnapshot <E extends Entity> extends EntityInventorySnapshot<E> {
+public interface BEntityInventorySnapshot <E extends LiveEntity> extends EntityInventorySnapshot<E> {
 
     @Override
     default void apply(E entity) {

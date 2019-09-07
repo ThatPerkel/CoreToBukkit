@@ -1,5 +1,7 @@
 package org.ships.implementation.bukkit.entity.scene.snapshot;
 
+import org.core.entity.EntityType;
+import org.core.entity.EntityTypes;
 import org.core.entity.scene.droppeditem.DroppedItem;
 import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.entity.scene.droppeditem.LiveDroppedItem;
@@ -7,6 +9,8 @@ import org.core.inventory.parts.snapshot.SlotSnapshot;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
+import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,9 +19,16 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
     protected int pickupDelay;
     protected SlotSnapshot slot = new SlotSnapshot(0, null);
 
-    public BDroppedItemSnapshot(DroppedItem item){
-        this(item.getPosition());
+    public BDroppedItemSnapshot(DroppedItemSnapshot item){
+        super(item);
         this.pickupDelay = item.getPickupDelayTicks();
+        this.slot = item.getHoldingItem().createSnapshot();
+    }
+
+    public BDroppedItemSnapshot(LiveDroppedItem item){
+        super(item);
+        this.pickupDelay = item.getPickupDelayTicks();
+        this.slot = item.getHoldingItem().createSnapshot();
     }
 
     public BDroppedItemSnapshot(ExactPosition position) {
@@ -26,10 +37,19 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
 
     @Override
     public LiveDroppedItem spawnEntity() {
-        BLiveDroppedItem item = new BLiveDroppedItem(this);
-        item.setPickupDelay(this.pickupDelay);
-        item.getHoldingItem().setItem(this.slot.getItem().orElse(null));
-        return item;
+        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        loc.setPitch((float)this.pitch);
+        loc.setYaw((float)this.yaw);
+        if(!this.slot.getItem().isPresent()){
+            System.out.println("throwing");
+            throw new IllegalStateException("A item  must be set for a DroppedItemSnapshot to spawn");
+        }
+        org.bukkit.entity.Item item = loc.getWorld().dropItem(loc, ((BItemStack)this.slot.getItem().get()).getBukkitItem());
+        BLiveDroppedItem coreItem = new BLiveDroppedItem(item);
+        applyDefaults(coreItem);
+        coreItem.setPickupDelay(this.pickupDelay);
+        coreItem.getHoldingItem().setItem(this.slot.getItem().orElse(null));
+        return coreItem;
     }
 
     @Override
@@ -69,6 +89,11 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
     @Override
     public SlotSnapshot getHoldingItem() {
         return this.slot;
+    }
+
+    @Override
+    public EntityType<LiveDroppedItem, DroppedItemSnapshot> getType() {
+        return EntityTypes.DROPPED_ITEM;
     }
 
     @Override

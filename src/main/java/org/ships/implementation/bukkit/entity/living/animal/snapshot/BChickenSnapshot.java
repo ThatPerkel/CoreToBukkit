@@ -1,6 +1,5 @@
 package org.ships.implementation.bukkit.entity.living.animal.snapshot;
 
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
@@ -10,6 +9,7 @@ import org.core.entity.living.animal.chicken.LiveChicken;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveChicken;
+import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 public class BChickenSnapshot extends BEntitySnapshot<LiveChicken> implements ChickenSnapshot {
 
@@ -19,15 +19,28 @@ public class BChickenSnapshot extends BEntitySnapshot<LiveChicken> implements Ch
         super(position);
     }
 
-    public BChickenSnapshot(Entity entity) {
+    public BChickenSnapshot(ChickenSnapshot entity) {
         super(entity);
+        this.adult = entity.isAdult();
+    }
+
+    public BChickenSnapshot(LiveChicken entity) {
+        super(entity);
+        this.adult = entity.isAdult();
     }
 
     @Override
     public LiveChicken spawnEntity() {
-        LiveChicken chicken = new BLiveChicken(this);
-        chicken.setAdult(this.adult);
-        return chicken;
+        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        loc.setPitch((float)this.pitch);
+        loc.setYaw((float)this.yaw);
+        org.bukkit.entity.Chicken chicken = (org.bukkit.entity.Chicken)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CHICKEN);
+
+
+        LiveChicken coreChicken = new BLiveChicken(chicken);
+        applyDefaults(coreChicken);
+        coreChicken.setAdult(this.adult);
+        return coreChicken;
     }
 
     @Override

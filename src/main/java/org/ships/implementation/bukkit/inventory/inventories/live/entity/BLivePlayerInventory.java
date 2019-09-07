@@ -10,22 +10,36 @@ import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlay
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.entity.BPlayerInventorySnapshot;
 import org.ships.implementation.bukkit.inventory.item.BItemStack;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 public class BLivePlayerInventory implements LivePlayerInventory {
 
+    private class PlayerCraftingSlots implements Grid2x2 {
+
+        BLivePlayerInventory.PlayerItemSlot slot1 = new BLivePlayerInventory.PlayerItemSlot(80);
+        BLivePlayerInventory.PlayerItemSlot slot2 = new BLivePlayerInventory.PlayerItemSlot(81);
+        BLivePlayerInventory.PlayerItemSlot slot3 = new BLivePlayerInventory.PlayerItemSlot(82);
+        BLivePlayerInventory.PlayerItemSlot slot4 = new BLivePlayerInventory.PlayerItemSlot(83);
+
+        @Override
+        public Set<Slot> getSlots() {
+            return new HashSet<>(Arrays.asList(slot1, slot2, slot3, slot4));
+        }
+    }
+
     private class PlayerArmorSlots implements ArmorPart {
 
-        BLivePlayerInventory.PlayerItemSlot helmentSlot = new BLivePlayerInventory.PlayerItemSlot(-1);
-        BLivePlayerInventory.PlayerItemSlot armorSlot = new BLivePlayerInventory.PlayerItemSlot(-1);
-        BLivePlayerInventory.PlayerItemSlot leggingsSlot = new BLivePlayerInventory.PlayerItemSlot(-1);
-        BLivePlayerInventory.PlayerItemSlot shoeSlot = new BLivePlayerInventory.PlayerItemSlot(-1);
+        BLivePlayerInventory.PlayerItemSlot helmetSlot = new BLivePlayerInventory.PlayerItemSlot(103);
+        BLivePlayerInventory.PlayerItemSlot armorSlot = new BLivePlayerInventory.PlayerItemSlot(102);
+        BLivePlayerInventory.PlayerItemSlot leggingsSlot = new BLivePlayerInventory.PlayerItemSlot(101);
+        BLivePlayerInventory.PlayerItemSlot shoeSlot = new BLivePlayerInventory.PlayerItemSlot(100);
 
         @Override
         public Slot getHelmetSlot() {
-            return this.helmentSlot;
+            return this.helmetSlot;
         }
 
         @Override
@@ -41,6 +55,22 @@ public class BLivePlayerInventory implements LivePlayerInventory {
         @Override
         public Slot getShoesSlot() {
             return this.shoeSlot;
+        }
+    }
+
+    private class PlayerMainInventory implements MainPlayerInventory{
+
+        Set<Slot> slots = new HashSet<>();
+
+        public PlayerMainInventory(){
+            for(int A = 9; A < 35; A++){
+                this.slots.add(new BLivePlayerInventory.PlayerItemSlot(A));
+            }
+        }
+
+        @Override
+        public Set<Slot> getSlots() {
+            return this.slots;
         }
     }
 
@@ -96,13 +126,20 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     }
 
-    BLivePlayer player;
-    BLivePlayerInventory.PlayerItemSlot offHandSlot = new BLivePlayerInventory.PlayerItemSlot(-1);
-    BLivePlayerInventory.PlayerArmorSlots armorSlots = new BLivePlayerInventory.PlayerArmorSlots();
-    BLivePlayerInventory.PlayerHotbar hotbar = new BLivePlayerInventory.PlayerHotbar();
+    protected BLivePlayer player;
+    protected BLivePlayerInventory.PlayerItemSlot offHandSlot;
+    protected BLivePlayerInventory.PlayerArmorSlots armorSlots;
+    protected BLivePlayerInventory.PlayerHotbar hotbar;
+    protected BLivePlayerInventory.PlayerCraftingSlots craftingSlots;
+    protected BLivePlayerInventory.PlayerMainInventory main;
 
     public BLivePlayerInventory(BLivePlayer player){
         this.player = player;
+        this.hotbar = new BLivePlayerInventory.PlayerHotbar();
+        this.armorSlots = new BLivePlayerInventory.PlayerArmorSlots();
+        this.offHandSlot = new BLivePlayerInventory.PlayerItemSlot(40);
+        this.craftingSlots = new BLivePlayerInventory.PlayerCraftingSlots();
+        this.main = new BLivePlayerInventory.PlayerMainInventory();
     }
 
     @Override
@@ -122,12 +159,12 @@ public class BLivePlayerInventory implements LivePlayerInventory {
 
     @Override
     public Grid2x2 getCraftingGrid() {
-        return null;
+        return this.craftingSlots;
     }
 
     @Override
     public MainPlayerInventory getMainInventory() {
-        return null;
+        return this.main;
     }
 
     @Override
@@ -136,8 +173,8 @@ public class BLivePlayerInventory implements LivePlayerInventory {
     }
 
     @Override
-    public LivePlayer getAttachedEntity() {
-        return this.player;
+    public Optional<LivePlayer> getAttachedEntity() {
+        return Optional.of(this.player);
     }
 
 }

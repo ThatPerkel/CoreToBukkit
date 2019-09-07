@@ -1,6 +1,5 @@
 package org.ships.implementation.bukkit.entity.living.bat.snapshot;
 
-import org.core.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
@@ -10,6 +9,7 @@ import org.core.entity.living.bat.LiveBat;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
+import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 public class BBatSnapshot extends BEntitySnapshot<LiveBat> implements BatSnapshot {
 
@@ -19,15 +19,27 @@ public class BBatSnapshot extends BEntitySnapshot<LiveBat> implements BatSnapsho
         super(position);
     }
 
-    public BBatSnapshot(Entity entity) {
+    public BBatSnapshot(BatSnapshot entity) {
         super(entity);
+        this.awake = entity.isAwake();
+    }
+
+    public BBatSnapshot(LiveBat entity) {
+        super(entity);
+        this.awake = entity.isAwake();
+
     }
 
     @Override
     public BLiveBat spawnEntity() {
-        BLiveBat bat = new BLiveBat(this);
+        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        loc.setPitch((float)this.pitch);
+        loc.setYaw((float)this.yaw);
+        org.bukkit.entity.Bat bat = (org.bukkit.entity.Bat)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.BAT);
+        BLiveBat coreBat = new BLiveBat(bat);
+        applyDefaults(coreBat);
         bat.setAwake(this.awake);
-        return bat;
+        return coreBat;
     }
 
     @Override

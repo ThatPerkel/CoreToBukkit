@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.entity.scene.snapshot;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
-import org.core.entity.scene.AttachableEntity;
 import org.core.entity.scene.itemframe.ItemFrame;
 import org.core.entity.scene.itemframe.ItemFrameSnapshot;
 import org.core.entity.scene.itemframe.LiveItemFrame;
@@ -15,6 +14,7 @@ import org.core.world.direction.FourFacingDirection;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveItemFrame;
+import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 import java.util.stream.Stream;
 
@@ -25,8 +25,20 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
     private SlotSnapshot slot = new SlotSnapshot(0, null);
     private Direction direction;
 
-    public BItemFrameSnapshot(ItemFrame frame){
+    public BItemFrameSnapshot(LiveItemFrame frame){
         super(frame);
+        this.itemRotation = frame.getItemRotation();
+        this.flip = frame.getItemRotationFlip();
+        this.slot = frame.getHoldingItem().createSnapshot();
+        this.direction = frame.getDirection();
+    }
+
+    public BItemFrameSnapshot(ItemFrameSnapshot frame){
+        super(frame);
+        this.itemRotation = frame.getItemRotation();
+        this.flip = frame.getItemRotationFlip();
+        this.slot = frame.getHoldingItem().createSnapshot();
+        this.direction = frame.getDirection();
     }
 
     public BItemFrameSnapshot(ExactPosition position) {
@@ -35,9 +47,12 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
 
     @Override
     public LiveItemFrame spawnEntity() {
-        BLiveItemFrame itemFrame = new BLiveItemFrame(this);
+        org.bukkit.Location loc = ((BExactPosition)this.position).getBukkitLocation();
+        loc.setPitch((float)this.pitch);
+        loc.setYaw((float)this.yaw);
+        org.bukkit.entity.ItemFrame frame = loc.getWorld().spawn(loc, org.bukkit.entity.ItemFrame.class);
+        BLiveItemFrame itemFrame = new BLiveItemFrame(frame);
         try {
-            itemFrame.setDirection(this.getDirection());
             itemFrame.setItemRotation(this.itemRotation, this.flip);
         } catch (DirectionNotSupported directionNotSupported) {
             directionNotSupported.printStackTrace();
@@ -88,7 +103,7 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
     }
 
     @Override
-    public AttachableEntity setDirection(Direction direction) throws DirectionNotSupported {
+    public BItemFrameSnapshot setDirection(Direction direction) throws DirectionNotSupported {
         if(!Stream.of(getDirections()).anyMatch(d -> d.getName().equals(direction.getName()))){
             throw new DirectionNotSupported(direction, "ItemFrameSnapshot");
         }

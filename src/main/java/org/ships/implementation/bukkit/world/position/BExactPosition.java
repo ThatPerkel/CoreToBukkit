@@ -6,7 +6,6 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
-import org.core.vector.Vector3;
 import org.core.vector.types.Vector3Double;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
@@ -14,7 +13,9 @@ import org.core.world.position.BlockPosition;
 import org.core.world.position.ExactPosition;
 import org.core.world.position.Position;
 import org.core.world.position.block.details.BlockDetails;
+import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.entity.LiveTileEntity;
+import org.core.world.position.flags.PositionFlag;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.BWorldExtent;
 
@@ -47,11 +48,6 @@ public class BExactPosition implements ExactPosition {
     }
 
     @Override
-    public ExactPosition getRelative(Vector3<Double> vector) {
-        return new BExactPosition(this.location.getX() + vector.getX(), this.location.getY() + vector.getY(), this.location.getZ() + vector.getZ(), this.location.getWorld());
-    }
-
-    @Override
     public BlockPosition toBlockPosition() {
         return new BBlockPosition(this.location.getBlock());
     }
@@ -62,13 +58,13 @@ public class BExactPosition implements ExactPosition {
     }
 
     @Override
-    public BlockDetails getBlockDetails() {
+    public BlockSnapshot getBlockDetails() {
         return toBlockPosition().getBlockDetails();
     }
 
     @Override
-    public Position<Double> setBlock(BlockDetails details) {
-        this.toBlockPosition().setBlock(details);
+    public Position<Double> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
+        this.toBlockPosition().setBlock(details, flags);
         return this;
     }
 

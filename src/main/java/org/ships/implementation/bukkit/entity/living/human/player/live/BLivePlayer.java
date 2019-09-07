@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.entity.living.human.player.live;
 import org.bukkit.Bukkit;
 import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
-import org.core.entity.living.human.player.Player;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.source.viewer.CommandViewer;
@@ -133,7 +132,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
-    public Player setGravity(boolean check) {
+    public BLivePlayer setGravity(boolean check) {
         getBukkitEntity().setGravity(check);
         return this;
     }

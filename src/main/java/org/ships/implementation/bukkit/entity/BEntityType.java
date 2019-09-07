@@ -307,4 +307,38 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
             return "Zombie";
         }
     }
+
+    class UnknownType <T extends org.bukkit.entity.Entity> implements BEntityType<UnknownLiveEntity<T>, UnknownEntitySnapshot<T>> {
+
+        protected org.bukkit.entity.EntityType type;
+
+        public UnknownType(org.bukkit.entity.EntityType type){
+            this.type = type;
+        }
+
+        @Override
+        public org.bukkit.entity.EntityType getBukkitEntityType() {
+            return this.type;
+        }
+
+        @Override
+        public Class<UnknownLiveEntity<T>> getEntityClass() {
+            return null;
+        }
+
+        @Override
+        public Class<UnknownEntitySnapshot<T>> getSnapshotClass() {
+            return null;
+        }
+
+        @Override
+        public String getId() {
+            return "minecraft:" + type.getName().toLowerCase();
+        }
+
+        @Override
+        public String getName() {
+            return type.getName();
+        }
+    }
 }

@@ -2,11 +2,9 @@ package org.ships.implementation.bukkit.platform;
 
 import org.core.platform.Plugin;
 
-import java.util.Optional;
-
 public class BPlugin implements Plugin {
 
-    org.bukkit.plugin.Plugin plugin;
+    protected org.bukkit.plugin.Plugin plugin;
 
     public BPlugin(org.bukkit.plugin.Plugin plugin){
         this.plugin = plugin;
@@ -19,7 +17,7 @@ public class BPlugin implements Plugin {
 
     @Override
     public String getPluginId() {
-        return this.plugin.getName().toLowerCase();
+        return this.plugin.getName().toLowerCase().replaceAll(" ", "_");
     }
 
     @Override
@@ -28,12 +26,8 @@ public class BPlugin implements Plugin {
     }
 
     @Override
-    public Optional<Object> getBukkitLauncher() {
-        return Optional.of(this.plugin);
+    public org.bukkit.plugin.Plugin getLauncher() {
+        return this.plugin;
     }
 
-    @Override
-    public Optional<Object> getSpongeLauncher() {
-        return Optional.empty();
-    }
 }

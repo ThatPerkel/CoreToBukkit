@@ -13,4 +13,9 @@ public class YamlConfigurationLoaderType implements ConfigurationLoaderType {
     public String getName() {
         return "yaml";
     }
+
+    @Override
+    public String[] acceptedFileExtensions() {
+        return new String[]{"yml"};
+    }
 }

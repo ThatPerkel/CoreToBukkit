@@ -6,7 +6,7 @@ import org.core.world.direction.Direction;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.data.keyed.AttachableKeyedData;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
-import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.IBBlockDetails;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.attachableworkarounds.AttachableWorkAround1D14;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.attachableworkarounds.CommonAttachableWorkAround;
 
@@ -36,10 +36,10 @@ public class BAttachableKeyedData implements AttachableKeyedData {
         }
     }
 
-    private BBlockDetails details;
+    private IBBlockDetails details;
     private AttachableBlockWorkAround workAround;
 
-    private BAttachableKeyedData(BBlockDetails details, AttachableBlockWorkAround workAround){
+    private BAttachableKeyedData(IBBlockDetails details, AttachableBlockWorkAround workAround){
         this.details = details;
         this.workAround = workAround;
     }
@@ -54,7 +54,7 @@ public class BAttachableKeyedData implements AttachableKeyedData {
         details.setBukkitData(this.workAround.setAttachedDirection(details.getBukkitData(), value));
     }
 
-    public static Optional<BAttachableKeyedData> getKeyedData(BBlockDetails details){
+    public static Optional<BAttachableKeyedData> getKeyedData(IBBlockDetails details){
         Optional<AttachableBlockWorkAround> opWork = workArounds.stream().filter(w -> w.getTypes().stream().anyMatch(b -> details.getType().equals(b))).findAny();
         if(opWork.isPresent()){
             return Optional.of(new BAttachableKeyedData(details, opWork.get()));

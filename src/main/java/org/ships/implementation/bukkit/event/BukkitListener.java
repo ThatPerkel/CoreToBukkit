@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockMultiPlaceEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -21,6 +23,8 @@ import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
 import org.core.text.Text;
 import org.core.world.position.BlockPosition;
+import org.core.world.position.block.details.BlockDetails;
+import org.core.world.position.block.details.BlockSnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.ships.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.ships.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
@@ -33,6 +37,8 @@ import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.expload.EntityExplosion;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.BlockStateSnapshot;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -40,6 +46,36 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class BukkitListener implements Listener {
+
+    @EventHandler
+    public static void onPlayerPlaceBlock(BlockPlaceEvent event){
+        BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData());
+        BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData());
+        BlockPosition position = new BBlockPosition(event.getBlock());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        List<BlockSnapshot> collection = Collections.singletonList(new1.createSnapshot(position));
+        AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 = new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(position, old, new1, player, collection);
+        call(event2);
+        if(event2.isCancelled()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public static void onPlayerPlaceMultiBlock(BlockMultiPlaceEvent event){
+        BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData());
+        BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData());
+        BlockPosition position = new BBlockPosition(event.getBlock());
+        LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        List<BlockSnapshot> collection = new ArrayList<>();
+        event.getReplacedBlockStates().forEach(bs -> collection.add(new BlockStateSnapshot(bs)));
+
+        AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 = new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(position, old, new1, player, collection);
+        call(event2);
+        if(event2.isCancelled()) {
+            event.setCancelled(true);
+        }
+    }
 
     @EventHandler
     public static void onItemSpawnEvent(ItemSpawnEvent event){

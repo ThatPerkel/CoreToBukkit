@@ -1,8 +1,10 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
 import org.core.CorePlugin;
+import org.core.world.position.BlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
+import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.DirectionalData;
 import org.core.world.position.block.details.data.keyed.*;
 import org.core.world.position.block.entity.TileEntity;
@@ -12,12 +14,13 @@ import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BRotationalData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BAttachableKeyedData;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BMultiDirectionalKeyedData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BOpenableKeyedData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BWaterLoggedKeyedData;
 
 import java.util.Optional;
 
-public class BBlockDetails implements BlockDetails {
+public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     private class BTileEntityKeyedData implements TileEntityKeyedData{
 
@@ -47,10 +50,12 @@ public class BBlockDetails implements BlockDetails {
         }
     }
 
+    @Override
     public org.bukkit.block.data.BlockData getBukkitData(){
         return this.data;
     }
 
+    @Override
     public void setBukkitData(org.bukkit.block.data.BlockData data){
         this.data = data;
     }
@@ -58,6 +63,11 @@ public class BBlockDetails implements BlockDetails {
     @Override
     public BlockType getType() {
         return new BBlockType(this.data.getMaterial());
+    }
+
+    @Override
+    public BlockSnapshot createSnapshot(BlockPosition position) {
+        return new BExtendedBlockSnapshot(position, this.getBukkitData());
     }
 
     @Override
@@ -87,7 +97,7 @@ public class BBlockDetails implements BlockDetails {
         return this;
     }
 
-    private <T extends Object> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data){
+    private <T> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data){
         KeyedData<T> key = null;
         if(data.isAssignableFrom(WaterLoggedKeyedData.class) && this.data instanceof org.bukkit.block.data.Waterlogged){
             key = (KeyedData<T>) new BWaterLoggedKeyedData((org.bukkit.block.data.Waterlogged)this.data);
@@ -97,6 +107,8 @@ public class BBlockDetails implements BlockDetails {
             key = (KeyedData<T>) new BOpenableKeyedData((org.bukkit.block.data.Openable)this.data);
         }else if(data.isAssignableFrom(AttachableKeyedData.class) && BAttachableKeyedData.getKeyedData(this).isPresent()){
             key = (KeyedData<T>) BAttachableKeyedData.getKeyedData(this).get();
+        }else if(data.isAssignableFrom(MultiDirectionalKeyedData.class) && this.data instanceof org.bukkit.block.data.MultipleFacing){
+            key = (KeyedData<T>) new BMultiDirectionalKeyedData((org.bukkit.block.data.MultipleFacing)this.data);
         }
         return Optional.ofNullable(key);
     }

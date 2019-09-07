@@ -5,7 +5,6 @@ import org.bukkit.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.scene.AttachableEntity;
 import org.core.entity.scene.itemframe.ItemFrame;
-import org.core.entity.scene.itemframe.ItemFrameSnapshot;
 import org.core.entity.scene.itemframe.LiveItemFrame;
 import org.core.exceptions.DirectionNotSupported;
 import org.core.inventory.parts.Slot;
@@ -15,6 +14,8 @@ import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLiveItemFrameSlot;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
+
+import java.util.stream.Stream;
 
 public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> implements LiveItemFrame {
 
@@ -27,9 +28,10 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
         super(entity);
     }
 
+    /*@Deprecated
     public BLiveItemFrame(ItemFrameSnapshot snapshot){
         super(snapshot);
-    }
+    }*/
 
     @Override
     public Direction getItemRotation() {
@@ -71,10 +73,8 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
 
     @Override
     public ItemFrame setItemRotation(Direction direction, boolean flip) throws DirectionNotSupported {
-        for(Direction dir : getDirections()){
-            if(dir.equals(direction)){
-                throw new DirectionNotSupported(direction, "ItemFrame");
-            }
+        if(!Stream.of(getDirections()).anyMatch(d -> d.equals(direction))) {
+            throw new DirectionNotSupported(direction, "ItemFrame");
         }
         org.bukkit.Rotation rotation = null;
         if(direction.equals(FourFacingDirection.NORTH)){

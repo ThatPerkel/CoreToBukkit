@@ -2,19 +2,16 @@ package org.ships.implementation.bukkit.entity.living.human.player.snapshot;
 
 import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
-import org.core.entity.living.human.player.Player;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
-import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 
 import java.util.UUID;
 
 public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements PlayerSnapshot {
 
-    protected BLivePlayer player;
     protected String name;
     protected PlayerInventorySnapshot inventorySnapshot;
     protected int foodLevel;
@@ -22,20 +19,26 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     protected double saturationLevel;
     protected boolean sneaking;
 
-    public BPlayerSnapshot(Player player){
-        super(player.getPosition());
+    public BPlayerSnapshot(LivePlayer player){
+        super(player);
         setRoll(player.getRoll());
         setExhaustionLevel(player.getExhaustionLevel());
         setFood(player.getFoodLevel());
         setSaturationLevel(player.getSaturationLevel());
         setPitch(player.getPitch());
         setYaw(player.getYaw());
-        this.inventorySnapshot = getInventory().createSnapshot();
-        if(player instanceof BLivePlayer){
-            this.player = (BLivePlayer) player;
-        }else{
-            this.player = ((BPlayerSnapshot)player).player;
-        }
+        this.inventorySnapshot = player.getInventory().createSnapshot();
+    }
+
+    public BPlayerSnapshot(PlayerSnapshot player){
+        super(player);
+        setRoll(player.getRoll());
+        setExhaustionLevel(player.getExhaustionLevel());
+        setFood(player.getFoodLevel());
+        setSaturationLevel(player.getSaturationLevel());
+        setPitch(player.getPitch());
+        setYaw(player.getYaw());
+        this.inventorySnapshot = player.getInventory().createSnapshot();
     }
 
     public BPlayerSnapshot(String name, ExactPosition position) {
@@ -51,20 +54,18 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
 
     @Override
     public UUID getUniqueId() {
-        return this.player.getUniqueId();
+        return this.createdFrom.getUniqueId();
     }
 
     @Override
     public LivePlayer spawnEntity() {
-        this.player.setExhaustionLevel(this.exhaustionLevel);
-        this.player.setFood(this.foodLevel);
-        this.player.setSaturationLevel(this.saturationLevel);
-        this.player.setPitch(this.pitch);
-        this.player.setRoll(this.roll);
-        this.player.setYaw(this.yaw);
-        this.player.setPosition(this.position);
-        this.inventorySnapshot.apply(this.player);
-        return this.player;
+        applyDefaults(this.createdFrom);
+        this.createdFrom.setSneaking(this.sneaking);
+        this.createdFrom.setExhaustionLevel(this.exhaustionLevel);
+        this.createdFrom.setFood(this.foodLevel);
+        this.createdFrom.setSaturationLevel(this.saturationLevel);
+        this.inventorySnapshot.apply(this.createdFrom);
+        return this.createdFrom;
     }
 
     @Override

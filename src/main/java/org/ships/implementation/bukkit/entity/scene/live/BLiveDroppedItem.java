@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.entity.scene.live;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.core.entity.scene.droppeditem.DroppedItem;
-import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.entity.scene.droppeditem.LiveDroppedItem;
 import org.core.inventory.parts.Slot;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
@@ -23,9 +22,10 @@ public class BLiveDroppedItem extends BLiveEntity<org.bukkit.entity.Item> implem
         super(entity);
     }
 
+    /*@Deprecated
     public BLiveDroppedItem(DroppedItemSnapshot snapshot){
         super(snapshot);
-    }
+    }*/
 
     @Override
     public int getPickupDelayTicks() {

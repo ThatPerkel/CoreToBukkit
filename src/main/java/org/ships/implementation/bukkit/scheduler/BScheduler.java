@@ -61,7 +61,7 @@ public class BScheduler implements Scheduler {
             }
         }
         Integer iter = null;
-        if(this.iterationTimeUnit != null) {
+        if(this.iteration != null) {
             if (this.iterationTimeUnit == null) {
                 iter = this.iteration;
             } else {
@@ -80,9 +80,9 @@ public class BScheduler implements Scheduler {
             }
         }
         if(iter == null){
-            this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getBukkitLauncher().get(), new BScheduler.RunAfterScheduler(), ticks);
+            this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks);
         } else {
-            this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getBukkitLauncher().get(), new BScheduler.RunAfterScheduler(), ticks, iter);
+            this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
         }
     }
 

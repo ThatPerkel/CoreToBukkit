@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.entity.living.animal.live;
 import org.bukkit.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.living.AgeableEntity;
-import org.core.entity.living.animal.chicken.ChickenSnapshot;
 import org.core.entity.living.animal.chicken.LiveChicken;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.animal.snapshot.BChickenSnapshot;
@@ -19,9 +18,10 @@ public class BLiveChicken extends BLiveEntity<org.bukkit.entity.Chicken> impleme
         super(entity);
     }
 
+    /*@Deprecated
     public BLiveChicken(ChickenSnapshot snapshot){
         super(snapshot);
-    }
+    }*/
 
     @Override
     public boolean isAdult() {

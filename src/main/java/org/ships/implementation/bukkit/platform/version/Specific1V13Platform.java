@@ -43,7 +43,7 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
                         new BEntityType.CowType(),
                         new BEntityType.ItemFrameType(),
                         new BEntityType.DroppedItemType(),
-                        new BEntityType.CodType(),
+                        //new BEntityType.CodType(),
                         new BEntityType.BatType(),
                         new BEntityType.SnowballType(),
                         new BEntityType.PlayerType(),

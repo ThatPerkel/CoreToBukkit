@@ -4,7 +4,6 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.living.AgeableEntity;
-import org.core.entity.living.animal.cow.CowSnapshot;
 import org.core.entity.living.animal.cow.LiveCow;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.animal.snapshot.BCowSnapshot;
@@ -20,9 +19,10 @@ public class BLiveCow extends BLiveEntity<org.bukkit.entity.Cow> implements Live
         super(entity);
     }
 
+    /*@Deprecated
     public BLiveCow(CowSnapshot snapshot){
         super(snapshot);
-    }
+    }*/
 
     @Override
     public boolean isAdult() {

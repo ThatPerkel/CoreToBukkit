@@ -12,16 +12,22 @@ import org.core.world.WorldExtent;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.Position;
 import org.core.world.position.block.details.BlockDetails;
+import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.KeyedData;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
 import org.core.world.position.block.entity.sign.SignTileEntitySnapshot;
+import org.core.world.position.flags.PositionFlag;
+import org.core.world.position.flags.physics.ApplyPhysicsFlag;
+import org.core.world.position.flags.physics.ApplyPhysicsFlags;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.BWorldExtent;
-import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.BExtendedBlockSnapshot;
+import org.ships.implementation.bukkit.world.position.block.details.blocks.IBBlockDetails;
+import org.ships.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -61,13 +67,15 @@ public class BBlockPosition implements BlockPosition {
     }
 
     @Override
-    public BlockDetails getBlockDetails() {
-        return new BBlockDetails(this);
+    public BlockSnapshot getBlockDetails() {
+        return new BExtendedBlockSnapshot(this);
     }
 
     @Override
-    public Position<Integer> setBlock(BlockDetails details) {
-        this.block.setBlockData(((BBlockDetails)details).getBukkitData(), false);
+    public Position<Integer> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
+        BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE);
+
+        this.block.setBlockData(((IBBlockDetails)details).getBukkitData(), physicsFlag.getBukitValue());
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if(opTile.isPresent()){
             try {
@@ -81,7 +89,7 @@ public class BBlockPosition implements BlockPosition {
 
     @Override
     public Position<Integer> setBlock(BlockDetails details, LivePlayer... player) {
-        Stream.of(player).forEach(lp -> ((BLivePlayer)lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((BBlockDetails)details).getBukkitData()));
+        Stream.of(player).forEach(lp -> ((BLivePlayer)lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((IBBlockDetails)details).getBukkitData()));
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if(opTile.isPresent()){
             TileEntitySnapshot<? extends TileEntity> tile = opTile.get();
