@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.world.position.block.entity.banner;
 
 import org.core.world.position.block.BlockType;
-import org.core.world.position.block.BlockTypes;
+import org.core.world.position.block.blocktypes.post.BlockTypes1V13;
 import org.core.world.position.block.entity.banner.BannerTileEntity;
 import org.core.world.position.block.entity.banner.BannerTileEntitySnapshot;
 import org.core.world.position.block.entity.banner.LiveBannerTileEntity;
@@ -30,7 +30,7 @@ public class BBannerTileEntitySnapshot implements BannerTileEntitySnapshot {
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return BlockTypes.BLACK_BANNER.get().getLike();
+        return BlockTypes1V13.BLACK_BANNER.get().getLike();
     }
 
     @Override

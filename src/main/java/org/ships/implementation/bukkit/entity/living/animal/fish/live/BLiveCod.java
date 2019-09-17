@@ -6,6 +6,7 @@ import org.core.entity.EntityTypes;
 import org.core.entity.living.fish.cod.CodSnapshot;
 import org.core.entity.living.fish.cod.LiveCod;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
+import org.ships.implementation.bukkit.entity.living.animal.fish.snapshot.BCodSnapshot;
 
 public class BLiveCod extends BLiveEntity<org.bukkit.entity.Cod> implements LiveCod {
 
@@ -25,6 +26,6 @@ public class BLiveCod extends BLiveEntity<org.bukkit.entity.Cod> implements Live
 
     @Override
     public EntitySnapshot createSnapshot() {
-        return null;
+        return new BCodSnapshot(this);
     }
 }

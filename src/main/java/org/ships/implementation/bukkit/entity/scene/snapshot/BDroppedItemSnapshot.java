@@ -41,7 +41,6 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
         loc.setPitch((float)this.pitch);
         loc.setYaw((float)this.yaw);
         if(!this.slot.getItem().isPresent()){
-            System.out.println("throwing");
             throw new IllegalStateException("A item  must be set for a DroppedItemSnapshot to spawn");
         }
         org.bukkit.entity.Item item = loc.getWorld().dropItem(loc, ((BItemStack)this.slot.getItem().get()).getBukkitItem());

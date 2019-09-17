@@ -13,6 +13,7 @@ import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements LiveEntity {
@@ -135,8 +136,12 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public Text getCustomName(){
-        return CorePlugin.buildText(this.entity.getCustomName());
+    public Optional<Text> getCustomName(){
+        String customName = this.entity.getCustomName();
+        if(customName == null){
+            return Optional.empty();
+        }
+        return Optional.of(CorePlugin.buildText(customName));
     }
 
     @Override

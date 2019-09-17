@@ -10,6 +10,10 @@ public class BParrotType implements ParrotType {
         this.type = variant;
     }
 
+    public org.bukkit.entity.Parrot.Variant getType(){
+        return this.type;
+    }
+
     @Override
     public String getId() {
         return "minecraft:parrot_variant_" + this.type.name().toLowerCase();

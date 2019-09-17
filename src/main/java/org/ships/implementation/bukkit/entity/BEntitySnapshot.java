@@ -1,6 +1,5 @@
 package org.ships.implementation.bukkit.entity;
 
-import org.core.CorePlugin;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
@@ -32,7 +31,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
 
     public BEntitySnapshot(T entity){
         this.hasGravity = entity.hasGravity();
-        this.customName = entity.getCustomName();
+        this.customName = entity.getCustomName().orElse(null);
         this.velocity = entity.getVelocity();
         this.yaw = entity.getYaw();
         this.pitch = entity.getPitch();
@@ -44,7 +43,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
 
     public BEntitySnapshot(EntitySnapshot<T> entity){
         this.hasGravity = entity.hasGravity();
-        this.customName = entity.getCustomName();
+        this.customName = entity.getCustomName().orElse(null);
         this.velocity = entity.getVelocity();
         this.yaw = entity.getYaw();
         this.pitch = entity.getPitch();
@@ -158,12 +157,8 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public Text getCustomName(){
-        if(this.customName == null){
-            BEntityType<T, ? extends EntitySnapshot<T>> type = (BEntityType<T, ? extends EntitySnapshot<T>>) this.getType();
-            return CorePlugin.buildText(type.getBukkitEntityType().name().toLowerCase());
-        }
-        return this.customName;
+    public Optional<Text> getCustomName(){
+        return Optional.ofNullable(this.customName);
     }
 
     @Override

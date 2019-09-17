@@ -7,6 +7,8 @@ import org.core.entity.living.animal.chicken.ChickenSnapshot;
 import org.core.entity.living.animal.chicken.LiveChicken;
 import org.core.entity.living.animal.cow.CowSnapshot;
 import org.core.entity.living.animal.cow.LiveCow;
+import org.core.entity.living.animal.parrot.LiveParrot;
+import org.core.entity.living.animal.parrot.ParrotSnapshot;
 import org.core.entity.living.bat.BatSnapshot;
 import org.core.entity.living.bat.LiveBat;
 import org.core.entity.living.fish.cod.CodSnapshot;
@@ -27,6 +29,34 @@ import org.core.entity.scene.itemframe.LiveItemFrame;
 public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
 
     org.bukkit.entity.EntityType getBukkitEntityType();
+
+    class ParrotType implements BEntityType<LiveParrot, ParrotSnapshot>{
+
+        @Override
+        public org.bukkit.entity.EntityType getBukkitEntityType() {
+            return org.bukkit.entity.EntityType.PARROT;
+        }
+
+        @Override
+        public Class<LiveParrot> getEntityClass() {
+            return LiveParrot.class;
+        }
+
+        @Override
+        public Class<ParrotSnapshot> getSnapshotClass() {
+            return ParrotSnapshot.class;
+        }
+
+        @Override
+        public String getId() {
+            return "minecraft:" + getName().toLowerCase();
+        }
+
+        @Override
+        public String getName() {
+            return "Parrot";
+        }
+    }
 
     class BatType implements BEntityType<LiveBat, BatSnapshot>{
 
