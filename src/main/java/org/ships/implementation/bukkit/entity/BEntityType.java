@@ -25,6 +25,26 @@ import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.entity.scene.droppeditem.LiveDroppedItem;
 import org.core.entity.scene.itemframe.ItemFrameSnapshot;
 import org.core.entity.scene.itemframe.LiveItemFrame;
+import org.ships.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
+import org.ships.implementation.bukkit.entity.living.animal.fish.snapshot.BCodSnapshot;
+import org.ships.implementation.bukkit.entity.living.animal.live.BLiveChicken;
+import org.ships.implementation.bukkit.entity.living.animal.live.BLiveCow;
+import org.ships.implementation.bukkit.entity.living.animal.live.BLiveParrot;
+import org.ships.implementation.bukkit.entity.living.animal.snapshot.BChickenSnapshot;
+import org.ships.implementation.bukkit.entity.living.animal.snapshot.BCowSnapshot;
+import org.ships.implementation.bukkit.entity.living.animal.snapshot.BParrotSnapshot;
+import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
+import org.ships.implementation.bukkit.entity.living.bat.snapshot.BBatSnapshot;
+import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
+import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.snapshot.BZombieSnapshot;
+import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
+import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlayerSnapshot;
+import org.ships.implementation.bukkit.entity.projectile.item.live.BLiveSnowballEntity;
+import org.ships.implementation.bukkit.entity.projectile.item.snapshot.BSnowballEntitySnapshot;
+import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
+import org.ships.implementation.bukkit.entity.scene.live.BLiveItemFrame;
+import org.ships.implementation.bukkit.entity.scene.snapshot.BDroppedItemSnapshot;
+import org.ships.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
 
 public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
 
@@ -38,13 +58,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveParrot> getEntityClass() {
-            return LiveParrot.class;
+        public Class<? extends LiveParrot> getEntityClass() {
+            return BLiveParrot.class;
         }
 
         @Override
-        public Class<ParrotSnapshot> getSnapshotClass() {
-            return ParrotSnapshot.class;
+        public Class<? extends ParrotSnapshot> getSnapshotClass() {
+            return BParrotSnapshot.class;
         }
 
         @Override
@@ -66,13 +86,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveBat> getEntityClass() {
-            return LiveBat.class;
+        public Class<? extends LiveBat> getEntityClass() {
+            return BLiveBat.class;
         }
 
         @Override
-        public Class<BatSnapshot> getSnapshotClass() {
-            return BatSnapshot.class;
+        public Class<? extends BatSnapshot> getSnapshotClass() {
+            return BBatSnapshot.class;
         }
 
         @Override
@@ -94,13 +114,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveSnowballEntity> getEntityClass() {
-            return LiveSnowballEntity.class;
+        public Class<? extends LiveSnowballEntity> getEntityClass() {
+            return BLiveSnowballEntity.class;
         }
 
         @Override
-        public Class<SnowballEntitySnapshot> getSnapshotClass() {
-            return SnowballEntitySnapshot.class;
+        public Class<? extends SnowballEntitySnapshot> getSnapshotClass() {
+            return BSnowballEntitySnapshot.class;
         }
 
         @Override
@@ -122,13 +142,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveDroppedItem> getEntityClass() {
-            return LiveDroppedItem.class;
+        public Class<? extends LiveDroppedItem> getEntityClass() {
+            return BLiveDroppedItem.class;
         }
 
         @Override
-        public Class<DroppedItemSnapshot> getSnapshotClass() {
-            return DroppedItemSnapshot.class;
+        public Class<? extends DroppedItemSnapshot> getSnapshotClass() {
+            return BDroppedItemSnapshot.class;
         }
 
         @Override
@@ -150,13 +170,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LivePlayer> getEntityClass() {
-            return LivePlayer.class;
+        public Class<? extends LivePlayer> getEntityClass() {
+            return BLivePlayer.class;
         }
 
         @Override
-        public Class<PlayerSnapshot> getSnapshotClass() {
-            return PlayerSnapshot.class;
+        public Class<? extends PlayerSnapshot> getSnapshotClass() {
+            return BPlayerSnapshot.class;
         }
 
         @Override
@@ -178,12 +198,12 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveHuman> getEntityClass() {
+        public Class<? extends LiveHuman> getEntityClass() {
             return LiveHuman.class;
         }
 
         @Override
-        public Class<HumanSnapshot> getSnapshotClass() {
+        public Class<? extends HumanSnapshot> getSnapshotClass() {
             return HumanSnapshot.class;
         }
 
@@ -206,13 +226,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveCod> getEntityClass() {
-            return LiveCod.class;
+        public Class<? extends LiveCod> getEntityClass() {
+            return BLiveCod.class;
         }
 
         @Override
-        public Class<CodSnapshot> getSnapshotClass() {
-            return CodSnapshot.class;
+        public Class<? extends CodSnapshot> getSnapshotClass() {
+            return BCodSnapshot.class;
         }
 
         @Override
@@ -234,13 +254,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveItemFrame> getEntityClass() {
-            return LiveItemFrame.class;
+        public Class<? extends LiveItemFrame> getEntityClass() {
+            return BLiveItemFrame.class;
         }
 
         @Override
-        public Class<ItemFrameSnapshot> getSnapshotClass() {
-            return ItemFrameSnapshot.class;
+        public Class<? extends ItemFrameSnapshot> getSnapshotClass() {
+            return BItemFrameSnapshot.class;
         }
 
         @Override
@@ -262,13 +282,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveCow> getEntityClass() {
-            return LiveCow.class;
+        public Class<? extends LiveCow> getEntityClass() {
+            return BLiveCow.class;
         }
 
         @Override
-        public Class<CowSnapshot> getSnapshotClass() {
-            return CowSnapshot.class;
+        public Class<? extends CowSnapshot> getSnapshotClass() {
+            return BCowSnapshot.class;
         }
 
         @Override
@@ -290,13 +310,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveChicken> getEntityClass() {
-            return LiveChicken.class;
+        public Class<? extends LiveChicken> getEntityClass() {
+            return BLiveChicken.class;
         }
 
         @Override
-        public Class<ChickenSnapshot> getSnapshotClass() {
-            return ChickenSnapshot.class;
+        public Class<? extends ChickenSnapshot> getSnapshotClass() {
+            return BChickenSnapshot.class;
         }
 
         @Override
@@ -318,13 +338,13 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
         }
 
         @Override
-        public Class<LiveClassicZombie> getEntityClass() {
-            return LiveClassicZombie.class;
+        public Class<? extends LiveClassicZombie> getEntityClass() {
+            return BLiveZombie.class;
         }
 
         @Override
-        public Class<ClassicZombieSnapshot> getSnapshotClass() {
-            return ClassicZombieSnapshot.class;
+        public Class<? extends ClassicZombieSnapshot> getSnapshotClass() {
+            return BZombieSnapshot.class;
         }
 
         @Override
@@ -363,12 +383,12 @@ public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>>
 
         @Override
         public String getId() {
-            return "minecraft:" + type.getName().toLowerCase();
+            return type.getKey().toString();
         }
 
         @Override
         public String getName() {
-            return type.getName();
+            return type.getKey().getNamespace();
         }
     }
 }

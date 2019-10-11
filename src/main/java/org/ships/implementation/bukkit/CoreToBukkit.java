@@ -7,6 +7,7 @@ import org.core.configuration.ConfigurationFile;
 import org.core.configuration.type.ConfigurationLoaderType;
 import org.core.configuration.type.ConfigurationLoaderTypes;
 import org.core.event.EventManager;
+import org.core.other.gui.TPSDisplay;
 import org.core.platform.Platform;
 import org.core.platform.PlatformServer;
 import org.core.schedule.SchedulerBuilder;
@@ -23,6 +24,7 @@ import org.ships.implementation.bukkit.scheduler.BSchedulerBuilder;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.boss.BServerBossBar;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -33,7 +35,6 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
     protected BServer server = new BServer();
     protected PlatformConsole console = new PlatformConsole();
 
-
     public CoreToBukkit(JavaPlugin plugin){
         init(plugin);
     }
@@ -43,6 +44,20 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
         Bukkit.getPluginManager().registerEvents(new BukkitListener(), plugin);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, getRawServer().getTPSExecutor(), 0, 1);
         this.platform.init();
+
+        JFrame frame = new JFrame("TPS");
+        frame.setSize(500, 500);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        TPSDisplay tpsDisplay = new TPSDisplay();
+        frame.add(tpsDisplay);
+        frame.setVisible(true);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                tpsDisplay.register(CoreToBukkit.this.getRawServer().getTPS());
+                tpsDisplay.repaint();
+            }
+        }, 0, 3);
     }
 
     @Override

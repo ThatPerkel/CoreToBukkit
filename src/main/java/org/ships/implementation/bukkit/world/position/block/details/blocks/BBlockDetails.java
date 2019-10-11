@@ -97,6 +97,15 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
         return this;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof BBlockDetails)){
+            return false;
+        }
+        BBlockDetails details = (BBlockDetails) obj;
+        return details.data.equals(this.data);
+    }
+
     private <T> Optional<KeyedData<T>> getKey(Class<? extends KeyedData<T>> data){
         KeyedData<T> key = null;
         if(data.isAssignableFrom(WaterLoggedKeyedData.class) && this.data instanceof org.bukkit.block.data.Waterlogged){

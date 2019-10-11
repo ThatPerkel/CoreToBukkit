@@ -16,6 +16,7 @@ public class BSchedulerBuilder implements SchedulerBuilder {
     protected TimeUnit iterationUnit;
     protected Runnable executor;
     protected Scheduler runAfter;
+    protected String displayName;
 
     @Override
     public Optional<Integer> getDelay() {
@@ -81,6 +82,17 @@ public class BSchedulerBuilder implements SchedulerBuilder {
     @Override
     public Optional<Scheduler> getToRunAfter() {
         return Optional.ofNullable(this.runAfter);
+    }
+
+    @Override
+    public Optional<String> getDisplayName() {
+        return Optional.ofNullable(this.displayName);
+    }
+
+    @Override
+    public SchedulerBuilder setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
     }
 
     @Override

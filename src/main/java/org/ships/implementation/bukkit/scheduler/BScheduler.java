@@ -5,6 +5,7 @@ import org.core.platform.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class BScheduler implements Scheduler {
@@ -27,6 +28,7 @@ public class BScheduler implements Scheduler {
     protected TimeUnit delayTimeUnit;
     protected Integer iteration;
     protected TimeUnit iterationTimeUnit;
+    protected String displayName;
     protected Plugin plugin;
 
     protected int task;
@@ -38,6 +40,11 @@ public class BScheduler implements Scheduler {
         this.delayCount = builder.getDelay().orElse(0);
         this.delayTimeUnit = builder.getDelayUnit().orElse(null);
         this.plugin = plugin;
+        this.displayName = builder.getDisplayName().orElse(null);
+        if(this.displayName == null){
+            System.err.println("No Display Name");
+            new IOException("No DisplayName").printStackTrace();
+        }
         builder.getToRunAfter().ifPresent(s -> this.runAfter = s);
     }
 
@@ -94,5 +101,17 @@ public class BScheduler implements Scheduler {
     @Override
     public Runnable getExecutor() {
         return this.taskToRun;
+    }
+
+    @Override
+    public String toString(){
+        String str = this.displayName + ": Delay(Time: " + this.delayCount + " Unit: " + this.delayTimeUnit + ") Iteration: (Time: " + this.iteration + " Unit: " + this.iterationTimeUnit + ") Plugin: " + this.plugin.getPluginId() + " ID:" + this.task;
+        if(this.runAfter == null){
+            return str + " ToRunAfter: None";
+        }else if(this.runAfter instanceof BScheduler){
+            return str + " ToRunAfter: " + ((BScheduler)this.runAfter).task;
+        }
+        return str + " ToRunAfter: Unknown";
+
     }
 }
