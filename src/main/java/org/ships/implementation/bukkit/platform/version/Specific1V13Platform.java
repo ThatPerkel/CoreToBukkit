@@ -10,6 +10,8 @@ import org.ships.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveChicken;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveCow;
 import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
+import org.ships.implementation.bukkit.entity.living.hostile.creeper.BCreeperSnapshot;
+import org.ships.implementation.bukkit.entity.living.hostile.creeper.BLiveCreeper;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.ships.implementation.bukkit.entity.projectile.item.live.BLiveSnowballEntity;
@@ -48,7 +50,8 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
                         new BEntityType.BatType(),
                         new BEntityType.SnowballType(),
                         new BEntityType.PlayerType(),
-                        new BEntityType.HumanType()
+                        new BEntityType.HumanType(),
+                        new BEntityType.CreeperType()
                 ));
         return set;
     }
@@ -72,6 +75,7 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
         map.put(org.bukkit.entity.Cod.class, BLiveCod.class);
         map.put(org.bukkit.entity.Bat.class, BLiveBat.class);
         map.put(org.bukkit.entity.Snowball.class, BLiveSnowballEntity.class);
+        map.put(org.bukkit.entity.Creeper.class, BLiveCreeper.class);
         return map;
     }
 

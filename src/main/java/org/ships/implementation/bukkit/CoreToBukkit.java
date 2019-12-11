@@ -45,7 +45,7 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, getRawServer().getTPSExecutor(), 0, 1);
         this.platform.init();
 
-        JFrame frame = new JFrame("TPS");
+        /*JFrame frame = new JFrame("TPS");
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TPSDisplay tpsDisplay = new TPSDisplay();
@@ -57,7 +57,7 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
                 tpsDisplay.register(CoreToBukkit.this.getRawServer().getTPS());
                 tpsDisplay.repaint();
             }
-        }, 0, 3);
+        }, 0, 3);*/
     }
 
     @Override

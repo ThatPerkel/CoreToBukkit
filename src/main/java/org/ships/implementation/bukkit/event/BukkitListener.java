@@ -99,7 +99,7 @@ public class BukkitListener implements Listener {
         }
     }
 
-    /**@EventHandler
+    /*@EventHandler
     public static void onItemDropFromBlock(BlockDropItemEvent event){
         BBlockDetails preDetails = new BBlockDetails(event.getBlockState().getBlockData());
         BBlockPosition position = new BBlockPosition(event.getBlock());

@@ -13,6 +13,8 @@ import org.core.entity.living.bat.BatSnapshot;
 import org.core.entity.living.bat.LiveBat;
 import org.core.entity.living.fish.cod.CodSnapshot;
 import org.core.entity.living.fish.cod.LiveCod;
+import org.core.entity.living.hostile.creeper.CreeperEntitySnapshot;
+import org.core.entity.living.hostile.creeper.LiveCreeperEntity;
 import org.core.entity.living.hostile.undead.classic.ClassicZombieSnapshot;
 import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
 import org.core.entity.living.human.HumanSnapshot;
@@ -35,6 +37,8 @@ import org.ships.implementation.bukkit.entity.living.animal.snapshot.BCowSnapsho
 import org.ships.implementation.bukkit.entity.living.animal.snapshot.BParrotSnapshot;
 import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
 import org.ships.implementation.bukkit.entity.living.bat.snapshot.BBatSnapshot;
+import org.ships.implementation.bukkit.entity.living.hostile.creeper.BCreeperSnapshot;
+import org.ships.implementation.bukkit.entity.living.hostile.creeper.BLiveCreeper;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.snapshot.BZombieSnapshot;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
@@ -49,6 +53,34 @@ import org.ships.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
 public interface BEntityType <E extends LiveEntity, S extends EntitySnapshot<E>> extends EntityType<E, S> {
 
     org.bukkit.entity.EntityType getBukkitEntityType();
+
+    class CreeperType implements BEntityType<LiveCreeperEntity, CreeperEntitySnapshot>{
+
+        @Override
+        public org.bukkit.entity.EntityType getBukkitEntityType() {
+            return org.bukkit.entity.EntityType.CREEPER;
+        }
+
+        @Override
+        public Class<? extends LiveCreeperEntity> getEntityClass() {
+            return BLiveCreeper.class;
+        }
+
+        @Override
+        public Class<? extends CreeperEntitySnapshot> getSnapshotClass() {
+            return BCreeperSnapshot.class;
+        }
+
+        @Override
+        public String getId() {
+            return "minecraft:" + getName().toLowerCase();
+        }
+
+        @Override
+        public String getName() {
+            return "Creeper";
+        }
+    }
 
     class ParrotType implements BEntityType<LiveParrot, ParrotSnapshot>{
 
