@@ -1,10 +1,11 @@
 package org.ships.implementation.bukkit.inventory.part.dispenser;
 
-import org.core.inventory.item.ItemStack;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Grid3x3;
 import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.Grid3x3Snapshot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 
 import java.util.*;
 
@@ -31,7 +32,7 @@ public abstract class DispenserBasedGrid implements Grid3x3 {
             if(is == null){
                 return Optional.empty();
             }
-            BItemStack stack = new BItemStack(is);
+            BAbstractItemStack stack = new BLiveItemStack(is);
             return Optional.of(stack);
         }
 
@@ -43,7 +44,7 @@ public abstract class DispenserBasedGrid implements Grid3x3 {
                 container.update();
                 return this;
             }
-            container.getSnapshotInventory().setItem(this.position, ((BItemStack)stack).getBukkitItem());
+            container.getSnapshotInventory().setItem(this.position, ((BAbstractItemStack)stack).getBukkitItem());
             container.update();
             return this;
         }

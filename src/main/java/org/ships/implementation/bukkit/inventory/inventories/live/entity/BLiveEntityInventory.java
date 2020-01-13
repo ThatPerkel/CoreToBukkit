@@ -4,11 +4,12 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.entity.living.ArmoredEntity;
 import org.core.inventory.inventories.BasicEntityInventory;
-import org.core.inventory.item.ItemStack;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.ArmorPart;
 import org.core.inventory.parts.Slot;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 
 import java.util.Optional;
 
@@ -29,12 +30,12 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
                 if(item == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(item));
+                return Optional.of(new BLiveItemStack(item));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveEntityInventory.this.getBukkitEntity().getEquipment().setHelmet(item);
                 return this;
             }
@@ -53,12 +54,12 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
                 if(item == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(item));
+                return Optional.of(new BLiveItemStack(item));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveEntityInventory.this.getBukkitEntity().getEquipment().setChestplate(item);
                 return this;
             }
@@ -77,12 +78,12 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
                 if(item == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(item));
+                return Optional.of(new BLiveItemStack(item));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveEntityInventory.this.getBukkitEntity().getEquipment().setLeggings(item);
                 return this;
             }
@@ -101,12 +102,12 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
                 if(item == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(item));
+                return Optional.of(new BLiveItemStack(item));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveEntityInventory.this.getBukkitEntity().getEquipment().setBoots(item);
                 return this;
             }
@@ -151,12 +152,12 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
             if(item == null){
                 return Optional.empty();
             }
-            return Optional.of(new BItemStack(item));
+            return Optional.of(new BLiveItemStack(item));
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
-            org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+            org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
             BLiveEntityInventory.this.getBukkitEntity().getEquipment().setItemInMainHand(item);
             return this;
         }
@@ -175,12 +176,12 @@ public abstract class BLiveEntityInventory<E extends LiveEntity, S extends Entit
             if(item == null){
                 return Optional.empty();
             }
-            return Optional.of(new BItemStack(item));
+            return Optional.of(new BLiveItemStack(item));
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
-            org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+            org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
             BLiveEntityInventory.this.getBukkitEntity().getEquipment().setItemInOffHand(item);
             return this;
         }

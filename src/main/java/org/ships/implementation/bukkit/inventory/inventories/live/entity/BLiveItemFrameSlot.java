@@ -1,8 +1,9 @@
 package org.ships.implementation.bukkit.inventory.inventories.live.entity;
 
-import org.core.inventory.item.ItemStack;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class BLiveItemFrameSlot implements Slot {
         if(stack == null){
             return Optional.empty();
         }
-        return Optional.of(new BItemStack(stack));
+        return Optional.of(new BLiveItemStack(stack));
     }
 
     @Override
@@ -34,7 +35,7 @@ public class BLiveItemFrameSlot implements Slot {
             this.frame.setItem(null, false);
             return this;
         }
-        org.bukkit.inventory.ItemStack stack2 = ((BItemStack)stack).getBukkitItem();
+        org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack)stack).getBukkitItem();
         this.frame.setItem(stack2, false);
         return this;
     }

@@ -9,7 +9,7 @@ import org.core.inventory.parts.snapshot.SlotSnapshot;
 import org.core.world.position.ExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 import java.util.concurrent.TimeUnit;
@@ -43,7 +43,7 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
         if(!this.slot.getItem().isPresent()){
             throw new IllegalStateException("A item  must be set for a DroppedItemSnapshot to spawn");
         }
-        org.bukkit.entity.Item item = loc.getWorld().dropItem(loc, ((BItemStack)this.slot.getItem().get()).getBukkitItem());
+        org.bukkit.entity.Item item = loc.getWorld().dropItem(loc, ((BAbstractItemStack)this.slot.getItem().get()).getBukkitItem());
         BLiveDroppedItem coreItem = new BLiveDroppedItem(item);
         applyDefaults(coreItem);
         coreItem.setPickupDelay(this.pickupDelay);

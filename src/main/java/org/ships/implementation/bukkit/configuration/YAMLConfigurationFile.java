@@ -11,6 +11,7 @@ import org.core.configuration.parser.StringParser;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class YAMLConfigurationFile implements ConfigurationFile {
 
@@ -24,6 +25,10 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     public YAMLConfigurationFile(File file, YamlConfiguration yaml){
         this.file = file;
         this.yaml = yaml;
+    }
+
+    public YamlConfiguration getYaml(){
+        return this.yaml;
     }
 
     @Override
@@ -40,7 +45,9 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     @Override
     public Map<ConfigurationNode, Object> getKeyValues() {
         Map<ConfigurationNode, Object> value = new HashMap<>();
-        this.yaml.getKeys(true).forEach(p -> value.put(new ConfigurationNode(p.split(".")), this.yaml.get(p)));
+        this.yaml.getKeys(true).forEach(p -> {
+            value.put(new ConfigurationNode(p.split(Pattern.quote("."))), this.yaml.get(p));
+        });
         return value;
     }
 

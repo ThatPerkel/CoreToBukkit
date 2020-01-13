@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.inventory.inventories.snapshot.block;
 import org.core.inventory.inventories.general.block.UnknownBlockAttachedInventory;
 import org.core.inventory.inventories.live.block.LiveUnknownBlockAttachedInventory;
 import org.core.inventory.inventories.snapshots.block.UnknownBlockAttachedInventorySnapshot;
-import org.core.inventory.parts.InventoryPart;
 import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
 import org.core.world.position.BlockPosition;
@@ -28,7 +27,7 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     public BUnknownBlockAttachedInventorySnapshot(UnknownBlockAttachedInventory inv){
         this.types = inv.getAllowedBlockType();
         this.position = inv.getPosition();
-        inv.getSlots().stream().forEach(i -> BUnknownBlockAttachedInventorySnapshot.this.slots.add(i.createSnapshot()));
+        inv.getSlots().forEach(i -> BUnknownBlockAttachedInventorySnapshot.this.slots.add(i.createSnapshot()));
     }
 
     @Override
@@ -42,13 +41,13 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     }
 
     @Override
-    public Set<InventoryPart> getFirstChildren() {
+    public Set<Slot> getSlots() {
         return new HashSet<>(this.slots);
     }
 
     @Override
-    public Set<Slot> getSlots() {
-        return new HashSet<>(this.slots);
+    public Optional<Slot> getSlot(int slotPos){
+        return this.getSlots().stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findFirst();
     }
 
     @Override

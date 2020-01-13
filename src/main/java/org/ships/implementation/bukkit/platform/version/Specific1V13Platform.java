@@ -22,6 +22,7 @@ import org.ships.implementation.bukkit.world.position.block.entity.container.che
 import org.ships.implementation.bukkit.world.position.block.entity.container.dispenser.BLiveDispenserTileEntity;
 import org.ships.implementation.bukkit.world.position.block.entity.container.furnace.BFurnaceEntity;
 import org.ships.implementation.bukkit.world.position.block.entity.sign.BSignEntity;
+import org.ships.implementation.bukkit.world.position.block.entity.skull.BSkullEntity;
 
 import java.util.*;
 
@@ -93,6 +94,7 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
         map.put(org.bukkit.block.Chest.class, BLiveChestTileEntity.class);
         map.put(org.bukkit.block.Dispenser.class, BLiveDispenserTileEntity.class);
         map.put(org.bukkit.block.Furnace.class, BFurnaceEntity.class);
+        map.put(org.bukkit.block.Skull.class, BSkullEntity.class);
 
         return map;
     }

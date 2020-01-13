@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.inventory.inventories.live.block.dispens
 import org.bukkit.block.Container;
 import org.core.inventory.inventories.live.block.dispenser.LiveDispenserBasedInventory;
 import org.core.inventory.parts.Grid3x3;
-import org.core.inventory.parts.InventoryPart;
 import org.core.inventory.parts.Slot;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.block.BlockType;
@@ -11,8 +10,7 @@ import org.ships.implementation.bukkit.inventory.part.dispenser.DispenserBasedGr
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class BLiveDispenserBasedInventory implements LiveDispenserBasedInventory {
@@ -41,12 +39,12 @@ public abstract class BLiveDispenserBasedInventory implements LiveDispenserBased
     }
 
     @Override
-    public Set<InventoryPart> getFirstChildren() {
-        return new HashSet<>(Collections.singletonList(this.grid));
+    public Set<Slot> getSlots() {
+        return getItems().getSlots();
     }
 
     @Override
-    public Set<Slot> getSlots() {
-        return getItems().getSlots();
+    public Optional<Slot> getSlot(int slotPos) {
+        return this.getSlots().stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findAny();
     }
 }

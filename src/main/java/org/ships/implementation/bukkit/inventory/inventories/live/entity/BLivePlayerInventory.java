@@ -4,11 +4,12 @@ import org.bukkit.Material;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.inventory.inventories.live.entity.LivePlayerInventory;
 import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
-import org.core.inventory.item.ItemStack;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.*;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.entity.BPlayerInventorySnapshot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -114,12 +115,12 @@ public class BLivePlayerInventory implements LivePlayerInventory {
             if(stack == null || stack.getType().equals(Material.VOID_AIR)){
                 return Optional.empty();
             }
-            return Optional.of(new BItemStack(stack));
+            return Optional.of(new BLiveItemStack(stack));
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
-            org.bukkit.inventory.ItemStack bstack = ((BItemStack)stack).getBukkitItem();
+            org.bukkit.inventory.ItemStack bstack = ((BAbstractItemStack)stack).getBukkitItem();
             BLivePlayerInventory.this.player.getBukkitEntity().getInventory().setItem(this.position, bstack);
             return this;
         }

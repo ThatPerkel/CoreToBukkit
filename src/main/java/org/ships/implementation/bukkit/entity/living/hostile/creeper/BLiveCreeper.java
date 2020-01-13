@@ -12,12 +12,24 @@ import org.ships.implementation.bukkit.entity.BLiveEntity;
 
 public class BLiveCreeper extends BLiveEntity<org.bukkit.entity.Creeper> implements LiveCreeperEntity {
 
+    @Deprecated
     public BLiveCreeper(org.bukkit.entity.Entity entity){
         super((org.bukkit.entity.Creeper)entity);
     }
 
     public BLiveCreeper(org.bukkit.entity.Creeper entity) {
         super(entity);
+    }
+
+    @Override
+    public boolean isCharged() {
+        return this.entity.isPowered();
+    }
+
+    @Override
+    public CreeperEntity<LiveEntity> setCharged(boolean check) {
+        this.entity.setPowered(check);
+        return this;
     }
 
     @Override

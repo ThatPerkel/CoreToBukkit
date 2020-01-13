@@ -3,11 +3,12 @@ package org.ships.implementation.bukkit.inventory.inventories.live.block;
 import org.bukkit.block.Furnace;
 import org.core.inventory.inventories.live.block.LiveFurnaceInventory;
 import org.core.inventory.inventories.snapshots.block.FurnaceInventorySnapshot;
-import org.core.inventory.item.ItemStack;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
 import org.core.world.position.BlockPosition;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BFurnaceInventorySnapshot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 
 import java.util.Optional;
@@ -37,14 +38,14 @@ public class BLiveFurnaceInventory implements LiveFurnaceInventory {
             if(is == null){
                 return Optional.empty();
             }
-            ItemStack isC = new BItemStack(is);
+            ItemStack isC = new BLiveItemStack(is);
             return Optional.of(isC);
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
             Furnace furnace = BLiveFurnaceInventory.this.getFurnace();
-            org.bukkit.inventory.ItemStack is = stack == null ? null : ((BItemStack) stack).getBukkitItem();
+            org.bukkit.inventory.ItemStack is = stack == null ? null : ((BAbstractItemStack) stack).getBukkitItem();
             furnace.getSnapshotInventory().setItem(this.position, is);
             furnace.update();
             return this;

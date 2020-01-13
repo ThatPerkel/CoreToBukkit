@@ -2,13 +2,13 @@ package org.ships.implementation.bukkit.inventory.inventories.live.block;
 
 import org.core.inventory.inventories.live.block.LiveUnknownBlockAttachedInventory;
 import org.core.inventory.inventories.snapshots.block.UnknownBlockAttachedInventorySnapshot;
-import org.core.inventory.item.ItemStack;
-import org.core.inventory.parts.InventoryPart;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.block.BlockType;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BUnknownBlockAttachedInventorySnapshot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 
@@ -37,14 +37,14 @@ public class BLiveUnknownBlockAttachedInventory implements LiveUnknownBlockAttac
             if(is == null){
                 return Optional.empty();
             }
-            ItemStack isC = new BItemStack(is);
+            ItemStack isC = new BLiveItemStack(is);
             return Optional.of(isC);
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
             org.bukkit.block.Container container = BLiveUnknownBlockAttachedInventory.this.state;
-            org.bukkit.inventory.ItemStack is = stack == null ? null : ((BItemStack) stack).getBukkitItem();
+            org.bukkit.inventory.ItemStack is = stack == null ? null : ((BAbstractItemStack) stack).getBukkitItem();
             container.getSnapshotInventory().setItem(this.position, is);
             container.update();
             return this;
@@ -62,13 +62,13 @@ public class BLiveUnknownBlockAttachedInventory implements LiveUnknownBlockAttac
     }
 
     @Override
-    public Set<InventoryPart> getFirstChildren() {
+    public Set<Slot> getSlots() {
         return new HashSet<>(this.slots);
     }
 
     @Override
-    public Set<Slot> getSlots() {
-        return new HashSet<>(this.slots);
+    public Optional<Slot> getSlot(int slotPos) {
+        return this.slots.stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findAny();
     }
 
     @Override

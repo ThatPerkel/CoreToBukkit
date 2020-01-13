@@ -7,6 +7,7 @@ import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class BChestInventorySnapshot extends ChestInventorySnapshot {
@@ -23,8 +24,8 @@ public class BChestInventorySnapshot extends ChestInventorySnapshot {
     }
 
     @Override
-    public Set<InventoryPart> getFirstChildren() {
-        return new HashSet<>(this.getSlots());
+    public Optional<Slot> getSlot(int slotPos) {
+        return this.getSlots().stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findAny();
     }
 
     @Override

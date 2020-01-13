@@ -5,6 +5,8 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.core.CorePlugin;
+import org.core.configuration.parser.unspecific.UnspecificParser;
+import org.core.configuration.parser.unspecific.UnspecificParsers;
 import org.core.configuration.type.ConfigurationLoaderType;
 import org.core.configuration.type.ConfigurationLoaderTypes;
 import org.core.entity.*;
@@ -16,6 +18,7 @@ import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
 import org.core.inventory.item.type.ItemTypeCommon;
 import org.core.platform.Platform;
+import org.core.platform.PlatformDetails;
 import org.core.platform.Plugin;
 import org.core.source.command.CommandSource;
 import org.core.source.projectile.ProjectileSource;
@@ -64,6 +67,7 @@ public class BukkitPlatform implements Platform {
     protected Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
     protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
     protected Set<BlockGroup> blockGroups = new HashSet<>();
+    protected Set<UnspecificParser<?>> parsers = new HashSet<>();
 
     public void init(){
         BukkitSpecificPlatform.getPlatforms().forEach(bsp -> {
@@ -212,6 +216,11 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public PlatformDetails getDetails() {
+        return new BPlatformDetails();
+    }
+
+    @Override
     public Set<Plugin> getPlugins() {
         Set<Plugin> plugins = new HashSet<>();
         for (org.bukkit.plugin.Plugin plugin : Bukkit.getPluginManager().getPlugins()){
@@ -285,6 +294,11 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public Collection<UnspecificParser<?>> getUnspecifiedParsers() {
+        return this.parsers;
+    }
+
+    @Override
     public Collection<TileEntitySnapshot<? extends TileEntity>> getDefaultTileEntities() {
         return this.defaultTileEntities;
     }
@@ -324,6 +338,11 @@ public class BukkitPlatform implements Platform {
             }
         }
         return null;
+    }
+
+    @Override
+    public <T> UnspecificParser<T> get(UnspecificParsers<T> parsers) {
+        return (UnspecificParser<T>) getUnspecifiedParser(parsers.getId()).get();
     }
 
     @Override
@@ -431,6 +450,11 @@ public class BukkitPlatform implements Platform {
     @Override
     public Optional<ApplyPhysicsFlag> getApplyPhysics(String id) {
         return getApplyPhysics().stream().filter(f -> f.getId().equals(id)).findAny();
+    }
+
+    @Override
+    public Optional<UnspecificParser<?>> getUnspecifiedParser(String id) {
+        return this.parsers.stream().filter(p -> p.getId().equals(id)).findFirst();
     }
 
     @Override

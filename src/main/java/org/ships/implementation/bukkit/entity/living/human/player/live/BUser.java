@@ -13,6 +13,10 @@ public class BUser implements User {
         this.user = player;
     }
 
+    public OfflinePlayer getBukkitUser(){
+        return this.user;
+    }
+
     @Override
     public String getName() {
         return this.user.getName();

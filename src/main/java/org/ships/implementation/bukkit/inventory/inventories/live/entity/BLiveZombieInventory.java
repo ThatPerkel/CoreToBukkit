@@ -3,12 +3,13 @@ package org.ships.implementation.bukkit.inventory.inventories.live.entity;
 import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
 import org.core.inventory.inventories.live.entity.LiveZombieInventory;
 import org.core.inventory.inventories.snapshots.entity.ZombieInventorySnapshot;
-import org.core.inventory.item.ItemStack;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.ArmorPart;
 import org.core.inventory.parts.Slot;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.entity.BClassicZombieInventorySnapshot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,12 +32,12 @@ public class BLiveZombieInventory implements LiveZombieInventory {
                 if(stack == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(stack));
+                return Optional.of(new BLiveItemStack(stack));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack stack2 = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setHelmet(stack2);
                 return this;
             }
@@ -56,12 +57,12 @@ public class BLiveZombieInventory implements LiveZombieInventory {
                 if(stack == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(stack));
+                return Optional.of(new BLiveItemStack(stack));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack stack2 = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setChestplate(stack2);
                 return this;
             }
@@ -81,12 +82,12 @@ public class BLiveZombieInventory implements LiveZombieInventory {
                 if(stack == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(stack));
+                return Optional.of(new BLiveItemStack(stack));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack stack2 = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setLeggings(stack2);
                 return this;
             }
@@ -106,12 +107,12 @@ public class BLiveZombieInventory implements LiveZombieInventory {
                 if(stack == null){
                     return Optional.empty();
                 }
-                return Optional.of(new BItemStack(stack));
+                return Optional.of(new BLiveItemStack(stack));
             }
 
             @Override
             public Slot setItem(ItemStack stack) {
-                org.bukkit.inventory.ItemStack stack2 = ((BItemStack)stack).getBukkitItem();
+                org.bukkit.inventory.ItemStack stack2 = ((BAbstractItemStack)stack).getBukkitItem();
                 BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setBoots(stack2);
                 return this;
             }
@@ -157,12 +158,12 @@ public class BLiveZombieInventory implements LiveZombieInventory {
             if(stack == null){
                 return Optional.empty();
             }
-            return Optional.of(new BItemStack(stack));
+            return Optional.of(new BLiveItemStack(stack));
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
-            BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setItemInMainHand(((BItemStack)stack).getBukkitItem());
+            BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setItemInMainHand(((BAbstractItemStack)stack).getBukkitItem());
             return this;
         }
     }
@@ -180,12 +181,12 @@ public class BLiveZombieInventory implements LiveZombieInventory {
             if(stack == null){
                 return Optional.empty();
             }
-            return Optional.of(new BItemStack(stack));
+            return Optional.of(new BLiveItemStack(stack));
         }
 
         @Override
         public Slot setItem(ItemStack stack) {
-            BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setItemInOffHand(((BItemStack)stack).getBukkitItem());
+            BLiveZombieInventory.this.zombie.getBukkitEntity().getEquipment().setItemInOffHand(((BAbstractItemStack)stack).getBukkitItem());
             return this;
         }
     }

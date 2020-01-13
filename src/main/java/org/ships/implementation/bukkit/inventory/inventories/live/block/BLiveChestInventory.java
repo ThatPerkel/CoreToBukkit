@@ -2,12 +2,12 @@ package org.ships.implementation.bukkit.inventory.inventories.live.block;
 
 import org.core.inventory.inventories.live.block.LiveChestInventory;
 import org.core.inventory.inventories.snapshots.block.ChestInventorySnapshot;
-import org.core.inventory.item.ItemStack;
-import org.core.inventory.parts.InventoryPart;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
 import org.core.world.position.BlockPosition;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BChestInventorySnapshot;
-import org.ships.implementation.bukkit.inventory.item.BItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
+import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class BLiveChestInventory implements LiveChestInventory {
             if (stack == null){
                 return Optional.empty();
             }
-            return Optional.of(new BItemStack(stack));
+            return Optional.of(new BLiveItemStack(stack));
         }
 
         @Override
@@ -45,7 +45,7 @@ public class BLiveChestInventory implements LiveChestInventory {
                 BLiveChestInventory.this.chest.update();
                 return this;
             }
-            org.bukkit.inventory.ItemStack item = ((BItemStack)stack).getBukkitItem();
+            org.bukkit.inventory.ItemStack item = ((BAbstractItemStack)stack).getBukkitItem();
             BLiveChestInventory.this.chest.getSnapshotInventory().setItem(this.pos, item);
             BLiveChestInventory.this.chest.update();
             return this;
@@ -68,13 +68,13 @@ public class BLiveChestInventory implements LiveChestInventory {
     }
 
     @Override
-    public Set<InventoryPart> getFirstChildren() {
-        return new HashSet<>(getSlots());
+    public Set<Slot> getSlots() {
+        return this.slots;
     }
 
     @Override
-    public Set<Slot> getSlots() {
-        return this.slots;
+    public Optional<Slot> getSlot(int slotPos) {
+        return this.slots.stream().filter(s -> s.getPosition().isPresent()).filter(s -> s.getPosition().get() == slotPos).findAny();
     }
 
     @Override

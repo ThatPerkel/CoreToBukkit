@@ -1,8 +1,10 @@
 package org.ships.implementation.bukkit.inventory.item;
 
-import org.core.inventory.item.ItemStack;
 import org.core.inventory.item.ItemType;
+import org.core.inventory.item.stack.ItemStack;
+import org.core.inventory.item.stack.ItemStackSnapshot;
 import org.core.world.position.block.BlockType;
+import org.ships.implementation.bukkit.inventory.item.stack.BItemStackSnapshot;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 
 import java.util.Optional;
@@ -37,9 +39,9 @@ public class BItemType implements ItemType {
     }
 
     @Override
-    public ItemStack getDefaultItemStack() {
+    public ItemStackSnapshot getDefaultItemStack() {
         org.bukkit.inventory.ItemStack stack = new org.bukkit.inventory.ItemStack(this.material, 1);
-        return new BItemStack(stack);
+        return new BItemStackSnapshot(stack);
     }
 
     @Override

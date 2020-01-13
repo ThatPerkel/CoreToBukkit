@@ -1,10 +1,12 @@
 package org.ships.implementation.bukkit.world;
 
+import org.bukkit.block.BlockState;
 import org.core.CorePlugin;
 import org.core.entity.LiveEntity;
 import org.core.world.WorldExtent;
 import org.core.world.position.BlockPosition;
 import org.core.world.position.ExactPosition;
+import org.core.world.position.block.entity.LiveTileEntity;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.position.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.BExactPosition;
@@ -51,6 +53,17 @@ public class BWorldExtent implements WorldExtent {
             entities.add(entity);
         });
         return entities;
+    }
+
+    @Override
+    public Set<LiveTileEntity> getTileEntities() {
+        Set<LiveTileEntity> set = new HashSet<>();
+        for (org.bukkit.Chunk chunk : this.world.getLoadedChunks()){
+            for (BlockState state : chunk.getTileEntities()) {
+                ((BukkitPlatform) CorePlugin.getPlatform()).createTileEntityInstance(state).ifPresent(set::add);
+            }
+        }
+        return set;
     }
 
     @Override

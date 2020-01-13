@@ -3,6 +3,8 @@ package org.ships.implementation.bukkit.entity.living.hostile.creeper;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;
+import org.core.entity.LiveEntity;
+import org.core.entity.living.hostile.creeper.CreeperEntity;
 import org.core.entity.living.hostile.creeper.CreeperEntitySnapshot;
 import org.core.entity.living.hostile.creeper.LiveCreeperEntity;
 import org.core.world.position.ExactPosition;
@@ -11,16 +13,20 @@ import org.ships.implementation.bukkit.world.position.BExactPosition;
 
 public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> implements CreeperEntitySnapshot {
 
+    private boolean charged;
+
     public BCreeperSnapshot(ExactPosition position) {
         super(position);
     }
 
     public BCreeperSnapshot(LiveCreeperEntity entity) {
         super(entity);
+        this.charged = entity.isCharged();
     }
 
-    public BCreeperSnapshot(EntitySnapshot<LiveCreeperEntity> entity) {
+    public BCreeperSnapshot(CreeperEntitySnapshot entity) {
         super(entity);
+        this.charged = entity.isCharged();
     }
 
     @Override
@@ -31,7 +37,19 @@ public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> impleme
         org.bukkit.entity.Creeper creeper = (org.bukkit.entity.Creeper)loc.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.CREEPER);
         BLiveCreeper liveCreeper = new BLiveCreeper(creeper);
         applyDefaults(liveCreeper);
+        liveCreeper.setCharged(this.charged);
         return liveCreeper;
+    }
+
+    @Override
+    public boolean isCharged() {
+        return this.charged;
+    }
+
+    @Override
+    public CreeperEntity<EntitySnapshot<? extends LiveEntity>> setCharged(boolean check) {
+        this.charged = check;
+        return this;
     }
 
     @Override
