@@ -1,13 +1,15 @@
 package org.ships.implementation.bukkit.entity.living.human.player.snapshot;
 
-import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
 import org.core.world.position.ExactPosition;
+import org.ships.implementation.bukkit.VaultService;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
+import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements PlayerSnapshot {
@@ -99,7 +101,7 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     }
 
     @Override
-    public AbstractHuman setFood(int value) throws IndexOutOfBoundsException {
+    public PlayerSnapshot setFood(int value) throws IndexOutOfBoundsException {
         if(value > 20){
             throw new IndexOutOfBoundsException();
         }
@@ -108,19 +110,19 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     }
 
     @Override
-    public AbstractHuman setExhaustionLevel(double value) throws IndexOutOfBoundsException {
+    public PlayerSnapshot setExhaustionLevel(double value) throws IndexOutOfBoundsException {
         this.exhaustionLevel = value;
         return this;
     }
 
     @Override
-    public AbstractHuman setSaturationLevel(double value) throws IndexOutOfBoundsException {
+    public PlayerSnapshot setSaturationLevel(double value) throws IndexOutOfBoundsException {
         this.saturationLevel = value;
         return this;
     }
 
     @Override
-    public AbstractHuman setSneaking(boolean sneaking) {
+    public PlayerSnapshot setSneaking(boolean sneaking) {
         this.sneaking = sneaking;
         return this;
     }
@@ -128,6 +130,16 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     @Override
     public PlayerSnapshot createSnapshot() {
         return new BPlayerSnapshot(this);
+    }
+
+    @Override
+    public BigDecimal getBalance() {
+        return BigDecimal.valueOf(VaultService.getBalance(((BLivePlayer)this.createdFrom).getBukkitEntity()).orElse(0.0));
+    }
+
+    @Override
+    public void setBalance(BigDecimal decimal) {
+        VaultService.setBalance(((BLivePlayer)this.createdFrom).getBukkitEntity(), decimal);
     }
 
 }

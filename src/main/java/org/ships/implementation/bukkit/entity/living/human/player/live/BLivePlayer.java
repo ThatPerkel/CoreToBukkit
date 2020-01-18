@@ -1,17 +1,18 @@
 package org.ships.implementation.bukkit.entity.living.human.player.live;
 
 import org.bukkit.Bukkit;
-import org.core.entity.living.human.AbstractHuman;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.source.viewer.CommandViewer;
 import org.core.text.Text;
+import org.ships.implementation.bukkit.VaultService;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlayerSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLivePlayerInventory;
 import org.ships.implementation.bukkit.text.BText;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implements LivePlayer {
@@ -31,10 +32,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
             return false;
         }
         BLivePlayer player2 = (BLivePlayer)object;
-        if(player2.getBukkitEntity().equals(this.getBukkitEntity())){
-            return true;
-        }
-        return false;
+        return player2.getBukkitEntity().equals(this.getBukkitEntity());
     }
 
     @Override
@@ -78,7 +76,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
-    public AbstractHuman setFood(int value) throws IndexOutOfBoundsException {
+    public LivePlayer setFood(int value) throws IndexOutOfBoundsException {
         if(value > 20){
             throw new IndexOutOfBoundsException();
         }
@@ -87,7 +85,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
-    public AbstractHuman setExhaustionLevel(double value) throws IndexOutOfBoundsException {
+    public LivePlayer setExhaustionLevel(double value) throws IndexOutOfBoundsException {
         if(value > 20){
             throw new IndexOutOfBoundsException();
         }
@@ -96,7 +94,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
-    public AbstractHuman setSaturationLevel(double value) throws IndexOutOfBoundsException {
+    public LivePlayer setSaturationLevel(double value) throws IndexOutOfBoundsException {
         if(value > 20){
             throw new IndexOutOfBoundsException();
         }
@@ -105,7 +103,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
-    public AbstractHuman setSneaking(boolean sneaking) {
+    public LivePlayer setSneaking(boolean sneaking) {
         getBukkitEntity().setSneaking(sneaking);
         return this;
     }
@@ -116,8 +114,8 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
         String[] blocks = permission.split(".");
         for(int A = 0; A < blocks.length; A++){
             StringBuilder builder = new StringBuilder();
-            for(int B = 0; B < blocks.length; B++){
-                builder.append(blocks[B]);
+            for (String block : blocks) {
+                builder.append(block);
             }
             if(player.hasPermission(builder.toString() + ".*")){
                 return true;
@@ -157,5 +155,15 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     @Override
     public boolean sudo(String wholeCommand) {
         return Bukkit.dispatchCommand(getBukkitEntity(), wholeCommand);
+    }
+
+    @Override
+    public BigDecimal getBalance() {
+        return BigDecimal.valueOf(VaultService.getBalance(this.getBukkitEntity()).orElse(0.0));
+    }
+
+    @Override
+    public void setBalance(BigDecimal decimal) {
+        VaultService.setBalance(this.getBukkitEntity(), decimal);
     }
 }

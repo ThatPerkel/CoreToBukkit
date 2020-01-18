@@ -2,7 +2,9 @@ package org.ships.implementation.bukkit.entity.living.human.player.live;
 
 import org.bukkit.OfflinePlayer;
 import org.core.entity.living.human.player.User;
+import org.ships.implementation.bukkit.VaultService;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class BUser implements User {
@@ -25,5 +27,15 @@ public class BUser implements User {
     @Override
     public UUID getUniqueId() {
         return this.user.getUniqueId();
+    }
+
+    @Override
+    public BigDecimal getBalance() {
+        return BigDecimal.valueOf(VaultService.getBalance(this.getBukkitUser()).orElse(0.0));
+    }
+
+    @Override
+    public void setBalance(BigDecimal decimal) {
+        VaultService.setBalance(this.getBukkitUser(), decimal);
     }
 }

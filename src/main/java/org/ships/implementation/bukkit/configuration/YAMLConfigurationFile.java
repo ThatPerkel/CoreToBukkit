@@ -54,6 +54,9 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     @Override
     public <T> Optional<T> parse(ConfigurationNode node, Parser<?, T> parser) {
         if (parser instanceof StringParser){
+            if(parser instanceof StringParser.SpecialParser){
+                return ((StringParser.SpecialParser<T>) parser).get(this, node);
+            }
             return ((StringParser<T>)parser).parse(this.yaml.getString(CorePlugin.toString(".", s -> s, node.getPath())));
         }else if(parser instanceof StringMapParser){
             StringMapParser<T> mParser = (StringMapParser<T>)parser;
@@ -118,6 +121,10 @@ public class YAMLConfigurationFile implements ConfigurationFile {
 
     @Override
     public <T> void set(ConfigurationNode node, Parser<?, T> parser, T value) {
+        if(parser instanceof StringParser.SpecialParser){
+            ((StringParser.SpecialParser<T>) parser).set(value, this, node);
+            return;
+        }
         this.yaml.set(CorePlugin.toString(".", s -> s, node.getPath()), parser.unparse(value));
     }
 
