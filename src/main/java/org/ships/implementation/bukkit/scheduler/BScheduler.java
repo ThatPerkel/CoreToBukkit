@@ -29,6 +29,7 @@ public class BScheduler implements Scheduler {
     protected Integer iteration;
     protected TimeUnit iterationTimeUnit;
     protected String displayName;
+    protected boolean async;
     protected Plugin plugin;
 
     protected int task;
@@ -41,6 +42,7 @@ public class BScheduler implements Scheduler {
         this.delayTimeUnit = builder.getDelayUnit().orElse(null);
         this.plugin = plugin;
         this.displayName = builder.getDisplayName().orElse(null);
+        this.async = builder.isAsync();
         if(this.displayName == null){
             System.err.println("No Display Name");
             new IOException("No DisplayName").printStackTrace();
@@ -87,9 +89,17 @@ public class BScheduler implements Scheduler {
             }
         }
         if(iter == null){
-            this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+            if(this.async) {
+                this.task = Bukkit.getScheduler().scheduleAsyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+            }else{
+                this.task = Bukkit.getScheduler().scheduleSyncDelayedTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks);
+            }
         } else {
-            this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
+            if(this.async){
+                this.task = Bukkit.getScheduler().scheduleAsyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
+            }else {
+                this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask((org.bukkit.plugin.Plugin) this.plugin.getLauncher(), new BScheduler.RunAfterScheduler(), ticks, iter);
+            }
         }
     }
 

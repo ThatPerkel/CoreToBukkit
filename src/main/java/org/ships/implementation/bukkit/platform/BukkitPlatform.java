@@ -1,6 +1,7 @@
 package org.ships.implementation.bukkit.platform;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -68,8 +69,19 @@ public class BukkitPlatform implements Platform {
     protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
     protected Set<BlockGroup> blockGroups = new HashSet<>();
     protected Set<UnspecificParser<?>> parsers = new HashSet<>();
+    protected Set<BlockType> blockTypes = new HashSet<>();
+    protected Set<ItemType> itemTypes = new HashSet<>();
 
     public void init(){
+        for(Material material : Material.values()){
+            if(material.isBlock()){
+                BlockType type = new BBlockType(material);
+                this.blockTypes.add(type);
+            }
+            if(material.isItem()){
+                this.itemTypes.add(new BItemType(material));
+            }
+        }
         BukkitSpecificPlatform.getPlatforms().forEach(bsp -> {
             this.entityToEntity.putAll(bsp.getGeneralEntityToEntity());
             this.entityTypes.addAll(bsp.getGeneralEntityTypes());
@@ -201,17 +213,30 @@ public class BukkitPlatform implements Platform {
     @Override
     public int[] getMinecraftVersion() {
         String version = Bukkit.getServer().getVersion();
-        version = version.split("MC: ")[1];
-        version = version.substring(0, version.length() - 1);
-        if(version.contains(" ")){
-            version = version.split(" ")[0];
+        try {
+            version = version.split("MC: ")[1];
+            version = version.substring(0, version.length() - 1);
+            if (version.contains(" ")) {
+                version = version.split(" ")[0];
+            }
+            String[] versionString = version.split(Pattern.quote("."));
+            int[] versionInt = new int[3];
+            for (int A = 0; A < versionString.length; A++) {
+                versionInt[A] = Integer.parseInt(versionString[A]);
+            }
+            return versionInt;
+        }catch (ArrayIndexOutOfBoundsException e){
+            //fix for Pukkit (Pocket Edition of Spigot)
+            if(version.startsWith("v")){
+                String[] versionString = version.substring(1).split(Pattern.quote("."));
+                int[] versionInt = new int[3];
+                for (int A = 0; A < versionString.length; A++) {
+                    versionInt[A] = Integer.parseInt(versionString[A]);
+                }
+                return versionInt;
+            }
+            throw e;
         }
-        String[] versionString = version.split(Pattern.quote("."));
-        int[] versionInt = new int[3];
-        for(int A = 0; A < versionString.length; A++){
-            versionInt[A] = Integer.parseInt(versionString[A]);
-        }
-        return versionInt;
 
     }
 
@@ -305,24 +330,12 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Collection<BlockType> getBlockTypes(){
-        Set<BlockType> set = new HashSet<>();
-        for(org.bukkit.Material material : org.bukkit.Material.values()) {
-            if (material.isBlock()) {
-                set.add(new BBlockType(material));
-            }
-        }
-        return set;
+        return Collections.unmodifiableCollection(this.blockTypes);
     }
 
     @Override
     public Collection<ItemType> getItemTypes(){
-        Set<ItemType> set = new HashSet<>();
-        for(org.bukkit.Material material : org.bukkit.Material.values()) {
-            if (material.isItem()) {
-                set.add(new BItemType(material));
-            }
-        }
-        return set;
+        return Collections.unmodifiableCollection(this.itemTypes);
     }
 
     @Override
@@ -381,22 +394,12 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public Optional<BlockType> getBlockType(String id) {
-        org.bukkit.Material material = getMaterial(id, true);
-        if(material == null){
-            System.err.println("Error getting block of id: " + id);
-            return Optional.empty();
-        }
-        return Optional.of(new BBlockType(material));
+        return this.blockTypes.stream().filter(bt -> bt.getId().equals(id)).findAny();
     }
 
     @Override
     public Optional<ItemType> getItemType(String id) {
-        org.bukkit.Material material = getMaterial(id, false);
-        if(material == null){
-            System.err.println("Error getting item of id: " + id);
-            return Optional.empty();
-        }
-        return Optional.of(new BItemType(material));
+        return this.itemTypes.stream().filter(it -> it.getId().equals(id)).findAny();
     }
 
     @Override
