@@ -7,15 +7,15 @@ import org.core.entity.LiveEntity;
 import org.core.entity.living.hostile.creeper.CreeperEntity;
 import org.core.entity.living.hostile.creeper.CreeperEntitySnapshot;
 import org.core.entity.living.hostile.creeper.LiveCreeperEntity;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class BCreeperSnapshot extends BEntitySnapshot<LiveCreeperEntity> implements CreeperEntitySnapshot {
 
     private boolean charged;
 
-    public BCreeperSnapshot(ExactPosition position) {
+    public BCreeperSnapshot(SyncExactPosition position) {
         super(position);
     }
 

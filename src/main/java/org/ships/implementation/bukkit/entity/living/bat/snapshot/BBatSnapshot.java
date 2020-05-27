@@ -6,16 +6,16 @@ import org.core.entity.EntityTypes;
 import org.core.entity.living.bat.Bat;
 import org.core.entity.living.bat.BatSnapshot;
 import org.core.entity.living.bat.LiveBat;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class BBatSnapshot extends BEntitySnapshot<LiveBat> implements BatSnapshot {
 
     protected boolean awake;
 
-    public BBatSnapshot(ExactPosition position) {
+    public BBatSnapshot(SyncExactPosition position) {
         super(position);
     }
 

@@ -11,10 +11,10 @@ import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
 import org.core.world.direction.Direction;
 import org.core.world.direction.FourFacingDirection;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveItemFrame;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.stream.Stream;
 
@@ -41,7 +41,7 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
         this.direction = frame.getDirection();
     }
 
-    public BItemFrameSnapshot(ExactPosition position) {
+    public BItemFrameSnapshot(SyncExactPosition position) {
         super(position);
     }
 

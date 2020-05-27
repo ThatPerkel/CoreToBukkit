@@ -6,11 +6,11 @@ import org.core.entity.scene.droppeditem.DroppedItem;
 import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.entity.scene.droppeditem.LiveDroppedItem;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +31,7 @@ public class BDroppedItemSnapshot extends BEntitySnapshot<LiveDroppedItem> imple
         this.slot = item.getHoldingItem().createSnapshot();
     }
 
-    public BDroppedItemSnapshot(ExactPosition position) {
+    public BDroppedItemSnapshot(SyncExactPosition position) {
         super(position);
     }
 

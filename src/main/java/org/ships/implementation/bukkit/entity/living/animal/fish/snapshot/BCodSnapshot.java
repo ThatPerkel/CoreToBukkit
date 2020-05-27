@@ -4,15 +4,15 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.living.fish.cod.CodSnapshot;
 import org.core.entity.living.fish.cod.LiveCod;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.BEntityType;
 import org.ships.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class BCodSnapshot extends BEntitySnapshot<LiveCod> implements CodSnapshot {
 
-    public BCodSnapshot(ExactPosition position) {
+    public BCodSnapshot(SyncExactPosition position) {
         super(position);
     }
 

@@ -1,4 +1,4 @@
-package org.ships.implementation.bukkit.world.position;
+package org.ships.implementation.bukkit.world.position.impl.sync;
 
 import org.core.CorePlugin;
 import org.core.entity.EntitySnapshot;
@@ -9,8 +9,8 @@ import org.core.exceptions.BlockNotSupported;
 import org.core.text.Text;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
-import org.core.world.position.BlockPosition;
-import org.core.world.position.Position;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncPosition;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.KeyedData;
@@ -32,7 +32,7 @@ import org.ships.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class BBlockPosition implements BlockPosition {
+public class BBlockPosition implements SyncBlockPosition {
 
     protected org.bukkit.block.Block block;
 
@@ -72,7 +72,7 @@ public class BBlockPosition implements BlockPosition {
     }
 
     @Override
-    public Position<Integer> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
+    public SyncPosition<Integer> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
         BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE);
 
         this.block.setBlockData(((IBBlockDetails)details).getBukkitData(), physicsFlag.getBukitValue());
@@ -88,7 +88,7 @@ public class BBlockPosition implements BlockPosition {
     }
 
     @Override
-    public Position<Integer> setBlock(BlockDetails details, LivePlayer... player) {
+    public SyncPosition<Integer> setBlock(BlockDetails details, LivePlayer... player) {
         Stream.of(player).forEach(lp -> ((BLivePlayer)lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((IBBlockDetails)details).getBukkitData()));
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if(opTile.isPresent()){
@@ -107,7 +107,7 @@ public class BBlockPosition implements BlockPosition {
     }
 
     @Override
-    public Position<Integer> resetBlock(LivePlayer... player) {
+    public SyncPosition<Integer> resetBlock(LivePlayer... player) {
         return setBlock(getBlockDetails(), player);
     }
 
@@ -124,10 +124,10 @@ public class BBlockPosition implements BlockPosition {
 
     @Override
     public boolean equals(Object value){
-        if(!(value instanceof Position)){
+        if(!(value instanceof SyncPosition)){
             return false;
         }
-        Position<? extends Number> pos = (Position<? extends Number>)value;
+        SyncPosition<? extends Number> pos = (SyncPosition<? extends Number>)value;
         return pos.getPosition().equals(getPosition());
     }
 }

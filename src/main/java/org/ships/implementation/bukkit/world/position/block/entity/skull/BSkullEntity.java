@@ -3,7 +3,6 @@ package org.ships.implementation.bukkit.world.position.block.entity.skull;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockState;
 import org.core.entity.living.human.player.User;
-import org.core.world.position.BlockPosition;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
 import org.core.world.position.block.entity.skull.LiveSkull;

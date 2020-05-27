@@ -5,7 +5,6 @@ import org.core.platform.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class BScheduler implements Scheduler {
@@ -44,8 +43,7 @@ public class BScheduler implements Scheduler {
         this.displayName = builder.getDisplayName().orElse(null);
         this.async = builder.isAsync();
         if(this.displayName == null){
-            System.err.println("No Display Name");
-            new IOException("No DisplayName").printStackTrace();
+            throw new IllegalStateException("No DisplayName");
         }
         builder.getToRunAfter().ifPresent(s -> this.runAfter = s);
     }

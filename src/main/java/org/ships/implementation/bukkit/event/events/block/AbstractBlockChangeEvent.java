@@ -4,7 +4,7 @@ import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.event.events.block.BlockChangeEvent;
 import org.core.world.expload.Explosion;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockTypes;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
@@ -15,11 +15,11 @@ import java.util.List;
 
 public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
-    protected BlockPosition position;
+    protected SyncBlockPosition position;
     protected BlockDetails before;
     protected BlockDetails after;
 
-    public AbstractBlockChangeEvent(BlockPosition pos, BlockDetails before, BlockDetails after){
+    public AbstractBlockChangeEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after){
         this.position = pos;
         this.before = before;
         this.after = after;
@@ -36,7 +36,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
     }
 
     @Override
-    public BlockPosition getPosition() {
+    public SyncBlockPosition getPosition() {
         return this.position;
     }
 
@@ -46,7 +46,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         protected boolean cancelled;
         protected Collection<BlockSnapshot> collection;
 
-        public PlaceBlockPlayerPostEvent(BlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot> affected) {
+        public PlaceBlockPlayerPostEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot> affected) {
             super(pos, before, after);
             this.player = player;
             this.collection = affected;
@@ -80,7 +80,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         List<DroppedItemSnapshot> toRemove = new ArrayList<>();
         LivePlayer player;
 
-        public BreakBlockPostEvent(BlockDetails pre, BlockPosition pos, LivePlayer player, Collection<DroppedItemSnapshot> items) {
+        public BreakBlockPostEvent(BlockDetails pre, SyncBlockPosition pos, LivePlayer player, Collection<DroppedItemSnapshot> items) {
             super(pos, pre, pos.getBlockDetails());
             this.items = items;
             this.player = player;
@@ -108,7 +108,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         protected boolean cancelled;
         protected Explosion explosion;
 
-        public BreakBlockChangeExplode(BlockPosition pos, Explosion explosion) {
+        public BreakBlockChangeExplode(SyncBlockPosition pos, Explosion explosion) {
             super(pos, pos.getBlockDetails(), BlockTypes.AIR.get().getDefaultBlockDetails());
             this.explosion = explosion;
         }
@@ -134,7 +134,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         protected LivePlayer player;
         protected boolean isCancelled;
 
-        public BreakBlockChangeEventPlayer(BlockPosition pos, LivePlayer player) {
+        public BreakBlockChangeEventPlayer(SyncBlockPosition pos, LivePlayer player) {
             super(pos, pos.getBlockDetails(), BlockTypes.AIR.get().getDefaultBlockDetails());
             this.player = player;
         }

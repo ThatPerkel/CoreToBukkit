@@ -22,7 +22,7 @@ import org.core.event.Event;
 import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
 import org.core.text.Text;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
@@ -35,8 +35,8 @@ import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.expload.EntityExplosion;
-import org.ships.implementation.bukkit.world.position.BBlockPosition;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BlockStateSnapshot;
 
@@ -49,9 +49,9 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onPlayerPlaceBlock(BlockPlaceEvent event){
-        BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData());
-        BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData());
-        BlockPosition position = new BBlockPosition(event.getBlock());
+        BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData(), false);
+        BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData(), false);
+        SyncBlockPosition position = new BBlockPosition(event.getBlock());
         LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
         List<BlockSnapshot> collection = Collections.singletonList(new1.createSnapshot(position));
         AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 = new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(position, old, new1, player, collection);
@@ -63,9 +63,9 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onPlayerPlaceMultiBlock(BlockMultiPlaceEvent event){
-        BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData());
-        BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData());
-        BlockPosition position = new BBlockPosition(event.getBlock());
+        BlockDetails old = new BBlockDetails(event.getBlockReplacedState().getBlockData(), false);
+        BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData(), false);
+        SyncBlockPosition position = new BBlockPosition(event.getBlock());
         LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
         List<BlockSnapshot> collection = new ArrayList<>();
         event.getReplacedBlockStates().forEach(bs -> collection.add(new BlockStateSnapshot(bs)));
@@ -168,7 +168,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onExplode(org.bukkit.event.entity.EntityExplodeEvent event){
-        List<BlockPosition> positions = new ArrayList<>();
+        List<SyncBlockPosition> positions = new ArrayList<>();
         List<Block> list = event.blockList();
         for (Block value : list) {
             positions.add(new BBlockPosition(value));
@@ -177,7 +177,7 @@ public class BukkitListener implements Listener {
         EntityExplosion explosion = new EntityExplosion(entity, positions);
         Iterator<Block> iterator = event.blockList().iterator();
         while(iterator.hasNext()){
-            BlockPosition block = new BBlockPosition(iterator.next());
+            SyncBlockPosition block = new BBlockPosition(iterator.next());
             AbstractBlockChangeEvent.BreakBlockChangeExplode event2 = new AbstractBlockChangeEvent.BreakBlockChangeExplode(block, explosion);
             call(event2);
             if(event2.isCancelled()){

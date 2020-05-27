@@ -7,18 +7,18 @@ import org.core.entity.living.AgeableEntity;
 import org.core.entity.living.hostile.undead.classic.ClassicZombieSnapshot;
 import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
 import org.core.inventory.inventories.general.entity.ZombieInventory;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.entity.BClassicZombieInventorySnapshot;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implements ClassicZombieSnapshot {
 
     protected boolean isAdult;
     protected BClassicZombieInventorySnapshot inventory;
 
-    public BZombieSnapshot(ExactPosition position) {
+    public BZombieSnapshot(SyncExactPosition position) {
         super(position);
     }
 

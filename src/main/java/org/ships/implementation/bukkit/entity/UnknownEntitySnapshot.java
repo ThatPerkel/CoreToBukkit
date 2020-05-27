@@ -2,7 +2,7 @@ package org.ships.implementation.bukkit.entity;
 
 import org.core.entity.EntitySnapshot;
 import org.ships.implementation.bukkit.world.BWorldExtent;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class UnknownEntitySnapshot<T extends org.bukkit.entity.Entity> extends BEntitySnapshot<UnknownLiveEntity<T>> {
 

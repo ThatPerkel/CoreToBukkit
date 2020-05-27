@@ -9,17 +9,17 @@ import org.core.entity.living.animal.parrot.LiveParrot;
 import org.core.entity.living.animal.parrot.Parrot;
 import org.core.entity.living.animal.parrot.ParrotSnapshot;
 import org.core.entity.living.animal.parrot.ParrotType;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveParrot;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class BParrotSnapshot extends BEntitySnapshot<LiveParrot> implements ParrotSnapshot {
 
     protected ParrotType type;
     protected boolean adult;
 
-    public BParrotSnapshot(ExactPosition position) {
+    public BParrotSnapshot(SyncExactPosition position) {
         super(position);
     }
 

@@ -4,7 +4,7 @@ import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.inventory.inventories.snapshots.entity.PlayerInventorySnapshot;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.VaultService;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
@@ -43,7 +43,7 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
         this.inventorySnapshot = player.getInventory().createSnapshot();
     }
 
-    public BPlayerSnapshot(String name, ExactPosition position) {
+    public BPlayerSnapshot(String name, SyncExactPosition position) {
         super(position);
         this.name = name;
         this.inventorySnapshot = null; //TODO

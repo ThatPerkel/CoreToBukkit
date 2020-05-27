@@ -27,7 +27,7 @@ import org.core.text.TextColour;
 import org.core.text.TextColours;
 import org.core.world.boss.colour.BossColour;
 import org.core.world.boss.colour.BossColours;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
@@ -49,7 +49,7 @@ import org.ships.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.ships.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.ships.implementation.bukkit.text.BTextColour;
 import org.ships.implementation.bukkit.world.boss.colour.BBossColour;
-import org.ships.implementation.bukkit.world.position.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
 import org.ships.implementation.bukkit.world.position.block.entity.unknown.BLiveUnknownContainerTileEntity;
@@ -156,12 +156,12 @@ public class BukkitPlatform implements Platform {
         return null;
     }
 
-    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, S> type, ExactPosition position){
+    public <E extends LiveEntity, S extends EntitySnapshot<E>> Optional<S> createSnapshot(EntityType<E, S> type, SyncExactPosition position){
         if(type.equals(EntityTypes.PLAYER) || type.equals(EntityTypes.HUMAN)){
             return Optional.empty();
         }
         try {
-            return Optional.of(type.getSnapshotClass().getConstructor(ExactPosition.class).newInstance(position));
+            return Optional.of(type.getSnapshotClass().getConstructor(SyncExactPosition.class).newInstance(position));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

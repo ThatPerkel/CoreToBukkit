@@ -4,12 +4,12 @@ import org.core.CorePlugin;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
 import org.core.vector.types.Vector3Double;
-import org.core.world.position.BlockPosition;
-import org.core.world.position.ExactPosition;
-import org.core.world.position.Position;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
+import org.core.world.position.impl.sync.SyncPosition;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -71,8 +71,8 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity setPosition(Position<? extends Number> position) {
-        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition)position : (BExactPosition) ((BlockPosition)position).toExactPosition();
+    public BLiveEntity setPosition(SyncPosition<? extends Number> position) {
+        BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition)position : (BExactPosition) ((SyncBlockPosition)position).toExactPosition();
         this.entity.teleport(position1.getBukkitLocation());
         return this;
     }
@@ -113,7 +113,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public ExactPosition getPosition() {
+    public SyncExactPosition getPosition() {
         return new BExactPosition(entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getWorld());
     }
 

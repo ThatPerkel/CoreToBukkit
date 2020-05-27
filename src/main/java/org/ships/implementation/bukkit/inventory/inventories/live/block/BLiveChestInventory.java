@@ -4,11 +4,11 @@ import org.core.inventory.inventories.live.block.LiveChestInventory;
 import org.core.inventory.inventories.snapshots.block.ChestInventorySnapshot;
 import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BChestInventorySnapshot;
 import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
-import org.ships.implementation.bukkit.world.position.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -63,7 +63,7 @@ public class BLiveChestInventory implements LiveChestInventory {
     }
 
     @Override
-    public BlockPosition getPosition() {
+    public SyncBlockPosition getPosition() {
         return new BBlockPosition(this.chest.getBlock());
     }
 

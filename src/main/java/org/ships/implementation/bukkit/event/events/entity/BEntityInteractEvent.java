@@ -3,19 +3,19 @@ package org.ships.implementation.bukkit.event.events.entity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.events.entity.EntityInteractEvent;
 import org.core.world.direction.Direction;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 
 public class BEntityInteractEvent {
 
     public static class PlayerInteractWithBlock implements EntityInteractEvent.WithBlock.AsPlayer {
 
-        protected BlockPosition position;
+        protected SyncBlockPosition position;
         protected LivePlayer player;
         protected Direction direction;
         protected int click;
         protected boolean cancelled;
 
-        public PlayerInteractWithBlock(BlockPosition position, int click, Direction clickedFace, LivePlayer player){
+        public PlayerInteractWithBlock(SyncBlockPosition position, int click, Direction clickedFace, LivePlayer player){
             this.player = player;
             this.position = position;
             this.direction = clickedFace;
@@ -23,7 +23,7 @@ public class BEntityInteractEvent {
         }
 
         @Override
-        public BlockPosition getInteractPosition() {
+        public SyncBlockPosition getInteractPosition() {
             return this.position;
         }
 

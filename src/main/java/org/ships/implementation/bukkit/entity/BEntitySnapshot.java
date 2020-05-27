@@ -4,9 +4,9 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
 import org.core.vector.types.Vector3Double;
-import org.core.world.position.BlockPosition;
-import org.core.world.position.ExactPosition;
-import org.core.world.position.Position;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
+import org.core.world.position.impl.sync.SyncPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,7 +17,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     protected double pitch;
     protected double yaw;
     protected double roll;
-    protected ExactPosition position;
+    protected SyncExactPosition position;
     protected Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected boolean hasGravity;
     protected Vector3Double velocity;
@@ -25,7 +25,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     protected boolean isCustomNameVisible;
     protected T createdFrom;
 
-    public BEntitySnapshot(ExactPosition position){
+    public BEntitySnapshot(SyncExactPosition position){
         this.position = position;
     }
 
@@ -86,8 +86,8 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public EntitySnapshot<T> setPosition(Position<? extends Number> position) {
-        this.position = position instanceof ExactPosition ? (ExactPosition)position : ((BlockPosition)position).toExactPosition();
+    public EntitySnapshot<T> setPosition(SyncPosition<? extends Number> position) {
+        this.position = position instanceof SyncExactPosition ? (SyncExactPosition)position : ((SyncBlockPosition)position).toExactPosition();
         return this;
     }
 
@@ -124,7 +124,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public ExactPosition getPosition() {
+    public SyncExactPosition getPosition() {
         return this.position;
     }
 

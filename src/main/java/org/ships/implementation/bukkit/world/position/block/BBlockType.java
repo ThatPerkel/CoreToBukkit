@@ -45,7 +45,7 @@ public class BBlockType implements BlockType {
 
     @Override
     public BlockDetails getDefaultBlockDetails() {
-        return new BBlockDetails(this.material.createBlockData());
+        return new BBlockDetails(this.material.createBlockData(), false);
     }
 
     @Override

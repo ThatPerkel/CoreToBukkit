@@ -6,16 +6,16 @@ import org.core.entity.EntityTypes;
 import org.core.entity.living.AgeableEntity;
 import org.core.entity.living.animal.chicken.ChickenSnapshot;
 import org.core.entity.living.animal.chicken.LiveChicken;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveChicken;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 public class BChickenSnapshot extends BEntitySnapshot<LiveChicken> implements ChickenSnapshot {
 
     private boolean adult;
 
-    public BChickenSnapshot(ExactPosition position) {
+    public BChickenSnapshot(SyncExactPosition position) {
         super(position);
     }
 

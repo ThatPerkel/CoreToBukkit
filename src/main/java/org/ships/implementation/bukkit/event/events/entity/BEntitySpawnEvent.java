@@ -2,15 +2,15 @@ package org.ships.implementation.bukkit.event.events.entity;
 
 import org.core.entity.LiveEntity;
 import org.core.event.events.entity.EntitySpawnEvent;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 
 public class BEntitySpawnEvent implements EntitySpawnEvent {
 
     boolean cancel;
     LiveEntity entity;
-    ExactPosition position;
+    SyncExactPosition position;
 
-    public BEntitySpawnEvent(ExactPosition position, LiveEntity entity){
+    public BEntitySpawnEvent(SyncExactPosition position, LiveEntity entity){
         this.entity = entity;
         this.position = position;
     }
@@ -31,7 +31,7 @@ public class BEntitySpawnEvent implements EntitySpawnEvent {
     }
 
     @Override
-    public ExactPosition getPosition() {
+    public SyncExactPosition getPosition() {
         return this.position;
     }
 }

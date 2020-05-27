@@ -4,12 +4,16 @@ import org.bukkit.block.BlockState;
 import org.core.CorePlugin;
 import org.core.entity.LiveEntity;
 import org.core.world.WorldExtent;
-import org.core.world.position.BlockPosition;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.async.ASyncBlockPosition;
+import org.core.world.position.impl.async.ASyncExactPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
-import org.ships.implementation.bukkit.world.position.BBlockPosition;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.async.BAsyncExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,13 +32,23 @@ public class BWorldExtent implements WorldExtent {
     }
 
     @Override
-    public ExactPosition getPosition(double x, double y, double z) {
+    public SyncExactPosition getPosition(double x, double y, double z) {
         return new BExactPosition(x, y, z, this.world);
     }
 
     @Override
-    public BlockPosition getPosition(int x, int y, int z) {
+    public ASyncExactPosition getAsyncPosition(double x, double y, double z) {
+        return new BAsyncExactPosition(this.world, x, y, z);
+    }
+
+    @Override
+    public SyncBlockPosition getPosition(int x, int y, int z) {
         return new BBlockPosition(x, y, z, this.world);
+    }
+
+    @Override
+    public ASyncBlockPosition getAsyncPosition(int x, int y, int z) {
+        return new BAsyncBlockPosition(this.world, x, y, z);
     }
 
     @Override

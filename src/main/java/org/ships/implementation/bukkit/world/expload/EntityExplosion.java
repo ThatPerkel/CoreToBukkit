@@ -2,7 +2,7 @@ package org.ships.implementation.bukkit.world.expload;
 
 import org.core.entity.Entity;
 import org.core.world.expload.Explosion;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,15 +10,15 @@ import java.util.Collections;
 public class EntityExplosion implements Explosion.EntityExplosion {
 
     protected Entity source;
-    protected Collection<BlockPosition> affected;
+    protected Collection<SyncBlockPosition> affected;
 
-    public EntityExplosion(Entity entity, Collection<BlockPosition> affected){
+    public EntityExplosion(Entity entity, Collection<SyncBlockPosition> affected){
         this.source = entity;
         this.affected = affected;
     }
 
     @Override
-    public Collection<BlockPosition> getAffectedPositions() {
+    public Collection<SyncBlockPosition> getAffectedPositions() {
         return Collections.unmodifiableCollection(this.affected);
     }
 

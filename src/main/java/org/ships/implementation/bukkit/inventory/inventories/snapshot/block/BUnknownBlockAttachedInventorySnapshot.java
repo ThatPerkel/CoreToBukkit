@@ -5,7 +5,7 @@ import org.core.inventory.inventories.live.block.LiveUnknownBlockAttachedInvento
 import org.core.inventory.inventories.snapshots.block.UnknownBlockAttachedInventorySnapshot;
 import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.entity.LiveTileEntity;
 
@@ -17,9 +17,9 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
 
     protected Set<SlotSnapshot> slots = new HashSet<>();
     protected BlockType[] types;
-    protected BlockPosition position;
+    protected SyncBlockPosition position;
 
-    public BUnknownBlockAttachedInventorySnapshot(BlockPosition position, BlockType... types){
+    public BUnknownBlockAttachedInventorySnapshot(SyncBlockPosition position, BlockType... types){
         this.types = types;
         this.position = position;
     }
@@ -36,7 +36,7 @@ public class BUnknownBlockAttachedInventorySnapshot implements UnknownBlockAttac
     }
 
     @Override
-    public BlockPosition getPosition() {
+    public SyncBlockPosition getPosition() {
         return this.position;
     }
 

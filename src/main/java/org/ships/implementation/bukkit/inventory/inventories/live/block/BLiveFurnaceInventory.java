@@ -5,11 +5,11 @@ import org.core.inventory.inventories.live.block.LiveFurnaceInventory;
 import org.core.inventory.inventories.snapshots.block.FurnaceInventorySnapshot;
 import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BFurnaceInventorySnapshot;
 import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
-import org.ships.implementation.bukkit.world.position.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.Optional;
 
@@ -87,7 +87,7 @@ public class BLiveFurnaceInventory implements LiveFurnaceInventory {
     }
 
     @Override
-    public BlockPosition getPosition() {
+    public SyncBlockPosition getPosition() {
         return new BBlockPosition(this.block.getBlock());
     }
 }

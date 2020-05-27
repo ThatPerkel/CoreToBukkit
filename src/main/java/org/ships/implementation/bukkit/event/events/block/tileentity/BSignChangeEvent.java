@@ -3,7 +3,7 @@ package org.ships.implementation.bukkit.event.events.block.tileentity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.events.block.tileentity.SignChangeEvent;
 import org.core.text.Text;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.entity.sign.SignTileEntitySnapshot;
 import org.ships.implementation.bukkit.world.position.block.entity.sign.BSignEntitySnapshot;
 
@@ -12,10 +12,10 @@ public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
     protected boolean isCancelled;
     protected SignTileEntitySnapshot original;
     protected SignTileEntitySnapshot to;
-    protected BlockPosition position;
+    protected SyncBlockPosition position;
     protected LivePlayer player;
 
-    public BSignChangeEvent(LivePlayer player, BlockPosition position, Text... lines){
+    public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, Text... lines){
         this.position = position;
         this.original = new BSignEntitySnapshot(lines);
         this.player = player;
@@ -49,7 +49,7 @@ public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
     }
 
     @Override
-    public BlockPosition getPosition() {
+    public SyncBlockPosition getPosition() {
         return this.position;
     }
 

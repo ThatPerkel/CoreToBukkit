@@ -1,4 +1,4 @@
-package org.ships.implementation.bukkit.world.position;
+package org.ships.implementation.bukkit.world.position.impl.sync;
 
 import org.bukkit.Location;
 import org.core.CorePlugin;
@@ -9,9 +9,9 @@ import org.core.entity.living.human.player.LivePlayer;
 import org.core.vector.types.Vector3Double;
 import org.core.vector.types.Vector3Int;
 import org.core.world.WorldExtent;
-import org.core.world.position.BlockPosition;
-import org.core.world.position.ExactPosition;
-import org.core.world.position.Position;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
+import org.core.world.position.impl.sync.SyncPosition;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.entity.LiveTileEntity;
@@ -21,7 +21,7 @@ import org.ships.implementation.bukkit.world.BWorldExtent;
 
 import java.util.Optional;
 
-public class BExactPosition implements ExactPosition {
+public class BExactPosition implements SyncExactPosition {
 
     protected org.bukkit.Location location;
 
@@ -48,7 +48,7 @@ public class BExactPosition implements ExactPosition {
     }
 
     @Override
-    public BlockPosition toBlockPosition() {
+    public SyncBlockPosition toBlockPosition() {
         return new BBlockPosition(this.location.getBlock());
     }
 
@@ -63,19 +63,19 @@ public class BExactPosition implements ExactPosition {
     }
 
     @Override
-    public Position<Double> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
+    public SyncPosition<Double> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
         this.toBlockPosition().setBlock(details, flags);
         return this;
     }
 
     @Override
-    public Position<Double> setBlock(BlockDetails details, LivePlayer... player) {
+    public SyncPosition<Double> setBlock(BlockDetails details, LivePlayer... player) {
         toBlockPosition().setBlock(details, player);
         return this;
     }
 
     @Override
-    public Position<Double> resetBlock(LivePlayer... player) {
+    public SyncPosition<Double> resetBlock(LivePlayer... player) {
         toBlockPosition().resetBlock(player);
         return this;
     }
@@ -92,10 +92,10 @@ public class BExactPosition implements ExactPosition {
 
     @Override
     public boolean equals(Object value){
-        if(!(value instanceof Position)){
+        if(!(value instanceof SyncPosition)){
             return false;
         }
-        Position<? extends Number> pos = (Position<? extends Number>)value;
+        SyncPosition<? extends Number> pos = (SyncPosition<? extends Number>)value;
         return pos.getPosition().equals(getPosition());
     }
 }

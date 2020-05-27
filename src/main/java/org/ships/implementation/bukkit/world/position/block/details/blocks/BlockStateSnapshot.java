@@ -2,7 +2,9 @@ package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
 import org.bukkit.block.data.BlockData;
 import org.core.CorePlugin;
-import org.core.world.position.BlockPosition;
+import org.core.world.position.impl.Position;
+import org.core.world.position.impl.async.ASyncBlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
@@ -12,7 +14,7 @@ import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
-import org.ships.implementation.bukkit.world.position.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BRotationalData;
@@ -23,7 +25,7 @@ import org.ships.implementation.bukkit.world.position.block.details.blocks.data.
 
 import java.util.Optional;
 
-public class BlockStateSnapshot implements BlockSnapshot, IBBlockDetails {
+public class BlockStateSnapshot implements BlockSnapshot<SyncBlockPosition>, IBBlockDetails {
 
     private class BTileEntityKeyedData implements TileEntityKeyedData{
 
@@ -63,7 +65,7 @@ public class BlockStateSnapshot implements BlockSnapshot, IBBlockDetails {
     }
 
     @Override
-    public BlockPosition getPosition() {
+    public SyncBlockPosition getPosition() {
         return new BBlockPosition(this.state.getBlock());
     }
 
@@ -73,8 +75,11 @@ public class BlockStateSnapshot implements BlockSnapshot, IBBlockDetails {
     }
 
     @Override
-    public BlockSnapshot createSnapshot(BlockPosition position) {
-        return new BExtendedBlockSnapshot(position, this.state.getBlockData());
+    public <T extends Position<Integer>> BlockSnapshot<T> createSnapshot(T position){
+        if(position instanceof SyncBlockPosition){
+            return (BlockSnapshot<T>) new BExtendedBlockSnapshot((SyncBlockPosition) position, this.state.getBlockData());
+        }
+        return (BlockSnapshot<T>) new AsyncBlockStateSnapshot((ASyncBlockPosition) position, this.state.getBlockData());
     }
 
     @Override
@@ -105,8 +110,8 @@ public class BlockStateSnapshot implements BlockSnapshot, IBBlockDetails {
     }
 
     @Override
-    public BlockSnapshot createCopyOf() {
-        return createSnapshot(this.getPosition());
+    public BlockStateSnapshot createCopyOf() {
+        return (BlockStateSnapshot) createSnapshot(this.getPosition());
     }
 
     @Override

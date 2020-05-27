@@ -7,10 +7,10 @@ import org.core.entity.projectile.ProjectileEntity;
 import org.core.entity.projectile.item.snowball.LiveSnowballEntity;
 import org.core.entity.projectile.item.snowball.SnowballEntitySnapshot;
 import org.core.source.projectile.ProjectileSource;
-import org.core.world.position.ExactPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.projectile.item.live.BLiveSnowballEntity;
-import org.ships.implementation.bukkit.world.position.BExactPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ public class BSnowballEntitySnapshot extends BEntitySnapshot<LiveSnowballEntity>
 
     private ProjectileSource source;
 
-    public BSnowballEntitySnapshot(ExactPosition position) {
+    public BSnowballEntitySnapshot(SyncExactPosition position) {
         super(position);
     }
 
