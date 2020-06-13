@@ -112,6 +112,12 @@ public class BBlockPosition implements SyncBlockPosition {
     }
 
     @Override
+    public SyncPosition<Integer> destroy() {
+        this.getBukkitBlock().breakNaturally();
+        return this;
+    }
+
+    @Override
     public Optional<LiveTileEntity> getTileEntity() {
         BukkitPlatform platform = (BukkitPlatform)CorePlugin.getPlatform();
         return platform.createTileEntityInstance(getBukkitBlock().getState());

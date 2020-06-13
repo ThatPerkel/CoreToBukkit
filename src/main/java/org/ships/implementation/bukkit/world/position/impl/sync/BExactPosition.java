@@ -91,6 +91,12 @@ public class BExactPosition implements SyncExactPosition {
     }
 
     @Override
+    public SyncPosition<Double> destroy() {
+        toBlockPosition().destroy();
+        return this;
+    }
+
+    @Override
     public boolean equals(Object value){
         if(!(value instanceof SyncPosition)){
             return false;
