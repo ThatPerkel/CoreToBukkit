@@ -19,11 +19,12 @@ import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
 import org.ships.implementation.bukkit.world.BWorldExtent;
+import org.ships.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.util.Optional;
 
-public class BAsyncExactPosition implements ASyncExactPosition {
+public class BAsyncExactPosition extends BAbstractPosition<Double> implements ASyncExactPosition {
 
     private Location location;
 

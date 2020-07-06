@@ -120,6 +120,31 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     }
 
     @Override
+    public String parseString(ConfigurationNode node, String defaut) {
+        return null;
+    }
+
+    @Override
+    public int parseInt(ConfigurationNode node, int defaut) {
+        return 0;
+    }
+
+    @Override
+    public double parseDouble(ConfigurationNode node, double defaut) {
+        return 0;
+    }
+
+    @Override
+    public boolean parseBoolean(ConfigurationNode node, boolean defaut) {
+        return false;
+    }
+
+    @Override
+    public <T> List<T> parseList(ConfigurationNode node, StringParser<T> parser, List<T> defaut) {
+        return null;
+    }
+
+    @Override
     public <T> void set(ConfigurationNode node, Parser<?, T> parser, T value) {
         if(parser instanceof StringParser.SpecialParser){
             ((StringParser.SpecialParser<T>) parser).set(value, this, node);

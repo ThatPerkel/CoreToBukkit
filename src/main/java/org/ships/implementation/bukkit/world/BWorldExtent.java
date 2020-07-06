@@ -94,4 +94,12 @@ public class BWorldExtent implements WorldExtent {
     public String getPlatformUniquieId() {
         return getName();
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof WorldExtent)){
+            return false;
+        }
+        return ((WorldExtent)obj).getName().equals(this.getName());
+    }
 }

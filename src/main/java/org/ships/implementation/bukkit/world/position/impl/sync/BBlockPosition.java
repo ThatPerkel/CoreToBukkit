@@ -28,11 +28,12 @@ import org.ships.implementation.bukkit.world.BWorldExtent;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BExtendedBlockSnapshot;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.IBBlockDetails;
 import org.ships.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
+import org.ships.implementation.bukkit.world.position.impl.BAbstractPosition;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class BBlockPosition implements SyncBlockPosition {
+public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBlockPosition {
 
     protected org.bukkit.block.Block block;
 

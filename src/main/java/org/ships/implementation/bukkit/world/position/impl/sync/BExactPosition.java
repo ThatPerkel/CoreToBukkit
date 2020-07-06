@@ -18,10 +18,11 @@ import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.BWorldExtent;
+import org.ships.implementation.bukkit.world.position.impl.BAbstractPosition;
 
 import java.util.Optional;
 
-public class BExactPosition implements SyncExactPosition {
+public class BExactPosition extends BAbstractPosition<Double> implements SyncExactPosition {
 
     protected org.bukkit.Location location;
 

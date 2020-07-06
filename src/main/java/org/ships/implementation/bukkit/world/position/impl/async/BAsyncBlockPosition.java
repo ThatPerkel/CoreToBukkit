@@ -18,11 +18,12 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncPosition;
 import org.ships.implementation.bukkit.world.BWorldExtent;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.AsyncBlockStateSnapshot;
+import org.ships.implementation.bukkit.world.position.impl.BAbstractPosition;
 import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.Optional;
 
-public class BAsyncBlockPosition implements ASyncBlockPosition {
+public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements ASyncBlockPosition {
 
     private Block block;
 
