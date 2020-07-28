@@ -39,7 +39,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity setGravity(boolean check) {
+    public BLiveEntity<T> setGravity(boolean check) {
         this.entity.setGravity(check);
         return this;
     }
@@ -50,7 +50,12 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity setPitch(double value) {
+    public boolean isOnGround() {
+        return this.entity.isOnGround();
+    }
+
+    @Override
+    public BLiveEntity<T> setPitch(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
         loc.setPitch((float)value);
         entity.teleport(loc);
@@ -58,7 +63,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity setYaw(double value) {
+    public BLiveEntity<T> setYaw(double value) {
         org.bukkit.Location loc = this.entity.getLocation();
         loc.setYaw((float)value);
         entity.teleport(loc);
@@ -66,12 +71,12 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public BLiveEntity setRoll(double value) {
+    public BLiveEntity<T> setRoll(double value) {
         return this;
     }
 
     @Override
-    public BLiveEntity setPosition(SyncPosition<? extends Number> position) {
+    public BLiveEntity<T> setPosition(SyncPosition<? extends Number> position) {
         BExactPosition position1 = position instanceof BExactPosition ? (BExactPosition)position : (BExactPosition) ((SyncBlockPosition)position).toExactPosition();
         this.entity.teleport(position1.getBukkitLocation());
         return this;
@@ -96,9 +101,7 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     public Collection<LiveEntity> getPassengers() {
         BukkitPlatform bukkitPlatform = (BukkitPlatform)CorePlugin.getPlatform();
         Set<LiveEntity> set = new HashSet<>();
-        this.entity.getPassengers().forEach(e -> {
-            set.add(bukkitPlatform.createEntityInstance(e));
-        });
+        this.entity.getPassengers().forEach(e -> set.add(bukkitPlatform.createEntityInstance(e)));
         return set;
     }
 

@@ -20,6 +20,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     protected SyncExactPosition position;
     protected Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected boolean hasGravity;
+    protected boolean isOnGround;
     protected Vector3Double velocity;
     protected Text customName;
     protected boolean isCustomNameVisible;
@@ -37,8 +38,9 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
         this.pitch = entity.getPitch();
         this.roll = entity.getRoll();
         this.position = entity.getPosition();
-        entity.getPassengers().stream().forEach(e -> this.passengers.add(e.createSnapshot()));
+        entity.getPassengers().forEach(e -> this.passengers.add(e.createSnapshot()));
         this.createdFrom = entity;
+        this.isOnGround = entity.isOnGround();
     }
 
     public BEntitySnapshot(EntitySnapshot<T> entity){
@@ -51,6 +53,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
         this.position = entity.getPosition();
         this.passengers.addAll(entity.getPassengers());
         this.createdFrom = entity.getCreatedFrom().orElse(null);
+        this.isOnGround = entity.isOnGround();
     }
 
     protected <L extends LiveEntity> L applyDefaults(L entity){
@@ -65,6 +68,11 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
         entity.setRoll(this.roll);
         entity.setYaw(this.yaw);
         return entity;
+    }
+
+    @Override
+    public boolean isOnGround() {
+        return this.isOnGround;
     }
 
     @Override
