@@ -7,12 +7,14 @@ import org.core.entity.scene.AttachableEntity;
 import org.core.entity.scene.itemframe.ItemFrame;
 import org.core.entity.scene.itemframe.LiveItemFrame;
 import org.core.exceptions.DirectionNotSupported;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
 import org.core.world.direction.Direction;
 import org.core.world.direction.FourFacingDirection;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.scene.snapshot.BItemFrameSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLiveItemFrameSlot;
+import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 
 import java.util.stream.Stream;
@@ -32,6 +34,11 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
     public BLiveItemFrame(ItemFrameSnapshot snapshot){
         super(snapshot);
     }*/
+
+    @Override
+    public void setItem(ItemStack stack) {
+        this.getBukkitEntity().setItem(((BAbstractItemStack)stack).getBukkitItem());
+    }
 
     @Override
     public Direction getItemRotation() {
@@ -72,7 +79,7 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
     }
 
     @Override
-    public ItemFrame setItemRotation(Direction direction, boolean flip) throws DirectionNotSupported {
+    public BLiveItemFrame setItemRotation(Direction direction, boolean flip) throws DirectionNotSupported {
         if(!Stream.of(getDirections()).anyMatch(d -> d.equals(direction))) {
             throw new DirectionNotSupported(direction, "ItemFrame");
         }
@@ -122,7 +129,7 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
     }
 
     @Override
-    public AttachableEntity setDirection(Direction direction) throws DirectionNotSupported {
+    public BLiveItemFrame setDirection(Direction direction) throws DirectionNotSupported {
         for(Direction dir : getDirections()){
             if(dir.equals(direction)){
                 throw new DirectionNotSupported(direction, "ItemFrame");
@@ -133,7 +140,13 @@ public class BLiveItemFrame extends BLiveEntity<org.bukkit.entity.ItemFrame> imp
     }
 
     @Override
-    public EntitySnapshot createSnapshot() {
+    public void remove() {
+        this.getBukkitEntity().setItem(null);
+        this.getBukkitEntity().remove();
+    }
+
+    @Override
+    public BItemFrameSnapshot createSnapshot() {
         return new BItemFrameSnapshot(this);
     }
 }

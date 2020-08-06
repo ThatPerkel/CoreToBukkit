@@ -1,18 +1,22 @@
 package org.ships.implementation.bukkit.entity.living.human.player.live;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.living.human.player.PlayerSnapshot;
 import org.core.inventory.inventories.general.entity.PlayerInventory;
 import org.core.source.viewer.CommandViewer;
 import org.core.text.Text;
+import org.core.world.position.impl.BlockPosition;
 import org.ships.implementation.bukkit.VaultService;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.living.human.player.snapshot.BPlayerSnapshot;
 import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLivePlayerInventory;
 import org.ships.implementation.bukkit.text.BText;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implements LivePlayer {
@@ -111,7 +115,7 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     @Override
     public boolean hasPermission(String permission) {
         org.bukkit.entity.Player player = getBukkitEntity();
-        String[] blocks = permission.split(".");
+        String[] blocks = permission.split("\\.");
         for(int A = 0; A < blocks.length; A++){
             StringBuilder builder = new StringBuilder();
             for (String block : blocks) {
@@ -122,6 +126,15 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
             }
         }
         return player.hasPermission(permission);
+    }
+
+    @Override
+    public Optional<BlockPosition> getBlockLookingAt(int scanLength) {
+        Block block = this.getBukkitEntity().getTargetBlockExact(scanLength);
+        if(block == null){
+            return Optional.empty();
+        }
+        return Optional.of(new BBlockPosition(block));
     }
 
     @Override
