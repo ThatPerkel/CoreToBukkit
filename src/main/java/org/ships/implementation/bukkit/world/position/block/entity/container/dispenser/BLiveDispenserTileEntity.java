@@ -32,6 +32,6 @@ public class BLiveDispenserTileEntity implements LiveDispenserTileEntity {
 
     @Override
     public DispenserTileEntitySnapshot getSnapshot() {
-        return new BDispenserTileEntitySnapshot();
+        return new BDispenserTileEntitySnapshot(this);
     }
 }

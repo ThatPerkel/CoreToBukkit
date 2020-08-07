@@ -58,17 +58,14 @@ public class BItemFrameSnapshot extends BEntitySnapshot<LiveItemFrame> implement
         try {
             frame = loc.getWorld().spawn(loc, org.bukkit.entity.ItemFrame.class);
         } catch (IllegalArgumentException e) {
-            System.out.println(loc.getBlock().getType().name());
             Collection<Entity> entities = loc.getWorld().getNearbyEntities(loc, 1, 1, 1);
             if (entities.isEmpty()) {
-                System.out.println("No Entities found");
                 throw e;
             }
             Optional<Entity> opItem = entities.stream().filter(le -> le instanceof org.bukkit.entity.ItemFrame).findAny();
             if (opItem.isPresent()) {
                 frame = (org.bukkit.entity.ItemFrame)opItem.get();
             } else {
-                System.out.println("No ItemFrames found");
                 throw e;
             }
         }

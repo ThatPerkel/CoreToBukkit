@@ -13,7 +13,7 @@ public abstract class DispenserBasedGrid implements Grid3x3 {
 
     protected List<DispenserSlot> slots = new ArrayList<>();
 
-    public class DispenserSlot implements Slot{
+    public class DispenserSlot implements Slot {
 
         private int position;
 

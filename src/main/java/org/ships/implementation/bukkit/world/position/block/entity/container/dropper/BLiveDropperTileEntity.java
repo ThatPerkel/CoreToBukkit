@@ -32,6 +32,6 @@ public class BLiveDropperTileEntity implements LiveDropperTileEntity {
 
     @Override
     public DropperTileEntitySnapshot getSnapshot() {
-        return new BDropperTileEntitySnapshot();
+        return new BDropperTileEntitySnapshot(this);
     }
 }

@@ -95,7 +95,6 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
         map.put(org.bukkit.block.Dispenser.class, BLiveDispenserTileEntity.class);
         map.put(org.bukkit.block.Furnace.class, BFurnaceEntity.class);
         map.put(org.bukkit.block.Skull.class, BSkullEntity.class);
-
         return map;
     }
 }

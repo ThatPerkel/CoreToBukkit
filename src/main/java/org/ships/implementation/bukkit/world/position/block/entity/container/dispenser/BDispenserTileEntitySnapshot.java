@@ -11,6 +11,7 @@ import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.disp
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public class BDispenserTileEntitySnapshot implements DispenserTileEntitySnapshot {
 
@@ -32,7 +33,7 @@ public class BDispenserTileEntitySnapshot implements DispenserTileEntitySnapshot
 
     @Override
     public Collection<BlockType> getSupportedBlocks() {
-        return Arrays.asList(BlockTypes.DISPENSER.get());
+        return Collections.singletonList(BlockTypes.DISPENSER.get());
     }
 
     @Override
