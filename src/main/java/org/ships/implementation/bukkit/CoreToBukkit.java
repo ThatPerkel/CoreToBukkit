@@ -3,11 +3,9 @@ package org.ships.implementation.bukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.core.CorePlugin;
-import org.core.configuration.ConfigurationFile;
-import org.core.configuration.type.ConfigurationLoaderType;
-import org.core.configuration.type.ConfigurationLoaderTypes;
+import org.core.config.ConfigurationFormat;
+import org.core.config.ConfigurationStream;
 import org.core.event.EventManager;
-import org.core.other.gui.TPSDisplay;
 import org.core.platform.Platform;
 import org.core.platform.PlatformServer;
 import org.core.schedule.SchedulerBuilder;
@@ -24,7 +22,6 @@ import org.ships.implementation.bukkit.scheduler.BSchedulerBuilder;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.boss.BServerBossBar;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -81,25 +78,26 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
     }
 
     @Override
-    public ConfigurationFile createRawConfigurationFile(File file, ConfigurationLoaderType type) {
+    public ConfigurationStream.ConfigurationFile createRawConfigurationFile(File file, ConfigurationFormat type) {
         if(file == null){
-            System.err.println("File can not be null");
-            new IOException("Unknown file").printStackTrace();
-            return null;
+            throw new IllegalStateException("File cannot be null");
         }
         if(type == null){
-            System.err.println("ConfigurationLoaderType can not be null");
-            new IOException("Unknown Configuration Loader Type").printStackTrace();
+            throw new IllegalStateException("ConfigurationFormat cannot be null");
+        }
+        boolean check = false;
+        for(String fileExt : type.getFileType()){
+            if(file.getName().endsWith(fileExt)){
+                check = true;
+            }
+        }
+        if(!check){
             return null;
         }
-        if(type.equals(ConfigurationLoaderTypes.YAML) || type.equals(ConfigurationLoaderTypes.DEFAULT)){
-            File file2 = file;
-            if(file.getName().endsWith(".temp")){
-                file2 = new File(file.getParentFile(), file.getName().substring(0, file.getName().length() - 4) + "yml");
-            }
-            return new YAMLConfigurationFile(file2);
+        if(type.equals(ConfigurationFormat.FORMAT_YAML)){
+            return new YAMLConfigurationFile(file);
         }
-        System.err.println("ConfigurationLoaderType is not supported: " + type.getId());
+        System.err.println("ConfigurationFormat is not supported: " + type.getName());
         return null;
     }
 

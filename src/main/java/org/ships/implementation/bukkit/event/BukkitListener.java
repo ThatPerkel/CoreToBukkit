@@ -1,5 +1,6 @@
 package org.ships.implementation.bukkit.event;
 
+import org.array.utils.ArrayUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,8 +20,10 @@ import org.core.CorePlugin;
 import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.Event;
+import org.core.event.EventListener;
 import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
+import org.core.platform.Plugin;
 import org.core.text.Text;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.details.BlockDetails;
@@ -53,7 +56,7 @@ public class BukkitListener implements Listener {
         BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData(), false);
         SyncBlockPosition position = new BBlockPosition(event.getBlock());
         LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
-        List<BlockSnapshot> collection = Collections.singletonList(new1.createSnapshot(position));
+        List<BlockSnapshot<SyncBlockPosition>> collection = Collections.singletonList(new1.createSnapshot(position));
         AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 = new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(position, old, new1, player, collection);
         call(event2);
         if(event2.isCancelled()) {
@@ -67,7 +70,7 @@ public class BukkitListener implements Listener {
         BlockDetails new1 = new BBlockDetails(event.getBlock().getBlockData(), false);
         SyncBlockPosition position = new BBlockPosition(event.getBlock());
         LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
-        List<BlockSnapshot> collection = new ArrayList<>();
+        List<BlockSnapshot<SyncBlockPosition>> collection = new ArrayList<>();
         event.getReplacedBlockStates().forEach(bs -> collection.add(new BlockStateSnapshot(bs)));
 
         AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent event2 = new AbstractBlockChangeEvent.PlaceBlockPlayerPostEvent(position, old, new1, player, collection);
@@ -173,7 +176,7 @@ public class BukkitListener implements Listener {
         for (Block value : list) {
             positions.add(new BBlockPosition(value));
         }
-        Entity entity = ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getEntity());
+        Entity<?> entity = ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getEntity());
         EntityExplosion explosion = new EntityExplosion(entity, positions);
         Iterator<Block> iterator = event.blockList().iterator();
         while(iterator.hasNext()){
@@ -227,7 +230,7 @@ public class BukkitListener implements Listener {
                 }
                 Class<?> class1 = parameters[0].getType();
                 if (!Event.class.isAssignableFrom(classEvent)) {
-                    System.err.println("Failed to know what to do: HEvent found on method, but no known event on " + el.getClass().getName() + "." + method.getName() + "(" + CorePlugin.toString(", ", p -> p.getType().getSimpleName() + " " + p.getName(), parameters) + ")");
+                    System.err.println("Failed to know what to do: HEvent found on method, but no known event on " + el.getClass().getName() + "." + method.getName() + "(" + ArrayUtils.toString(", ", p -> p.getType().getSimpleName() + " " + p.getName(), parameters) + ")");
                 }
                 if (class1.isAssignableFrom(classEvent)) {
                     methods.add(new BEventLaunch(key, el, method));

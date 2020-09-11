@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.text;
 
+import org.array.utils.ArrayUtils;
 import org.bukkit.ChatColor;
-import org.core.CorePlugin;
 import org.core.text.Text;
 
 public class BText implements Text {
@@ -37,6 +37,6 @@ public class BText implements Text {
 
     @Override
     public Text append(Text... text) {
-        return new BText(this.text + CorePlugin.toString("", t -> ((BText)t).text, text));
+        return new BText(this.text + ArrayUtils.toString("", t -> ((BText)t).text, text));
     }
 }

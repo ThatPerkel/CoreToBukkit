@@ -1,19 +1,18 @@
 package org.ships.implementation.bukkit.configuration;
 
+import org.array.utils.ArrayUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.core.CorePlugin;
-import org.core.configuration.ConfigurationFile;
-import org.core.configuration.ConfigurationNode;
-import org.core.configuration.parser.Parser;
-import org.core.configuration.parser.StringMapParser;
-import org.core.configuration.parser.StringParser;
+import org.core.config.ConfigurationFormat;
+import org.core.config.ConfigurationNode;
+import org.core.config.ConfigurationStream;
+import org.core.config.parser.Parser;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
-import java.util.regex.Pattern;
 
-public class YAMLConfigurationFile implements ConfigurationFile {
+public class YAMLConfigurationFile implements ConfigurationStream.ConfigurationFile {
 
     protected File file;
     protected YamlConfiguration yaml;
@@ -27,7 +26,7 @@ public class YAMLConfigurationFile implements ConfigurationFile {
         this.yaml = yaml;
     }
 
-    public YamlConfiguration getYaml(){
+    public YamlConfiguration getYaml() {
         return this.yaml;
     }
 
@@ -37,130 +36,117 @@ public class YAMLConfigurationFile implements ConfigurationFile {
     }
 
     @Override
-    public ConfigurationFile reload() {
-        this.yaml = YamlConfiguration.loadConfiguration(this.file);
-        return this;
+    public ConfigurationFormat getFormat() {
+        return ConfigurationFormat.FORMAT_YAML;
     }
 
     @Override
-    public Map<ConfigurationNode, Object> getKeyValues() {
-        Map<ConfigurationNode, Object> value = new HashMap<>();
-        this.yaml.getKeys(true).forEach(p -> {
-            value.put(new ConfigurationNode(p.split(Pattern.quote("."))), this.yaml.get(p));
-        });
+    public Optional<Double> getDouble(ConfigurationNode node) {
+        if(!this.yaml.contains(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        if(!(this.yaml.isDouble(ArrayUtils.toString(".", t -> t, node.getPath())) || this.yaml.isInt(ArrayUtils.toString(".", t->t, node.getPath())))){
+            return Optional.empty();
+        }
+        return Optional.of(this.yaml.getDouble(ArrayUtils.toString(".", t -> t, node.getPath())));
+    }
+
+    @Override
+    public Optional<Integer> getInteger(ConfigurationNode node) {
+        if(!this.yaml.contains(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        if(!this.yaml.isInt(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        int value = this.yaml.getInt(ArrayUtils.toString(".", t -> t, node.getPath()));
+        return Optional.of(value);
+    }
+
+    @Override
+    public Optional<Boolean> getBoolean(ConfigurationNode node) {
+        if(!this.yaml.contains(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        if(!this.yaml.isBoolean(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        return Optional.of(this.yaml.getBoolean(ArrayUtils.toString(".", t -> t, node.getPath())));
+    }
+
+    @Override
+    public Optional<String> getString(ConfigurationNode node) {
+        if(!this.yaml.contains(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        if(!this.yaml.isString(ArrayUtils.toString(".", t -> t, node.getPath()))){
+            return Optional.empty();
+        }
+        return Optional.ofNullable(this.yaml.getString(ArrayUtils.toString(".", t -> t, node.getPath())));
+    }
+
+    @Override
+    public <T, C extends Collection<T>> C parseCollection(ConfigurationNode node, Parser<String, T> parser, C collection) {
+        List<String> list = this.yaml.getStringList(ArrayUtils.toString(".", t -> t, node.getPath()));
+        for(String value : list){
+            parser.parse(value).ifPresent(collection::add);
+        }
+        return collection;
+    }
+
+    public void setObject(ConfigurationNode node, Object value){
+        if(node.getPath().length == 0){
+            throw new IllegalArgumentException("Node must have a path specified");
+        }
+        this.yaml.set(ArrayUtils.toString(".", t -> t, node.getPath()), value);
+    }
+
+    @Override
+    public void set(ConfigurationNode node, int value) {
+        this.setObject(node, value);
+    }
+
+    @Override
+    public void set(ConfigurationNode node, double value) {
+        this.setObject(node, value);
+
+    }
+
+    @Override
+    public void set(ConfigurationNode node, boolean value) {
+        this.setObject(node, value);
+    }
+
+    @Override
+    public void set(ConfigurationNode node, String value) {
+        this.setObject(node, value);
+    }
+
+    @Override
+    public <T> void set(ConfigurationNode node, Parser<String, T> parser, Collection<T> collection) {
+        List<String> list = new ArrayList<>(collection.size());
+        for(T value : collection){
+            try {
+                list.add(parser.unparse(value));
+            }catch (ClassCastException e){
+                System.err.println("Path: " + ArrayUtils.toString(".", t -> t, node.getPath()));
+                System.err.println("Value: (" + value.getClass().getName() + ") '" + value.toString() + "'");
+                e.printStackTrace();
+            }
+        }
+        this.setObject(node, list);
+    }
+
+    @Override
+    public Set<ConfigurationNode> getChildren(ConfigurationNode node) {
+        Set<ConfigurationNode> value = new HashSet<>();
+        this.yaml.getKeys(true).forEach(p -> value.add(new ConfigurationNode(p.split("\\."))));
         return value;
     }
 
     @Override
-    public <T> Optional<T> parse(ConfigurationNode node, Parser<?, T> parser) {
-        if (parser instanceof StringParser){
-            if(parser instanceof StringParser.SpecialParser){
-                return ((StringParser.SpecialParser<T>) parser).get(this, node);
-            }
-            return ((StringParser<T>)parser).parse(this.yaml.getString(CorePlugin.toString(".", s -> s, node.getPath())));
-        }else if(parser instanceof StringMapParser){
-            StringMapParser<T> mParser = (StringMapParser<T>)parser;
-            Map<String, String> map = new HashMap<>();
-            String path = CorePlugin.toString(".", t -> t, node.getPath());
-            mParser.getKeys().forEach(k -> {
-                String value2 = path + "." + k;
-                String value3 = this.yaml.getString(value2);
-                map.put(k, value3);
-            });
-            return mParser.parse(map);
-        }else{
-            System.err.println("Unknown Parser Type: The following are supported: StringParser<> or StringMapParser<>");
-            new IOException("Parser " + parser.getClass().getSimpleName() + " failed").printStackTrace();
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<String> parseString(ConfigurationNode node) {
-        String value = this.yaml.getString(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.ofNullable(value);
-    }
-
-    @Override
-    public Optional<Integer> parseInt(ConfigurationNode node) {
-        if(!this.yaml.contains(CorePlugin.toString(".", node.getPath()))){
-            return Optional.empty();
-        }
-        int value = this.yaml.getInt(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.of(value);
-    }
-
-    @Override
-    public Optional<Double> parseDouble(ConfigurationNode node) {
-        if(!this.yaml.contains(CorePlugin.toString(".", node.getPath()))){
-            return Optional.empty();
-        }
-        double value = this.yaml.getDouble(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.of(value);
-    }
-
-    @Override
-    public Optional<Boolean> parseBoolean(ConfigurationNode node) {
-        if(!this.yaml.contains(CorePlugin.toString(".", node.getPath()))){
-            return Optional.empty();
-        }
-        boolean value = this.yaml.getBoolean(CorePlugin.toString(".", s -> s, node.getPath()));
-        return Optional.of(value);
-    }
-
-    @Override
-    public <T> Optional<List<T>> parseList(ConfigurationNode node, StringParser<T> parser) {
-        List<String> stringList = this.yaml.getStringList(CorePlugin.toString(".", t -> t, node.getPath()));
-        List<T> valueList = new ArrayList<>();
-        stringList.forEach(s -> parser.parse(s).ifPresent(v -> valueList.add(v)));
-        if(valueList.isEmpty()){
-            return Optional.empty();
-        }
-        return Optional.of(valueList);
-    }
-
-    @Override
-    public String parseString(ConfigurationNode node, String defaut) {
-        return null;
-    }
-
-    @Override
-    public int parseInt(ConfigurationNode node, int defaut) {
-        return 0;
-    }
-
-    @Override
-    public double parseDouble(ConfigurationNode node, double defaut) {
-        return 0;
-    }
-
-    @Override
-    public boolean parseBoolean(ConfigurationNode node, boolean defaut) {
-        return false;
-    }
-
-    @Override
-    public <T> List<T> parseList(ConfigurationNode node, StringParser<T> parser, List<T> defaut) {
-        return null;
-    }
-
-    @Override
-    public <T> void set(ConfigurationNode node, Parser<?, T> parser, T value) {
-        if(parser instanceof StringParser.SpecialParser){
-            ((StringParser.SpecialParser<T>) parser).set(value, this, node);
-            return;
-        }
-        this.yaml.set(CorePlugin.toString(".", s -> s, node.getPath()), parser.unparse(value));
-    }
-
-    @Override
-    public void set(ConfigurationNode node, Object value) {
-        this.yaml.set(CorePlugin.toString(".", s -> s, node.getPath()), value);
-    }
-
-    @Override
-    public ConfigurationNode getRootNode() {
-        return new ConfigurationNode();
+    public void reload() {
+        this.yaml = YamlConfiguration.loadConfiguration(this.file);
     }
 
     @Override

@@ -6,10 +6,9 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.core.CorePlugin;
-import org.core.configuration.parser.unspecific.UnspecificParser;
-import org.core.configuration.parser.unspecific.UnspecificParsers;
-import org.core.configuration.type.ConfigurationLoaderType;
-import org.core.configuration.type.ConfigurationLoaderTypes;
+import org.core.config.ConfigurationFormat;
+import org.core.config.parser.unspecific.UnspecificParser;
+import org.core.config.parser.unspecific.UnspecificParsers;
 import org.core.entity.*;
 import org.core.entity.living.animal.parrot.ParrotType;
 import org.core.entity.living.animal.parrot.ParrotTypes;
@@ -38,7 +37,6 @@ import org.core.world.position.block.grouptype.BlockGroup;
 import org.core.world.position.block.grouptype.BlockGroups;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
-import org.ships.implementation.bukkit.configuration.YamlConfigurationLoaderType;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.UnknownLiveEntity;
 import org.ships.implementation.bukkit.entity.living.animal.type.BParrotType;
@@ -246,6 +244,11 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public ConfigurationFormat getConfigFormat() {
+        return ConfigurationFormat.FORMAT_YAML;
+    }
+
+    @Override
     public Set<Plugin> getPlugins() {
         Set<Plugin> plugins = new HashSet<>();
         for (org.bukkit.plugin.Plugin plugin : Bukkit.getPluginManager().getPlugins()){
@@ -280,11 +283,6 @@ public class BukkitPlatform implements Platform {
     @Override
     public Collection<PatternLayerType> getPatternLayerTypes() {
         return null;
-    }
-
-    @Override
-    public Collection<ConfigurationLoaderType> getConfigurationLoaderTypes() {
-        return new HashSet<>(Collections.singletonList(ConfigurationLoaderTypes.YAML));
     }
 
     @Override
@@ -430,11 +428,6 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    public Optional<ConfigurationLoaderType> getConfigurationLoaderType(String id) {
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<BossColour> getBossColour(String id) {
         return Optional.empty();
     }
@@ -482,15 +475,6 @@ public class BukkitPlatform implements Platform {
 
     @Override
     public PatternLayerType get(PatternLayerTypes id) {
-        return null;
-    }
-
-    @Override
-    public ConfigurationLoaderType get(ConfigurationLoaderTypes id) {
-        if(id.getName().equals("YetAnotherMarkupLang") || id.getName().equals("Default")){
-            return new YamlConfigurationLoaderType();
-        }
-        new IOException("Unknown ConfigurationLoaderType: " + id.getName()).printStackTrace();
         return null;
     }
 

@@ -9,8 +9,8 @@ import java.util.*;
 
 public class BEventManager implements EventManager {
 
-    Map<Plugin, Set<EventListener>> eventListeners = new HashMap<>();
-    BukkitListener listener = new BukkitListener();
+    private final Map<Plugin, Set<EventListener>> eventListeners = new HashMap<>();
+    private final BukkitListener listener = new BukkitListener();
 
     public BukkitListener getRawListener(){
         return this.listener;
@@ -18,7 +18,7 @@ public class BEventManager implements EventManager {
 
     @Override
     public <E extends Event> E callEvent(E event) {
-        return this.listener.call(event);
+        return BukkitListener.call(event);
     }
 
     @Override

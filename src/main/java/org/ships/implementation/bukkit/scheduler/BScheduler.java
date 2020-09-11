@@ -4,8 +4,7 @@ import org.bukkit.Bukkit;
 import org.core.platform.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
-
-import java.util.concurrent.TimeUnit;
+import org.core.schedule.unit.TimeUnit;
 
 public class BScheduler implements Scheduler {
 
@@ -36,9 +35,9 @@ public class BScheduler implements Scheduler {
     public BScheduler(SchedulerBuilder builder, Plugin plugin){
         this.taskToRun = builder.getExecutor();
         this.iteration = builder.getIteration().orElse(null);
-        this.iterationTimeUnit = builder.getIterationUnit().orElse(null);
+        this.iterationTimeUnit = builder.getIterationUnit().orElse(TimeUnit.MINECRAFT_TICKS);
         this.delayCount = builder.getDelay().orElse(0);
-        this.delayTimeUnit = builder.getDelayUnit().orElse(null);
+        this.delayTimeUnit = builder.getDelayUnit().orElse(TimeUnit.MINECRAFT_TICKS);
         this.plugin = plugin;
         this.displayName = builder.getDisplayName().orElse(null);
         this.async = builder.isAsync();
@@ -50,41 +49,10 @@ public class BScheduler implements Scheduler {
 
     @Override
     public void run() {
-        long ticks = 0;
-        if(this.delayTimeUnit == null) {
-            ticks = this.delayCount;
-        }else{
-            switch (this.delayTimeUnit) {
-                case MILLISECONDS:
-                    ticks = ((this.delayCount * 20)/1000); break;
-                case MICROSECONDS:
-                    ticks = ((this.delayCount * 20)/1000000); break;
-                case SECONDS:
-                    ticks = (this.delayCount * 20); break;
-                case MINUTES:
-                    ticks = ((this.delayCount * 20)*100); break;
-                default:
-                    System.err.println("Unknown TimeUnit: " + this.delayTimeUnit.name());
-            }
-        }
+        long ticks = this.delayTimeUnit.getTicks(this.delayCount);
         Integer iter = null;
         if(this.iteration != null) {
-            if (this.iterationTimeUnit == null) {
-                iter = this.iteration;
-            } else {
-                switch (this.iterationTimeUnit) {
-                    case MILLISECONDS:
-                        iter = ((this.iteration * 20)/1000); break;
-                    case MICROSECONDS:
-                        iter = ((this.iteration * 20)/1000000); break;
-                    case SECONDS:
-                        iter = (this.iteration * 20); break;
-                    case MINUTES:
-                        iter = ((this.iteration * 20)*100); break;
-                    default:
-                        System.err.println("Unknown TimeUnit: " + this.iterationTimeUnit.name());
-                }
-            }
+            iter = this.iterationTimeUnit.getTicks(this.iteration);
         }
         if(iter == null){
             if(this.async) {

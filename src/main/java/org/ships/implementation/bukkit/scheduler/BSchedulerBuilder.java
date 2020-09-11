@@ -3,10 +3,10 @@ package org.ships.implementation.bukkit.scheduler;
 import org.core.platform.Plugin;
 import org.core.schedule.Scheduler;
 import org.core.schedule.SchedulerBuilder;
+import org.core.schedule.unit.TimeUnit;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 public class BSchedulerBuilder implements SchedulerBuilder {
 
@@ -112,6 +112,10 @@ public class BSchedulerBuilder implements SchedulerBuilder {
         if(this.executor == null){
             System.err.println("SchedulerBuilder was attempted to be built but no executor was set");
             new IOException("No Executor in build").printStackTrace();
+        }
+        if(this.delay != null && this.delayUnit == null){
+            System.err.println("SchedulerBuilder was attempted to be built but delayUnit was set to null");
+            new IOException("Invalid delayUnit in build").printStackTrace();
         }
         return new BScheduler(this, plugin);
     }

@@ -44,9 +44,9 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
 
         protected LivePlayer player;
         protected boolean cancelled;
-        protected Collection<BlockSnapshot> collection;
+        protected Collection<BlockSnapshot<SyncBlockPosition>> collection;
 
-        public PlaceBlockPlayerPostEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot> affected) {
+        public PlaceBlockPlayerPostEvent(SyncBlockPosition pos, BlockDetails before, BlockDetails after, LivePlayer player, Collection<BlockSnapshot<SyncBlockPosition>> affected) {
             super(pos, before, after);
             this.player = player;
             this.collection = affected;
@@ -69,7 +69,7 @@ public class AbstractBlockChangeEvent implements BlockChangeEvent {
         }
 
         @Override
-        public Collection<BlockSnapshot> getAffected() {
+        public Collection<BlockSnapshot<SyncBlockPosition>> getAffected() {
             return this.collection;
         }
     }
