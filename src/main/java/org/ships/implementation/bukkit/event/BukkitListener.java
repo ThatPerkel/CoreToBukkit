@@ -1,7 +1,6 @@
 package org.ships.implementation.bukkit.event;
 
 import org.array.utils.ArrayUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
