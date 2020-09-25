@@ -26,7 +26,6 @@ import org.core.text.TextColour;
 import org.core.text.TextColours;
 import org.core.world.boss.colour.BossColour;
 import org.core.world.boss.colour.BossColours;
-import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
@@ -37,6 +36,7 @@ import org.core.world.position.block.grouptype.BlockGroup;
 import org.core.world.position.block.grouptype.BlockGroups;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
+import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BLiveEntity;
 import org.ships.implementation.bukkit.entity.UnknownLiveEntity;
 import org.ships.implementation.bukkit.entity.living.animal.type.BParrotType;
@@ -47,13 +47,12 @@ import org.ships.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
 import org.ships.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.ships.implementation.bukkit.text.BTextColour;
 import org.ships.implementation.bukkit.world.boss.colour.BBossColour;
-import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.grouptype.BBlockGroup;
 import org.ships.implementation.bukkit.world.position.block.entity.unknown.BLiveUnknownContainerTileEntity;
 import org.ships.implementation.bukkit.world.position.flags.BApplyPhysicsFlag;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -97,8 +96,12 @@ public class BukkitPlatform implements Platform {
             }
             Set<BlockType> blockType = new HashSet<>();
             try {
-                org.bukkit.Tag<org.bukkit.Material> tag = (org.bukkit.Tag) field.get(null);
-                tag.getValues().forEach(m -> {
+                org.bukkit.Tag<?> tag = (org.bukkit.Tag<?>) field.get(null);
+                tag.getValues().forEach(v -> {
+                    if(!(v instanceof Material)){
+                        return;
+                    }
+                    Material m = (Material)v;
                     if(m.isBlock()){
                         blockType.add(new BBlockType(m));
                     }

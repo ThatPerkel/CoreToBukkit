@@ -21,14 +21,12 @@ import org.core.CorePlugin;
 import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.Event;
-import org.core.event.EventListener;
 import org.core.event.HEvent;
 import org.core.event.events.entity.EntityInteractEvent;
-import org.core.platform.Plugin;
 import org.core.text.Text;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.ships.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.ships.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
@@ -39,10 +37,10 @@ import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.utils.DirectionUtils;
 import org.ships.implementation.bukkit.world.expload.EntityExplosion;
-import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
-import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BBlockDetails;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.BlockStateSnapshot;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
+import org.ships.implementation.bukkit.world.position.impl.sync.BExactPosition;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -153,7 +151,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onPlayerInteractWithBlockEvent(PlayerInteractEvent event){
-        if(event.getClickedBlock() == null || event.getHand() != EquipmentSlot.HAND) {
+        if(event.getClickedBlock() == null || event.getHand() != EquipmentSlot.HAND){
             return;
         }
         int action = -1;
