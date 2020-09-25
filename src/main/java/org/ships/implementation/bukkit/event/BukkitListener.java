@@ -16,6 +16,7 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.core.CorePlugin;
 import org.core.entity.Entity;
 import org.core.entity.living.human.player.LivePlayer;
@@ -152,7 +153,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public static void onPlayerInteractWithBlockEvent(PlayerInteractEvent event){
-        if(event.getClickedBlock() == null){
+        if(event.getClickedBlock() == null || event.getHand() != EquipmentSlot.HAND) {
             return;
         }
         int action = -1;
