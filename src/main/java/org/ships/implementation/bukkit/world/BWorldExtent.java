@@ -4,11 +4,11 @@ import org.bukkit.block.BlockState;
 import org.core.CorePlugin;
 import org.core.entity.LiveEntity;
 import org.core.world.WorldExtent;
+import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.world.position.block.entity.LiveTileEntity;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.position.impl.async.BAsyncBlockPosition;
 import org.ships.implementation.bukkit.world.position.impl.async.BAsyncExactPosition;
@@ -62,6 +62,7 @@ public class BWorldExtent implements WorldExtent {
         this.world.getEntities().forEach(e -> {
             LiveEntity entity = ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(e);
             if(entity == null){
+                System.err.println("Entity could not be converted: " + e.getType().name() + " | " + e.getName());
                 return;
             }
             entities.add(entity);

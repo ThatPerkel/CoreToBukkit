@@ -4,10 +4,10 @@ import org.core.entity.living.human.player.LivePlayer;
 import org.core.entity.scene.droppeditem.DroppedItemSnapshot;
 import org.core.event.events.block.BlockChangeEvent;
 import org.core.world.expload.Explosion;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockTypes;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 
 import java.util.ArrayList;
 import java.util.Collection;

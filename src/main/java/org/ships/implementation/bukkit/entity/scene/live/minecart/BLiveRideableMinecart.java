@@ -1,12 +1,10 @@
 package org.ships.implementation.bukkit.entity.scene.live.minecart;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Minecart;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.entity.scene.minecart.type.rideable.LiveRideableMinecart;
-import org.core.entity.scene.minecart.type.rideable.RideableMinecart;
 
 public class BLiveRideableMinecart extends BLiveMinecart<org.bukkit.entity.minecart.RideableMinecart> implements LiveRideableMinecart {
 

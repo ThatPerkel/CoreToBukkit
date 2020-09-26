@@ -10,7 +10,6 @@ import org.ships.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveChicken;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveCow;
 import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
-import org.ships.implementation.bukkit.entity.living.hostile.creeper.BCreeperSnapshot;
 import org.ships.implementation.bukkit.entity.living.hostile.creeper.BLiveCreeper;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;

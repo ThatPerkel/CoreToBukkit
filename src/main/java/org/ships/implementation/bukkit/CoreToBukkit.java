@@ -23,7 +23,6 @@ import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.boss.BServerBossBar;
 
 import java.io.File;
-import java.io.IOException;
 
 public class CoreToBukkit extends CorePlugin.CoreImplementation {
 

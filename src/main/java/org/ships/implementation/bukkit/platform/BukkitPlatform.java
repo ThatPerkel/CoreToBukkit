@@ -180,6 +180,7 @@ public class BukkitPlatform implements Platform {
         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+        System.err.println("Welp. Something went very wrong with entity " + entity.getName() + " | " + entity.getType().name());
         return null;
     }
 

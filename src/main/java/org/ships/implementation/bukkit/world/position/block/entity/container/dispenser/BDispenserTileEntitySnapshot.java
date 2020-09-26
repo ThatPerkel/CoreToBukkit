@@ -9,7 +9,6 @@ import org.core.world.position.block.entity.container.dispenser.DispenserTileEnt
 import org.core.world.position.block.entity.container.dispenser.LiveDispenserTileEntity;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.dispenser.BDispenserInventorySnapshot;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 

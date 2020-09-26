@@ -2,7 +2,6 @@ package org.ships.implementation.bukkit.inventory.inventories.snapshot.block;
 
 import org.core.inventory.inventories.general.block.ChestInventory;
 import org.core.inventory.inventories.snapshots.block.ChestInventorySnapshot;
-import org.core.inventory.parts.InventoryPart;
 import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
 

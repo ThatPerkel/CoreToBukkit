@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.world.position.block.entity;
 
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.entity.LiveTileEntity;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 public abstract class AbstractLiveTileEntity implements LiveTileEntity {

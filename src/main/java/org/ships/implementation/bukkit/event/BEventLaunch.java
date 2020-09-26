@@ -1,7 +1,6 @@
 package org.ships.implementation.bukkit.event;
 
 import org.array.utils.ArrayUtils;
-import org.core.CorePlugin;
 import org.core.event.Event;
 import org.core.event.EventListener;
 import org.core.platform.Plugin;

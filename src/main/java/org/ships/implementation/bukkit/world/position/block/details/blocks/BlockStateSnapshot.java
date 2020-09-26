@@ -2,9 +2,6 @@ package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
 import org.bukkit.block.data.BlockData;
 import org.core.CorePlugin;
-import org.core.world.position.impl.Position;
-import org.core.world.position.impl.async.ASyncBlockPosition;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
@@ -13,8 +10,10 @@ import org.core.world.position.block.details.data.keyed.*;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
+import org.core.world.position.impl.Position;
+import org.core.world.position.impl.async.ASyncBlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
-import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BRotationalData;
@@ -22,6 +21,7 @@ import org.ships.implementation.bukkit.world.position.block.details.blocks.data.
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BMultiDirectionalKeyedData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BOpenableKeyedData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BWaterLoggedKeyedData;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.Optional;
 

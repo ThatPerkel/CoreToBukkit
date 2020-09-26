@@ -1,10 +1,10 @@
 package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
 import org.bukkit.block.data.BlockData;
+import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.KeyedData;
 import org.core.world.position.block.details.data.keyed.TileEntityKeyedData;
 import org.core.world.position.impl.sync.SyncBlockPosition;
-import org.core.world.position.block.details.BlockSnapshot;
 import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.Optional;

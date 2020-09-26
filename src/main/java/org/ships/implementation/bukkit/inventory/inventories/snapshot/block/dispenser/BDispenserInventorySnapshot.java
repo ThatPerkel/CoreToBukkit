@@ -2,8 +2,6 @@ package org.ships.implementation.bukkit.inventory.inventories.snapshot.block.dis
 
 import org.core.inventory.inventories.general.block.dispenser.DispenserInventory;
 import org.core.inventory.inventories.snapshots.block.dispenser.DispenserInventorySnapshot;
-import org.core.inventory.parts.Grid3x3;
-import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.Grid3x3Snapshot;
 
 public class BDispenserInventorySnapshot extends DispenserInventorySnapshot {

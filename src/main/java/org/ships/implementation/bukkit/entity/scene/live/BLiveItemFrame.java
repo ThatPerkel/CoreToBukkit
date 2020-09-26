@@ -2,9 +2,6 @@ package org.ships.implementation.bukkit.entity.scene.live;
 
 import org.bukkit.Rotation;
 import org.bukkit.entity.Entity;
-import org.core.entity.EntitySnapshot;
-import org.core.entity.scene.AttachableEntity;
-import org.core.entity.scene.itemframe.ItemFrame;
 import org.core.entity.scene.itemframe.LiveItemFrame;
 import org.core.exceptions.DirectionNotSupported;
 import org.core.inventory.item.stack.ItemStack;
