@@ -19,9 +19,6 @@ public abstract class BAbstractPosition<T extends Number> implements Position<T>
         if(!pos.getZ().equals(this.getZ())){
             return false;
         }
-        if(!pos.getWorld().equals(this.getWorld())){
-            return false;
-        }
-        return true;
+        return pos.getWorld().equals(this.getWorld());
     }
 }

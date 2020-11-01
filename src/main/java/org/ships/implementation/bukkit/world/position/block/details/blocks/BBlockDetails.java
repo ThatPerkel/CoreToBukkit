@@ -8,7 +8,7 @@ import org.core.world.position.block.details.data.DirectionalData;
 import org.core.world.position.block.details.data.keyed.*;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
-import org.core.world.position.impl.Position;
+import org.core.world.position.impl.BlockPosition;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
@@ -40,7 +40,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
 
     private org.bukkit.block.data.BlockData data;
     private TileEntitySnapshot<? extends TileEntity> tileEntitySnapshot;
-    private boolean async;
+    private final boolean async;
 
     public BBlockDetails(org.bukkit.block.data.BlockData data, boolean async){
         this.data = data;
@@ -81,7 +81,7 @@ public class BBlockDetails implements BlockDetails, IBBlockDetails {
     }
 
     @Override
-    public <T extends Position<Integer>> BlockSnapshot<T> createSnapshot(T position) {
+    public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position) {
         if(position instanceof SyncBlockPosition){
             return (BlockSnapshot<T>) new BExtendedBlockSnapshot((SyncBlockPosition) position, this.getBukkitData());
         }

@@ -6,6 +6,7 @@ import org.core.text.Text;
 
 public class BKickEvent extends AbstractLeaveEvent implements ClientConnectionEvent.Leave.Kick {
 
+    @Deprecated
     public BKickEvent(LivePlayer player, Text leaveMessage) {
         super(player, leaveMessage);
     }

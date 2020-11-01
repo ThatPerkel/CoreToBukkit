@@ -7,7 +7,7 @@ import org.bukkit.block.Block;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.platform.Plugin;
 import org.core.threadsafe.FutureResult;
-import org.core.vector.types.Vector3Int;
+import org.core.vector.type.Vector3;
 import org.core.world.WorldExtent;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.entity.LiveTileEntity;
@@ -40,9 +40,9 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     }
 
     @Override
-    public Vector3Int getChunkPosition() {
+    public Vector3<Integer> getChunkPosition() {
         Chunk chunk = this.block.getChunk();
-        return new Vector3Int(chunk.getX(), 0, chunk.getZ());
+        return Vector3.valueOf(chunk.getX(), 0, chunk.getZ());
     }
 
     @Override
@@ -61,8 +61,8 @@ public class BAsyncBlockPosition extends BAbstractPosition<Integer> implements A
     }
 
     @Override
-    public Vector3Int getPosition() {
-        return new Vector3Int(this.block.getX(), this.block.getY(), this.block.getZ());
+    public Vector3<Integer> getPosition() {
+        return Vector3.valueOf(this.block.getX(), this.block.getY(), this.block.getZ());
     }
 
     @Override

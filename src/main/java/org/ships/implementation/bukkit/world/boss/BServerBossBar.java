@@ -28,11 +28,13 @@ public class BServerBossBar implements ServerBossBar {
     }
 
     @Override
+    @Deprecated
     public Text getMessage() {
         return new BText(this.bossBar.getTitle());
     }
 
     @Override
+    @Deprecated
     public ServerBossBar setMessage(Text text) {
         this.bossBar.setTitle(((BText)text).toBukkitString());
         return this;

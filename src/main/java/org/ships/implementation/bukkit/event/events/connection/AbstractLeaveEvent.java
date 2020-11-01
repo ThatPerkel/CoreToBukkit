@@ -9,6 +9,7 @@ public class AbstractLeaveEvent implements ClientConnectionEvent.Leave {
     protected LivePlayer player;
     protected Text leaveMessage;
 
+    @Deprecated
     public AbstractLeaveEvent(LivePlayer player, Text leaveMessage){
         this.leaveMessage = leaveMessage;
         this.player = player;
@@ -20,11 +21,13 @@ public class AbstractLeaveEvent implements ClientConnectionEvent.Leave {
     }
 
     @Override
+    @Deprecated
     public Text getLeaveMessage() {
         return this.leaveMessage;
     }
 
     @Override
+    @Deprecated
     public Leave setLeaveMessage(Text message) {
         this.leaveMessage = message;
         return this;

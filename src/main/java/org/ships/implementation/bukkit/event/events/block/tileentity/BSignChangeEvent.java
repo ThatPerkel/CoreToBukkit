@@ -15,6 +15,7 @@ public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
     protected SyncBlockPosition position;
     protected LivePlayer player;
 
+    @Deprecated
     public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, Text... lines){
         this.position = position;
         this.original = new BSignEntitySnapshot(lines);

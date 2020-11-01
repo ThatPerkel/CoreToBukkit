@@ -1,5 +1,6 @@
 package org.ships.implementation.bukkit.platform;
 
+import org.core.command.CommandRegister;
 import org.core.config.ConfigurationStream;
 import org.core.platform.Plugin;
 import org.ships.implementation.bukkit.configuration.YAMLConfigurationFile;
@@ -31,6 +32,12 @@ public class BPlugin implements Plugin {
     @Override
     public String getPluginVersion() {
         return this.plugin.getDescription().getVersion();
+    }
+
+    @Override
+    @Deprecated
+    public void registerCommands(CommandRegister register) {
+
     }
 
     @Override

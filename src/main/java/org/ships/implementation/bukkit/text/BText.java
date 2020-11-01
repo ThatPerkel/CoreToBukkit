@@ -4,6 +4,7 @@ import org.array.utils.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.core.text.Text;
 
+@Deprecated
 public class BText implements Text {
 
     protected String text;
@@ -36,6 +37,7 @@ public class BText implements Text {
     }
 
     @Override
+    @Deprecated
     public Text append(Text... text) {
         return new BText(this.text + ArrayUtils.toString("", t -> ((BText)t).text, text));
     }

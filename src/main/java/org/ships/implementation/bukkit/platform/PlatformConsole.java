@@ -7,7 +7,21 @@ import org.core.text.Text;
 import org.core.text.TextColours;
 import org.ships.implementation.bukkit.text.BText;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
+
 public class PlatformConsole implements ConsoleSource {
+    @Override
+    public CommandViewer sendMessage(Text message, UUID uuid) {
+        try {
+            Bukkit.getConsoleSender().getClass().getDeclaredMethod("sendMessage", UUID.class, String.class).invoke(Bukkit.getConsoleSender(), uuid, ((BText)message).toBukkitString());
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            sendMessage(message);
+        }
+
+        return this;
+    }
+
     @Override
     public CommandViewer sendMessage(Text message) {
         Bukkit.getConsoleSender().sendMessage(((BText)message).toBukkitString());

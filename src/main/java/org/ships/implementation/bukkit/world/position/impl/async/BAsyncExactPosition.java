@@ -7,13 +7,13 @@ import org.bukkit.World;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.platform.Plugin;
 import org.core.threadsafe.FutureResult;
-import org.core.vector.types.Vector3Double;
-import org.core.vector.types.Vector3Int;
+import org.core.vector.type.Vector3;
 import org.core.world.WorldExtent;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
+import org.core.world.position.impl.BlockPosition;
 import org.core.world.position.impl.async.ASyncBlockPosition;
 import org.core.world.position.impl.async.ASyncExactPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
@@ -26,7 +26,7 @@ import java.util.Optional;
 
 public class BAsyncExactPosition extends BAbstractPosition<Double> implements ASyncExactPosition {
 
-    private Location location;
+    private final Location location;
 
     public BAsyncExactPosition(World world, double x, double y, double z){
         this(new Location(world, x, y, z));
@@ -37,9 +37,9 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     }
 
     @Override
-    public Vector3Int getChunkPosition() {
+    public Vector3<Integer> getChunkPosition() {
         Chunk chunk = this.location.getChunk();
-        return new Vector3Int(chunk.getX(), 0, chunk.getZ());
+        return Vector3.valueOf(chunk.getX(), 0, chunk.getZ());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     }
 
     @Override
-    public BlockSnapshot getBlockDetails() {
+    public BlockSnapshot<? extends BlockPosition> getBlockDetails() {
         return this.toBlockPosition().getBlockDetails();
     }
 
@@ -58,8 +58,8 @@ public class BAsyncExactPosition extends BAbstractPosition<Double> implements AS
     }
 
     @Override
-    public Vector3Double getPosition() {
-        return new Vector3Double(this.location.getX(), this.location.getY(), this.location.getZ());
+    public Vector3<Double> getPosition() {
+        return Vector3.valueOf(this.location.getX(), this.location.getY(), this.location.getZ());
     }
 
     @Override

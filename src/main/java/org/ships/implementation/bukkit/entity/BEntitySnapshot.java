@@ -3,7 +3,7 @@ package org.ships.implementation.bukkit.entity;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
-import org.core.vector.types.Vector3Double;
+import org.core.vector.type.Vector3;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
@@ -21,7 +21,7 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     protected Collection<EntitySnapshot<? extends LiveEntity>> passengers = new HashSet<>();
     protected boolean hasGravity;
     protected boolean isOnGround;
-    protected Vector3Double velocity;
+    protected Vector3<Double> velocity;
     protected Text customName;
     protected boolean isCustomNameVisible;
     protected T createdFrom;
@@ -148,13 +148,13 @@ public abstract class BEntitySnapshot <T extends LiveEntity> implements EntitySn
     }
 
     @Override
-    public EntitySnapshot<T> setVelocity(Vector3Double velocity){
+    public EntitySnapshot<T> setVelocity(Vector3<Double> velocity){
         this.velocity = velocity;
         return this;
     }
 
     @Override
-    public Vector3Double getVelocity(){
+    public Vector3<Double> getVelocity(){
         return this.velocity;
     }
 
