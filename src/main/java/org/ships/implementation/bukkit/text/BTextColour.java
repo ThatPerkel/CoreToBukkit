@@ -2,6 +2,7 @@ package org.ships.implementation.bukkit.text;
 
 import org.core.text.TextColour;
 
+@Deprecated
 public class BTextColour implements TextColour {
 
     private org.bukkit.ChatColor color;

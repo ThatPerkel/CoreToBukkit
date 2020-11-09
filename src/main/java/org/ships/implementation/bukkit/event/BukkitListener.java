@@ -14,6 +14,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -30,6 +31,7 @@ import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.entity.scene.live.BLiveDroppedItem;
 import org.ships.implementation.bukkit.event.events.block.AbstractBlockChangeEvent;
 import org.ships.implementation.bukkit.event.events.block.tileentity.BSignChangeEvent;
+import org.ships.implementation.bukkit.event.events.connection.BJoinedEvent;
 import org.ships.implementation.bukkit.event.events.connection.BKickEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntityInteractEvent;
 import org.ships.implementation.bukkit.event.events.entity.BEntitySpawnEvent;
@@ -48,6 +50,13 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class BukkitListener implements Listener {
+
+    @EventHandler
+    public static void onPlayerJoin(PlayerJoinEvent event){
+        LivePlayer player = (LivePlayer) ((BukkitPlatform)CorePlugin.getPlatform()).createEntityInstance(event.getPlayer());
+        BJoinedEvent cEvent = new BJoinedEvent(player);
+        call(cEvent);
+    }
 
     @EventHandler
     public static void onPlayerPlaceBlock(BlockPlaceEvent event){
@@ -205,7 +214,9 @@ public class BukkitListener implements Listener {
 
     public static <E extends Event> E call(E event){
         Set<BEventLaunch> methods = getMethods(event.getClass());
-        methods.forEach(m -> m.run(event));
+        methods.forEach(m -> {
+            m.run(event);
+        });
         return event;
     }
 
