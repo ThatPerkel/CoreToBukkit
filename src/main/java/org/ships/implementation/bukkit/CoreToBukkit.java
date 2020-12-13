@@ -1,6 +1,7 @@
 package org.ships.implementation.bukkit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.core.CorePlugin;
 import org.core.config.ConfigurationFormat;
@@ -47,20 +48,6 @@ public class CoreToBukkit extends CorePlugin.CoreImplementation {
         Bukkit.getPluginManager().registerEvents(new BukkitListener(), plugin);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, getRawServer().getTPSExecutor(), 0, 1);
         this.platform.init();
-
-        /*JFrame frame = new JFrame("TPS");
-        frame.setSize(500, 500);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        TPSDisplay tpsDisplay = new TPSDisplay();
-        frame.add(tpsDisplay);
-        frame.setVisible(true);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                tpsDisplay.register(CoreToBukkit.this.getRawServer().getTPS());
-                tpsDisplay.repaint();
-            }
-        }, 0, 3);*/
     }
 
     @Override

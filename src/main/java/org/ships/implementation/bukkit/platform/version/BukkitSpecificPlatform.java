@@ -16,8 +16,8 @@ public interface BukkitSpecificPlatform {
 
     int[] getVersion();
 
-    Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getSpecificEntityTypes();
-    Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getGeneralEntityTypes();
+    Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getSpecificEntityTypes();
+    Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getGeneralEntityTypes();
 
     Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> getSpecificEntityToEntity();
     Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> getGeneralEntityToEntity();

@@ -19,12 +19,12 @@ public class Specific1V14Platform implements BukkitSpecificPlatform {
     }
 
     @Override
-    public Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getSpecificEntityTypes() {
+    public Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getSpecificEntityTypes() {
         return new HashSet<>();
     }
 
     @Override
-    public Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getGeneralEntityTypes() {
+    public Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getGeneralEntityTypes() {
         return new HashSet<>();
     }
 

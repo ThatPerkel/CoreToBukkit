@@ -17,6 +17,7 @@ import org.core.inventory.item.ItemType;
 import org.core.inventory.item.data.dye.DyeType;
 import org.core.inventory.item.data.dye.DyeTypes;
 import org.core.inventory.item.type.ItemTypeCommon;
+import org.core.permission.Permission;
 import org.core.platform.Platform;
 import org.core.platform.PlatformDetails;
 import org.core.platform.Plugin;
@@ -44,6 +45,7 @@ import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlay
 import org.ships.implementation.bukkit.event.BukkitListener;
 import org.ships.implementation.bukkit.inventory.item.BItemType;
 import org.ships.implementation.bukkit.inventory.item.data.dye.BItemDyeType;
+import org.ships.implementation.bukkit.permission.BukkitPermission;
 import org.ships.implementation.bukkit.platform.version.BukkitSpecificPlatform;
 import org.ships.implementation.bukkit.text.BTextColour;
 import org.ships.implementation.bukkit.world.boss.colour.BBossColour;
@@ -57,10 +59,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class BukkitPlatform implements Platform {
 
-    protected Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> entityTypes = new HashSet<>();
+    protected Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> entityTypes = new HashSet<>();
     protected Map<Class<? extends org.bukkit.entity.Entity>, Class<? extends LiveEntity>> entityToEntity = new HashMap<>();
     protected Map<Class<? extends org.bukkit.block.BlockState>, Class<? extends LiveTileEntity>> blockStateToTileEntity = new HashMap<>();
     protected Set<TileEntitySnapshot<? extends TileEntity>> defaultTileEntities = new HashSet<>();
@@ -143,7 +146,7 @@ public class BukkitPlatform implements Platform {
         return this.entityToEntity;
     }
 
-    public Set<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getEntityTypeSet(){
+    public Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getEntityTypeSet(){
         return this.entityTypes;
     }
 
@@ -212,138 +215,6 @@ public class BukkitPlatform implements Platform {
         return null;
     }
 
-    @Override
-    public int[] getMinecraftVersion() {
-        String version = Bukkit.getServer().getVersion();
-        try {
-            version = version.split("MC: ")[1];
-            version = version.substring(0, version.length() - 1);
-            if (version.contains(" ")) {
-                version = version.split(" ")[0];
-            }
-            String[] versionString = version.split(Pattern.quote("."));
-            int[] versionInt = new int[3];
-            for (int A = 0; A < versionString.length; A++) {
-                versionInt[A] = Integer.parseInt(versionString[A]);
-            }
-            return versionInt;
-        }catch (ArrayIndexOutOfBoundsException e){
-            //fix for Pukkit (Pocket Edition of Spigot)
-            if(version.startsWith("v")){
-                String[] versionString = version.substring(1).split(Pattern.quote("."));
-                int[] versionInt = new int[3];
-                for (int A = 0; A < versionString.length; A++) {
-                    versionInt[A] = Integer.parseInt(versionString[A]);
-                }
-                return versionInt;
-            }
-            throw e;
-        }
-
-    }
-
-    @Override
-    public PlatformDetails getDetails() {
-        return new BPlatformDetails();
-    }
-
-    @Override
-    public ConfigurationFormat getConfigFormat() {
-        return ConfigurationFormat.FORMAT_YAML;
-    }
-
-    @Override
-    public Set<Plugin> getPlugins() {
-        Set<Plugin> plugins = new HashSet<>();
-        for (org.bukkit.plugin.Plugin plugin : Bukkit.getPluginManager().getPlugins()){
-            plugins.add(new BPlugin(plugin));
-        }
-        return plugins;
-    }
-
-    @Override
-    public <E extends CustomEvent> E callEvent(E event) {
-        return BukkitListener.call(event);
-    }
-
-    @Override
-    public Collection<TextColour> getTextColours(){
-        Set<TextColour> set = new HashSet<>();
-        for(org.bukkit.ChatColor color : org.bukkit.ChatColor.values()){
-            set.add(new BTextColour(color));
-        }
-        return set;
-    }
-
-    @Override
-    public Collection<DyeType> getDyeTypes() {
-        Set<DyeType> set = new HashSet<>();
-        for(org.bukkit.DyeColor colour : org.bukkit.DyeColor.values()){
-            set.add(new BItemDyeType(colour));
-        }
-        return set;
-    }
-
-    @Override
-    public Collection<PatternLayerType> getPatternLayerTypes() {
-        return null;
-    }
-
-    @Override
-    public Collection<BlockGroup> getBlockGroups() {
-        return this.blockGroups;
-    }
-
-    @Override
-    public Collection<BossColour> getBossColours() {
-        Set<BossColour> set = new HashSet<>();
-        for(BarColor color : BarColor.values()){
-            set.add(new BBossColour(color));
-        }
-        return set;
-    }
-
-    @Override
-    public Collection<ParrotType> getParrotType() {
-        List<ParrotType> list = new ArrayList<>();
-        for(org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()){
-            list.add(new BParrotType(variant));
-        }
-        return Collections.unmodifiableCollection(list);
-    }
-
-    @Override
-    public Collection<ApplyPhysicsFlag> getApplyPhysics() {
-        List<ApplyPhysicsFlag> list = new ArrayList<>();
-        list.add(BApplyPhysicsFlag.DEFAULT);
-        list.add(BApplyPhysicsFlag.NONE);
-        return Collections.unmodifiableCollection(list);
-    }
-
-    @Override
-    public Collection<UnspecificParser<?>> getUnspecifiedParsers() {
-        return this.parsers;
-    }
-
-    @Override
-    public Collection<TileEntitySnapshot<? extends TileEntity>> getDefaultTileEntities() {
-        return this.defaultTileEntities;
-    }
-
-    @Override
-    public Collection<BlockType> getBlockTypes(){
-        return Collections.unmodifiableCollection(this.blockTypes);
-    }
-
-    @Override
-    public Collection<ItemType> getItemTypes(){
-        return Collections.unmodifiableCollection(this.itemTypes);
-    }
-
-    @Override
-    public Collection<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getEntityTypes() {
-        return new HashSet<>(this.entityTypes);
-    }
 
     @Override
     public BossColour get(BossColours colours) {
@@ -384,19 +255,49 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
+    public TextColour get(TextColours id) {
+        for(org.bukkit.ChatColor color : org.bukkit.ChatColor.values()){
+            if(id.getId().equals("minecraft:" + color.name().toLowerCase())){
+                return new BTextColour(color);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public DyeType get(DyeTypes id) {
+        for(org.bukkit.DyeColor color : org.bukkit.DyeColor.values()){
+            if(id.getId().equals("minecraft:" + color.name().toLowerCase())){
+                return new BItemDyeType(color);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public PatternLayerType get(PatternLayerTypes id) {
+        return null;
+    }
+
+    @Override
     public <E extends LiveEntity, S extends EntitySnapshot<E>> EntityType<E, S> get(EntityTypes<E, S> entityId) {
         return (EntityType<E, S>) this.entityTypes.stream().filter(t -> t.getId().equals(entityId.getId())).findAny().get();
     }
 
     @Override
-    public Optional<EntityType<? extends Entity, ? extends EntitySnapshot<? extends Entity>>> getEntityType(String id) {
-        return this.entityTypes.stream().filter(t -> t.getId().equals(id)).findAny();
-
+    public <E extends LiveEntity> Optional<EntityType<E, ? extends EntitySnapshot<E>>> getEntityType(String id) {
+        Optional<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> opEntity = this.entityTypes.stream().filter(t -> t.getId().equals(id)).findAny();
+        if(opEntity.isPresent()){
+            EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>> entityType = opEntity.get();
+            return Optional.of((EntityType<E, ? extends EntitySnapshot<E>>)entityType);
+        }
+        return Optional.empty();
     }
 
     @Override
     public Optional<BlockType> getBlockType(String id) {
         return this.blockTypes.stream().filter(bt -> bt.getId().equals(id)).findAny();
+
     }
 
     @Override
@@ -458,28 +359,152 @@ public class BukkitPlatform implements Platform {
     }
 
     @Override
-    public TextColour get(TextColours id) {
+    public Collection<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getEntityTypes() {
+        return new HashSet<>(this.entityTypes);
+    }
+
+    @Override
+    public Collection<BlockType> getBlockTypes() {
+        return Collections.unmodifiableCollection(this.blockTypes);
+    }
+
+    @Override
+    public Collection<ItemType> getItemTypes() {
+        return Collections.unmodifiableCollection(this.itemTypes);
+
+    }
+
+    @Override
+    public Collection<TextColour> getTextColours() {
+        Set<TextColour> set = new HashSet<>();
         for(org.bukkit.ChatColor color : org.bukkit.ChatColor.values()){
-            if(id.getId().equals("minecraft:" + color.name().toLowerCase())){
-                return new BTextColour(color);
-            }
+            set.add(new BTextColour(color));
         }
+        return set;
+    }
+
+    @Override
+    public Collection<DyeType> getDyeTypes() {
+        Set<DyeType> set = new HashSet<>();
+        for(org.bukkit.DyeColor colour : org.bukkit.DyeColor.values()){
+            set.add(new BItemDyeType(colour));
+        }
+        return set;
+    }
+
+    @Override
+    public Collection<PatternLayerType> getPatternLayerTypes() {
         return null;
     }
 
     @Override
-    public DyeType get(DyeTypes id) {
-        for(org.bukkit.DyeColor color : org.bukkit.DyeColor.values()){
-            if(id.getId().equals("minecraft:" + color.name().toLowerCase())){
-                return new BItemDyeType(color);
-            }
-        }
-        return null;
+    public Collection<BlockGroup> getBlockGroups() {
+        return this.blockGroups;
     }
 
     @Override
-    public PatternLayerType get(PatternLayerTypes id) {
-        return null;
+    public Collection<BossColour> getBossColours() {
+        Set<BossColour> set = new HashSet<>();
+        for(BarColor color : BarColor.values()){
+            set.add(new BBossColour(color));
+        }
+        return set;
     }
 
+    @Override
+    public Collection<ParrotType> getParrotType() {
+        List<ParrotType> list = new ArrayList<>();
+        for(org.bukkit.entity.Parrot.Variant variant : org.bukkit.entity.Parrot.Variant.values()){
+            list.add(new BParrotType(variant));
+        }
+        return Collections.unmodifiableCollection(list);
+    }
+
+    @Override
+    public Collection<ApplyPhysicsFlag> getApplyPhysics() {
+        List<ApplyPhysicsFlag> list = new ArrayList<>();
+        list.add(BApplyPhysicsFlag.DEFAULT);
+        list.add(BApplyPhysicsFlag.NONE);
+        return Collections.unmodifiableCollection(list);
+    }
+
+    @Override
+    public Collection<Permission> getPermissions() {
+        return Bukkit.getServer().getPluginManager().getPermissions().parallelStream().map(p -> new BukkitPermission(p.getName())).collect(Collectors.toList());
+    }
+
+    @Override
+    public Permission register(String permissionNode) {
+        if(Bukkit.getServer().getPluginManager().getPermission(permissionNode) == null) {
+            BukkitPermission permission = new BukkitPermission(permissionNode);
+            Bukkit.getServer().getPluginManager().addPermission(new org.bukkit.permissions.Permission(permissionNode));
+            return permission;
+        }
+        return new BukkitPermission(permissionNode);
+    }
+
+
+    @Override
+    public Collection<UnspecificParser<?>> getUnspecifiedParsers() {
+        return this.parsers;
+    }
+
+    @Override
+    public Collection<TileEntitySnapshot<? extends TileEntity>> getDefaultTileEntities() {
+        return this.defaultTileEntities;
+    }
+
+    @Override
+    public int[] getMinecraftVersion() {
+        String version = Bukkit.getServer().getVersion();
+        try {
+            version = version.split("MC: ")[1];
+            version = version.substring(0, version.length() - 1);
+            if (version.contains(" ")) {
+                version = version.split(" ")[0];
+            }
+            String[] versionString = version.split(Pattern.quote("."));
+            int[] versionInt = new int[3];
+            for (int A = 0; A < versionString.length; A++) {
+                versionInt[A] = Integer.parseInt(versionString[A]);
+            }
+            return versionInt;
+        }catch (ArrayIndexOutOfBoundsException e){
+            //fix for Pukkit (Pocket Edition of Spigot)
+            if(version.startsWith("v")){
+                String[] versionString = version.substring(1).split(Pattern.quote("."));
+                int[] versionInt = new int[3];
+                for (int A = 0; A < versionString.length; A++) {
+                    versionInt[A] = Integer.parseInt(versionString[A]);
+                }
+                return versionInt;
+            }
+            throw e;
+        }
+
+    }
+
+    @Override
+    public PlatformDetails getDetails() {
+        return new BPlatformDetails();
+    }
+
+    @Override
+    public ConfigurationFormat getConfigFormat() {
+        return ConfigurationFormat.FORMAT_YAML;
+    }
+
+    @Override
+    public Set<Plugin> getPlugins() {
+        Set<Plugin> plugins = new HashSet<>();
+        for (org.bukkit.plugin.Plugin plugin : Bukkit.getPluginManager().getPlugins()){
+            plugins.add(new BPlugin(plugin));
+        }
+        return plugins;
+    }
+
+    @Override
+    public <E extends CustomEvent> E callEvent(E event) {
+        return BukkitListener.call(event);
+    }
 }
