@@ -1,9 +1,6 @@
 package org.ships.implementation.bukkit.entity.scene.live.minecart;
 
 import org.bukkit.entity.Entity;
-import org.core.entity.EntitySnapshot;
-import org.core.entity.EntityType;
-import org.core.entity.EntityTypes;
 import org.core.entity.LiveEntity;
 import org.core.entity.scene.minecart.LiveMinecart;
 import org.core.entity.scene.minecart.Minecart;

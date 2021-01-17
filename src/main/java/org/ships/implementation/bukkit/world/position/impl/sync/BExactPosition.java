@@ -6,16 +6,15 @@ import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
-import org.core.vector.types.Vector3Double;
-import org.core.vector.types.Vector3Int;
+import org.core.vector.type.Vector3;
 import org.core.world.WorldExtent;
-import org.core.world.position.impl.sync.SyncBlockPosition;
-import org.core.world.position.impl.sync.SyncExactPosition;
-import org.core.world.position.impl.sync.SyncPosition;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.flags.PositionFlag;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncExactPosition;
+import org.core.world.position.impl.sync.SyncPosition;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.world.BWorldExtent;
 import org.ships.implementation.bukkit.world.position.impl.BAbstractPosition;
@@ -39,13 +38,13 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
     }
 
     @Override
-    public Vector3Int getChunkPosition() {
-        return new Vector3Int(this.location.getChunk().getX(), 0, this.location.getChunk().getZ());
+    public Vector3<Integer> getChunkPosition() {
+        return Vector3.valueOf(this.location.getChunk().getX(), 0, this.location.getChunk().getZ());
     }
 
     @Override
-    public Vector3Double getPosition() {
-        return new Vector3Double(this.location.getX(), this.location.getY(), this.location.getZ());
+    public Vector3<Double> getPosition() {
+        return Vector3.valueOf(this.location.getX(), this.location.getY(), this.location.getZ());
     }
 
     @Override
@@ -59,7 +58,7 @@ public class BExactPosition extends BAbstractPosition<Double> implements SyncExa
     }
 
     @Override
-    public BlockSnapshot getBlockDetails() {
+    public BlockSnapshot<SyncBlockPosition> getBlockDetails() {
         return toBlockPosition().getBlockDetails();
     }
 

@@ -15,6 +15,7 @@ import org.ships.implementation.bukkit.inventory.inventories.live.entity.BLivePl
 import org.ships.implementation.bukkit.text.BText;
 import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
@@ -154,6 +155,19 @@ public class BLivePlayer extends BLiveEntity<org.bukkit.entity.Player> implement
     }
 
     @Override
+    @Deprecated
+    public CommandViewer sendMessage(Text message, UUID uuid) {
+        try {
+            this.entity.getClass().getDeclaredMethod("sendMessage", UUID.class, String.class).invoke(this.entity, uuid, ((BText)message).toBukkitString());
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            sendMessage(message);
+        }
+
+        return this;
+    }
+
+    @Override
+    @Deprecated
     public CommandViewer sendMessage(Text message) {
         getBukkitEntity().sendMessage(((BText)message).toBukkitString());
         return this;

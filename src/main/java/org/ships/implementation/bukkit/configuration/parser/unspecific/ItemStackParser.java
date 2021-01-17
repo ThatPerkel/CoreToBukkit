@@ -1,7 +1,6 @@
 package org.ships.implementation.bukkit.configuration.parser.unspecific;
 
 import org.array.utils.ArrayUtils;
-import org.core.CorePlugin;
 import org.core.config.ConfigurationNode;
 import org.core.config.ConfigurationStream;
 import org.core.config.parser.unspecific.UnspecificParser;

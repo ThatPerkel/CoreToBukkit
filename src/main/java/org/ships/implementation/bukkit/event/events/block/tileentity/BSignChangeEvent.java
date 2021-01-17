@@ -3,8 +3,8 @@ package org.ships.implementation.bukkit.event.events.block.tileentity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.event.events.block.tileentity.SignChangeEvent;
 import org.core.text.Text;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.entity.sign.SignTileEntitySnapshot;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.entity.sign.BSignEntitySnapshot;
 
 public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
@@ -15,6 +15,7 @@ public class BSignChangeEvent implements SignChangeEvent.ByPlayer {
     protected SyncBlockPosition position;
     protected LivePlayer player;
 
+    @Deprecated
     public BSignChangeEvent(LivePlayer player, SyncBlockPosition position, Text... lines){
         this.position = position;
         this.original = new BSignEntitySnapshot(lines);

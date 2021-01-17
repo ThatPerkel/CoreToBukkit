@@ -1,6 +1,5 @@
 package org.ships.implementation.bukkit.entity.living.hostile.creeper;
 
-import org.bukkit.entity.Creeper;
 import org.core.entity.EntitySnapshot;
 import org.core.entity.EntityType;
 import org.core.entity.EntityTypes;

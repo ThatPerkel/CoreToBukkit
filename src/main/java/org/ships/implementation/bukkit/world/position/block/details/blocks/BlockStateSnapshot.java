@@ -2,9 +2,6 @@ package org.ships.implementation.bukkit.world.position.block.details.blocks;
 
 import org.bukkit.block.data.BlockData;
 import org.core.CorePlugin;
-import org.core.world.position.impl.Position;
-import org.core.world.position.impl.async.ASyncBlockPosition;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
@@ -13,8 +10,11 @@ import org.core.world.position.block.details.data.keyed.*;
 import org.core.world.position.block.entity.LiveTileEntity;
 import org.core.world.position.block.entity.TileEntity;
 import org.core.world.position.block.entity.TileEntitySnapshot;
+import org.core.world.position.impl.BlockPosition;
+import org.core.world.position.impl.Position;
+import org.core.world.position.impl.async.ASyncBlockPosition;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
-import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BDirectionalData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.BRotationalData;
@@ -22,6 +22,7 @@ import org.ships.implementation.bukkit.world.position.block.details.blocks.data.
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BMultiDirectionalKeyedData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BOpenableKeyedData;
 import org.ships.implementation.bukkit.world.position.block.details.blocks.data.keyed.BWaterLoggedKeyedData;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.Optional;
 
@@ -33,10 +34,7 @@ public class BlockStateSnapshot implements BlockSnapshot<SyncBlockPosition>, IBB
         public Optional<TileEntitySnapshot<? extends TileEntity>> getData() {
             BukkitPlatform platform = (BukkitPlatform)CorePlugin.getPlatform();
             Optional<LiveTileEntity> opTile = platform.createTileEntityInstance(BlockStateSnapshot.this.state);
-            if(!opTile.isPresent()){
-                return Optional.empty();
-            }
-            return Optional.of(opTile.get().getSnapshot());
+            return opTile.map(TileEntity::getSnapshot);
         }
 
         @Override
@@ -75,7 +73,7 @@ public class BlockStateSnapshot implements BlockSnapshot<SyncBlockPosition>, IBB
     }
 
     @Override
-    public <T extends Position<Integer>> BlockSnapshot<T> createSnapshot(T position){
+    public <T extends BlockPosition> BlockSnapshot<T> createSnapshot(T position){
         if(position instanceof SyncBlockPosition){
             return (BlockSnapshot<T>) new BExtendedBlockSnapshot((SyncBlockPosition) position, this.state.getBlockData());
         }

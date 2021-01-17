@@ -1,7 +1,7 @@
 package org.ships.implementation.bukkit.inventory.item.stack;
 
-import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.item.ItemType;
+import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.item.stack.ItemStackSnapshot;
 import org.core.text.Text;
 import org.ships.implementation.bukkit.inventory.item.BItemType;

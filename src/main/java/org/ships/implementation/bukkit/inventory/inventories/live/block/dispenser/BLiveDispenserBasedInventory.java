@@ -4,11 +4,11 @@ import org.bukkit.block.Container;
 import org.core.inventory.inventories.live.block.dispenser.LiveDispenserBasedInventory;
 import org.core.inventory.parts.Grid3x3;
 import org.core.inventory.parts.Slot;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.inventory.part.dispenser.DispenserBasedGrid;
-import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.Optional;
 import java.util.Set;

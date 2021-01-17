@@ -60,21 +60,4 @@ public class BServer implements PlatformServer {
     public TPSExecutor getTPSExecutor() {
         return this.tpsExecutor;
     }
-
-    @Override
-    public Collection<CommandLauncher> getCommands() {
-        return Collections.unmodifiableCollection(this.commands);
-    }
-
-    @Override
-    public void registerCommands(CommandLauncher... commandLaunchers) {
-        for(CommandLauncher command : commandLaunchers){
-            JavaPlugin plugin = (JavaPlugin) command.getPlugin().getLauncher();
-            PluginCommand command2 = plugin.getCommand(command.getName());
-            BCommand command3 = new BCommand(command);
-            command2.setTabCompleter(command3);
-            command2.setExecutor(command3);
-            this.commands.add(command);
-        }
-    }
 }

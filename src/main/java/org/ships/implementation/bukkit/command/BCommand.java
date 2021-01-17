@@ -9,7 +9,6 @@ import org.core.exceptions.NotEnoughArguments;
 import org.core.source.command.CommandSource;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 
-import java.io.IOException;
 import java.util.List;
 
 public class BCommand implements TabExecutor {

@@ -1,9 +1,9 @@
 package org.ships.implementation.bukkit.world.position.block.entity.container.dispenser;
 
 import org.core.inventory.inventories.general.block.dispenser.DispenserInventory;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.entity.container.dispenser.DispenserTileEntitySnapshot;
 import org.core.world.position.block.entity.container.dispenser.LiveDispenserTileEntity;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.inventory.inventories.live.block.dispenser.BLiveDispenserInventory;
 import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 

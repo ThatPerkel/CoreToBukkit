@@ -6,6 +6,7 @@ import org.core.text.Text;
 
 public class BQuitEvent extends AbstractLeaveEvent implements ClientConnectionEvent.Leave.Quit {
 
+    @Deprecated
     public BQuitEvent(LivePlayer player, Text leaveMessage) {
         super(player, leaveMessage);
     }

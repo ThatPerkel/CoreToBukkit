@@ -6,7 +6,6 @@ import org.core.entity.LiveEntity;
 import org.core.entity.living.AgeableEntity;
 import org.core.entity.living.hostile.undead.classic.ClassicZombieSnapshot;
 import org.core.entity.living.hostile.undead.classic.LiveClassicZombie;
-import org.core.inventory.inventories.general.entity.ZombieInventory;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.ships.implementation.bukkit.entity.BEntitySnapshot;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
@@ -49,7 +48,7 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
     }
 
     @Override
-    public ZombieInventory getInventory() {
+    public BClassicZombieInventorySnapshot getInventory() {
         return this.inventory;
     }
 
@@ -65,7 +64,7 @@ public class BZombieSnapshot extends BEntitySnapshot<LiveClassicZombie> implemen
     }
 
     @Override
-    public EntitySnapshot createSnapshot() {
+    public BZombieSnapshot createSnapshot() {
         return new BZombieSnapshot(this);
     }
 }

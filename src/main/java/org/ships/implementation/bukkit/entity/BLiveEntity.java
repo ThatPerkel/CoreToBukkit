@@ -3,7 +3,7 @@ package org.ships.implementation.bukkit.entity;
 import org.core.CorePlugin;
 import org.core.entity.LiveEntity;
 import org.core.text.Text;
-import org.core.vector.types.Vector3Double;
+import org.core.vector.type.Vector3;
 import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.impl.sync.SyncExactPosition;
 import org.core.world.position.impl.sync.SyncPosition;
@@ -121,15 +121,15 @@ public abstract class BLiveEntity<T extends org.bukkit.entity.Entity> implements
     }
 
     @Override
-    public LiveEntity setVelocity(Vector3Double velocity){
+    public LiveEntity setVelocity(Vector3<Double> velocity){
         this.entity.setVelocity(new org.bukkit.util.Vector(velocity.getX(), velocity.getY(), velocity.getZ()));
         return this;
     }
 
     @Override
-    public Vector3Double getVelocity(){
+    public Vector3<Double> getVelocity(){
         org.bukkit.util.Vector vector = this.entity.getVelocity();
-        return new Vector3Double(vector.getX(), vector.getY(), vector.getZ());
+        return Vector3.valueOf(vector.getX(), vector.getY(), vector.getZ());
     }
 
     @Override

@@ -61,12 +61,19 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
 
     @Override
     public LivePlayer spawnEntity() {
+        return teleportEntity(false);
+    }
+
+    @Override
+    public LivePlayer teleportEntity(boolean keepInventory) {
         applyDefaults(this.createdFrom);
         this.createdFrom.setSneaking(this.sneaking);
         this.createdFrom.setExhaustionLevel(this.exhaustionLevel);
         this.createdFrom.setFood(this.foodLevel);
         this.createdFrom.setSaturationLevel(this.saturationLevel);
-        this.inventorySnapshot.apply(this.createdFrom);
+        if(!keepInventory) {
+            this.inventorySnapshot.apply(this.createdFrom);
+        }
         return this.createdFrom;
     }
 
@@ -141,5 +148,4 @@ public class BPlayerSnapshot extends BEntitySnapshot<LivePlayer> implements Play
     public void setBalance(BigDecimal decimal) {
         VaultService.setBalance(((BLivePlayer)this.createdFrom).getBukkitEntity(), decimal);
     }
-
 }

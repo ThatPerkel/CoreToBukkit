@@ -7,10 +7,8 @@ import org.core.entity.LiveEntity;
 import org.core.entity.living.human.player.LivePlayer;
 import org.core.exceptions.BlockNotSupported;
 import org.core.text.Text;
-import org.core.vector.types.Vector3Int;
+import org.core.vector.type.Vector3;
 import org.core.world.WorldExtent;
-import org.core.world.position.impl.sync.SyncBlockPosition;
-import org.core.world.position.impl.sync.SyncPosition;
 import org.core.world.position.block.details.BlockDetails;
 import org.core.world.position.block.details.BlockSnapshot;
 import org.core.world.position.block.details.data.keyed.KeyedData;
@@ -21,6 +19,8 @@ import org.core.world.position.block.entity.sign.SignTileEntitySnapshot;
 import org.core.world.position.flags.PositionFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlag;
 import org.core.world.position.flags.physics.ApplyPhysicsFlags;
+import org.core.world.position.impl.sync.SyncBlockPosition;
+import org.core.world.position.impl.sync.SyncPosition;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
 import org.ships.implementation.bukkit.platform.BukkitPlatform;
 import org.ships.implementation.bukkit.text.BText;
@@ -53,13 +53,13 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public Vector3Int getChunkPosition() {
-        return new Vector3Int(this.block.getChunk().getX(), 0, this.block.getChunk().getZ());
+    public Vector3<Integer> getChunkPosition() {
+        return Vector3.valueOf(this.block.getChunk().getX(), 0, this.block.getChunk().getZ());
     }
 
     @Override
-    public Vector3Int getPosition() {
-        return new Vector3Int(this.block.getX(), this.block.getY(), this.block.getZ());
+    public Vector3<Integer> getPosition() {
+        return Vector3.valueOf(this.block.getX(), this.block.getY(), this.block.getZ());
     }
 
     @Override
@@ -68,12 +68,12 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public BlockSnapshot getBlockDetails() {
+    public BlockSnapshot<SyncBlockPosition> getBlockDetails() {
         return new BExtendedBlockSnapshot(this);
     }
 
     @Override
-    public SyncPosition<Integer> setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
+    public BBlockPosition setBlock(BlockDetails details, PositionFlag.SetFlag... flags) {
         BApplyPhysicsFlag physicsFlag = (BApplyPhysicsFlag) Stream.of(flags).filter(b -> b instanceof ApplyPhysicsFlag).findAny().orElse(ApplyPhysicsFlags.NONE);
 
         this.block.setBlockData(((IBBlockDetails)details).getBukkitData(), physicsFlag.getBukitValue());
@@ -89,7 +89,7 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public SyncPosition<Integer> setBlock(BlockDetails details, LivePlayer... player) {
+    public BBlockPosition setBlock(BlockDetails details, LivePlayer... player) {
         Stream.of(player).forEach(lp -> ((BLivePlayer)lp).getBukkitEntity().sendBlockChange(this.block.getLocation(), ((IBBlockDetails)details).getBukkitData()));
         Optional<TileEntitySnapshot<? extends TileEntity>> opTile = details.get(KeyedData.TILED_ENTITY);
         if(opTile.isPresent()){
@@ -108,12 +108,12 @@ public class BBlockPosition extends BAbstractPosition<Integer> implements SyncBl
     }
 
     @Override
-    public SyncPosition<Integer> resetBlock(LivePlayer... player) {
+    public BBlockPosition resetBlock(LivePlayer... player) {
         return setBlock(getBlockDetails(), player);
     }
 
     @Override
-    public SyncPosition<Integer> destroy() {
+    public BBlockPosition destroy() {
         this.getBukkitBlock().breakNaturally();
         return this;
     }

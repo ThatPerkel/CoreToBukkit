@@ -4,13 +4,13 @@ import org.core.inventory.inventories.live.block.LiveUnknownBlockAttachedInvento
 import org.core.inventory.inventories.snapshots.block.UnknownBlockAttachedInventorySnapshot;
 import org.core.inventory.item.stack.ItemStack;
 import org.core.inventory.parts.Slot;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.ships.implementation.bukkit.inventory.inventories.snapshot.block.BUnknownBlockAttachedInventorySnapshot;
 import org.ships.implementation.bukkit.inventory.item.stack.BAbstractItemStack;
 import org.ships.implementation.bukkit.inventory.item.stack.BLiveItemStack;
-import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 import org.ships.implementation.bukkit.world.position.block.BBlockType;
+import org.ships.implementation.bukkit.world.position.impl.sync.BBlockPosition;
 
 import java.util.HashSet;
 import java.util.Optional;

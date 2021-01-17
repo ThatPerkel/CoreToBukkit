@@ -5,9 +5,9 @@ import org.core.inventory.inventories.live.block.LiveUnknownBlockAttachedInvento
 import org.core.inventory.inventories.snapshots.block.UnknownBlockAttachedInventorySnapshot;
 import org.core.inventory.parts.Slot;
 import org.core.inventory.parts.snapshot.SlotSnapshot;
-import org.core.world.position.impl.sync.SyncBlockPosition;
 import org.core.world.position.block.BlockType;
 import org.core.world.position.block.entity.LiveTileEntity;
+import org.core.world.position.impl.sync.SyncBlockPosition;
 
 import java.util.HashSet;
 import java.util.Optional;

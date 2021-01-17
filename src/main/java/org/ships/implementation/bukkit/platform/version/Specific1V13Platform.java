@@ -10,7 +10,6 @@ import org.ships.implementation.bukkit.entity.living.animal.fish.live.BLiveCod;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveChicken;
 import org.ships.implementation.bukkit.entity.living.animal.live.BLiveCow;
 import org.ships.implementation.bukkit.entity.living.bat.live.BLiveBat;
-import org.ships.implementation.bukkit.entity.living.hostile.creeper.BCreeperSnapshot;
 import org.ships.implementation.bukkit.entity.living.hostile.creeper.BLiveCreeper;
 import org.ships.implementation.bukkit.entity.living.hostile.undead.classic.live.BLiveZombie;
 import org.ships.implementation.bukkit.entity.living.human.player.live.BLivePlayer;
@@ -33,13 +32,13 @@ public class Specific1V13Platform implements BukkitSpecificPlatform {
     }
 
     @Override
-    public Set<EntityType<? extends org.core.entity.Entity, ? extends EntitySnapshot<? extends org.core.entity.Entity>>> getSpecificEntityTypes() {
+    public Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getSpecificEntityTypes() {
         return new HashSet<>();
     }
 
     @Override
-    public Set<EntityType<? extends org.core.entity.Entity, ? extends EntitySnapshot<? extends org.core.entity.Entity>>> getGeneralEntityTypes() {
-        Set<EntityType<? extends org.core.entity.Entity, ? extends EntitySnapshot<? extends org.core.entity.Entity>>> set = new HashSet<>(
+    public Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> getGeneralEntityTypes() {
+        Set<EntityType<? extends LiveEntity, ? extends EntitySnapshot<? extends LiveEntity>>> set = new HashSet<>(
                 Arrays.asList(
                         new BEntityType.ZombieType(),
                         new BEntityType.ChickenType(),
